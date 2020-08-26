@@ -1,0 +1,65 @@
+README - Financial capital data
+
+# fin_acs_2018
+American Community Survey data.
+County-level, 2014/18.
+Source for percent employed in agriculture, gini, in poverty, social assistance, ssi, median income, education, commute, labor force.
+Obtained via API (see 01_getacs).
+
+# fin_cbp_2018_orig and fin_cbp_2014_orig (not committed)
+County Business Patterns data.
+County-level, 2018 and 2014
+Original data.
+Source for HHI of employment by industry, HHI of payroll by industry.
+Downloaded from https://www.census.gov/data/datasets/2018/econ/cbp/2018-cbp.html and 
+                https://www.census.gov/data/datasets/2014/econ/cbp/2018-cbp.html.
+
+# fin_cbp_2018
+County Business Patterns data.
+County-level, 2018.
+Source for HHI of employment by industry, HHI of payroll by industry, new businesses per 10k, businesses per 10k.
+Downloaded from https://www.census.gov/data/datasets/2018/econ/cbp/2018-cbp.html.
+Filtered and calculated for what we need.
+
+# fin_urban_2018_orig
+Urban Institute Debt in America data via credit bureau. 
+County-level, 2018.
+Source for financial capital variable "share with any debt in collections."
+Downloaded from https://apps.urban.org/features/debt-interactive-map/?type=overall&variable=pct_debt_collections
+Removed extraneous sheets and information from data before uploading. Only kept data needed (Share with any debt in collections).
+
+# fin_urban_2018
+Urban Institute Debt in America data via credit bureau. 
+County-level, 2018.
+Source for financial capital variable "share with any debt in collections."
+Downloaded from https://apps.urban.org/features/debt-interactive-map/?type=overall&variable=pct_debt_collections
+Clean and filtered to counties we need.
+
+# fin_cdfi_2020_orig
+Community Development Financial Institutions list.
+Address level, 2020.
+Downloaded from https://www.cdfifund.gov/programs-training/certification/cdfi/Pages/default.aspx
+Original data.
+
+# fin_cdfi_2020
+Community Development Financial Institutions list.
+Address level, 2020.
+Downloaded from https://www.cdfifund.gov/programs-training/certification/cdfi/Pages/default.aspx
+Clean and geocoded data.
+
+# fin_nass_2017 _aglandtotal, _landareatotal, _landvalueperacre, _netincome
+National Agricultural Statistics Service.
+County-level, 2017.
+Downloaded for the three states from https://quickstats.nass.usda.gov/; glossary: https://quickstats.nass.usda.gov/src/glossary.pdf
+Obtained:
+- Agricultural land: Census -- economics -- farms&land&assets -- farm operations -- area operated -- farm operations acres operated - total
+- Land area: Census -- economics -- farms&land&assets -- land area -- area 
+- Net income per acre: Census -- economics -- income — income net cash farm — net income — income net cash farm of operations net income measured in dollars per operation
+- Land value per acre: census — economics — farms & land & assets — ag land — asset value — ag land including buildings asset value measured in dollars per acre
+
+# fin_nass_2017
+National Agricultural Statistics Service.
+County-level, 2017.
+Source for percent county in agriculture acres, land value per acre, net income per farm operation.
+Clean, filtered to counties we need, joined and added geography.
+
