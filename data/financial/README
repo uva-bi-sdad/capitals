@@ -63,3 +63,18 @@ County-level, 2017.
 Source for percent county in agriculture acres, land value per acre, net income per farm operation.
 Clean, filtered to counties we need, joined and added geography.
 
+# fin_laus_2020_orig
+Bureu of Labor Statistics, Local Area Unemployment Statistics.
+County level, 2020.
+Source for pre- and covid seasonally adjusted unemployment rates.
+Downloaded from https://www.bls.gov/lau/#tables
+(https://www.bls.gov/web/metro/laucntycur14.txt)
+Original data.
+
+# fin_laus_2020
+Bureu of Labor Statistics, Local Area Unemployment Statistics.
+County level, 2020.
+Source for pre- and covid seasonally adjusted unemployment rates.
+Downloaded from https://www.bls.gov/lau/#tables
+(https://www.bls.gov/web/metro/laucntycur14.txt)
+Cleaned data, calculated variables, joined to geography.
