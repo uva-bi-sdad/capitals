@@ -10,7 +10,7 @@ library(readr)
 #
 
 # Read
-data <- read_excel("./data/financial/fin_laus_2020_orig.xlsx", 
+data <- read_excel("./rivanna_data/financial/fin_laus_2020_orig.xlsx", 
                    col_types = c("text", "text", "text", "text", "date", "numeric", "numeric", "numeric", "numeric"))
 
 # Prepare GEOID
@@ -78,4 +78,4 @@ data <- left_join(acsdata, data, by = c("GEOID", "STATEFP" = "state", "COUNTYFP"
 # Write out -------------------------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_laus_2020.Rds")
+write_rds(data, "./rivanna_data/financial/fin_laus_2020.Rds")

@@ -10,7 +10,7 @@ library(readr)
 #
 
 # Read in. Warnings are OK - coercion was correct.
-data <- read_excel("./data/financial/fin_cdfi_2020_orig.xlsx", 
+data <- read_excel("./rivanna_data/financial/fin_cdfi_2020_orig.xlsx", 
                    col_types = c("text", "date", "text", "text", "text", "text", "text", "text", "text")) %>% clean_names()
 
 
@@ -86,4 +86,4 @@ data$longitude[41] <- -122.672549
 # Write out ------------------------------------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_cdfi_2020.Rds")
+write_rds(data, "./rivanna_data/financial/fin_cdfi_2020.Rds")

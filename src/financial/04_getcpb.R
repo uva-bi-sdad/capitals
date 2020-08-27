@@ -15,8 +15,8 @@ library(stringr)
 # Layout explanations at 
 # https://www2.census.gov/programs-surveys/cbp/technical-documentation/records-layouts/2018_record_layouts/county-layout-2018.txt
 
-cbpdata14 <- read_csv("./data/financial/fin_cbp_2014_orig.txt")
-cbpdata18 <- read_csv("./data/financial/fin_cbp_2018_orig.txt")
+cbpdata14 <- read_csv("./rivanna_data/financial/fin_cbp_2014_orig.txt")
+cbpdata18 <- read_csv("./rivanna_data/financial/fin_cbp_2018_orig.txt")
 
 
 #
@@ -158,4 +158,4 @@ data <- left_join(data, cbpforindex, by = "GEOID")
 # Write out --------------------------------------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_cbp_2018.Rds")
+write_rds(data, "./rivanna_data/financial/fin_cbp_2018.Rds")

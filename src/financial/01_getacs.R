@@ -88,4 +88,4 @@ acsdata <- data %>% transmute(
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(acsdata, "./data/financial/fin_acs_2018.Rds")
+write_rds(acsdata, "./rivanna_data/financial/fin_acs_2018.Rds")

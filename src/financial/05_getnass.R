@@ -29,16 +29,16 @@ acsdata$acres <- acsdata$ALAND * 0.00024710538146717
 #
 
 # FARM OPERATIONS - ACRES OPERATED total
-aglandtotal <- read_csv("./data/financial/fin_nass_2017_aglandtotal.csv") %>% clean_names()
+aglandtotal <- read_csv("./rivanna_data/financial/fin_nass_2017_aglandtotal.csv") %>% clean_names()
 
 # LAND AREA, INCL NON-AG - ACRES total
-landareatotal <- read_csv("./data/financial/fin_nass_2017_landareatotal.csv") %>% clean_names()
+landareatotal <- read_csv("./rivanna_data/financial/fin_nass_2017_landareatotal.csv") %>% clean_names()
 
 # AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $ / ACRE total
-landvalueperacre <- read_csv("./data/financial/fin_nass_2017_landvalueperacre.csv") %>% clean_names()
+landvalueperacre <- read_csv("./rivanna_data/financial/fin_nass_2017_landvalueperacre.csv") %>% clean_names()
 
 # INCOME, NET CASH FARM, OF OPERATIONS - NET INCOME, MEASURED IN $ / OPERATION total
-netincome <- read_csv("./data/financial/fin_nass_2017_netincome.csv") %>% clean_names()
+netincome <- read_csv("./rivanna_data/financial/fin_nass_2017_netincome.csv") %>% clean_names()
 
 
 #
@@ -93,5 +93,5 @@ data <- data %>% rename(fin_pctagacres = fin_pctagacres1) %>% select(-fin_pctaga
 # Write out ---------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_nass_2017.Rds")
+write_rds(data, "./rivanna_data/financial/fin_nass_2017.Rds")
 

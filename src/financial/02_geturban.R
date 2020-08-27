@@ -8,7 +8,7 @@ library(readr)
 # Read in -------------------------------------------------------------------
 #
 
-data <- read_excel("./data/financial/fin_urban_2018_orig.xlsx")
+data <- read_excel("./rivanna_data/financial/fin_urban_2018_orig.xlsx")
 
 
 #
@@ -56,5 +56,5 @@ data <- left_join(acsdata, data, by = c("NAME.y" = "fullname"))
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_urban_2018.Rds")
+write_rds(data, "./rivanna_data/financial/fin_urban_2018.Rds")
 

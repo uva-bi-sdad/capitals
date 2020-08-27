@@ -8,11 +8,11 @@ library(naniar)
 # Read in -----------------------------------------------------------------------
 #
 
-data_acs <- read_rds("./data/financial/fin_acs_2018.Rds")
-data_cbp <- read_rds("./data/financial/fin_cbp_2018.Rds") %>% st_drop_geometry()
-data_laus <- read_rds("./data/financial/fin_laus_2020.Rds") %>% st_drop_geometry()
-data_nass <- read_rds("./data/financial/fin_nass_2017.Rds") %>% st_drop_geometry()
-data_urban <- read_rds("./data/financial/fin_urban_2018.Rds") %>% st_drop_geometry()
+data_acs <- read_rds("./rivanna_data/financial/fin_acs_2018.Rds")
+data_cbp <- read_rds("./rivanna_data/financial/fin_cbp_2018.Rds") %>% st_drop_geometry()
+data_laus <- read_rds("./rivanna_data/financial/fin_laus_2020.Rds") %>% st_drop_geometry()
+data_nass <- read_rds("./rivanna_data/financial/fin_nass_2017.Rds") %>% st_drop_geometry()
+data_urban <- read_rds("./rivanna_data/financial/fin_urban_2018.Rds") %>% st_drop_geometry()
 
 
 #
@@ -55,7 +55,7 @@ miss_var_summary(data)
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "./data/financial/fin_final.Rds")
+write_rds(data, "./rivanna_data/financial/fin_final.Rds")
 
 
 
