@@ -9,7 +9,7 @@ turbines = read_csv("data/natural/nat_usgs_2020.csv")
 turbines %<>% filter(t_state %in% c("IA", "OR", "VA"))
 
 # Find the total kW produced by turbines in each county
-co_turbines = turbines %>% group_by(t_fips) %>% summarise(total_kw = sum(t_cap, na.rm = T))
+co_turbines = turbines %>% group_by(t_fips) %>% summarise(total_kw = sum(t_cap, na.rm = T)) %>% ungroup()
 
 # Change names
 names(co_turbines) = c("GEOID", "total_kw")
@@ -18,7 +18,7 @@ names(co_turbines) = c("GEOID", "total_kw")
 counties = read_csv("data/natural/nat_census_2019_pop.csv")
 
 # Add GEOID column for joining
-counties %<>% mutate(GEOID =  paste0(STATE, COUNTY))
+counties %<>% mutate(GEOID = paste0(STATE, COUNTY))
 
 # Get rid of state totals
 counties %<>% filter(COUNTY != "000")
