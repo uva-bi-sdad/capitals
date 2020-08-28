@@ -1,6 +1,7 @@
 library(dplyr)
 library(magrittr)
 library(readr)
+library(tidycensus)
 
 # Read in USGS wind turbine data
 turbines = read_csv("data/natural/nat_usgs_2020.csv")
@@ -31,6 +32,18 @@ usgs_windpower = left_join(counties, co_turbines)
 
 # Adjust total_kw for population
 usgs_windpower %<>% mutate(nat_windkwper10k = (total_kw/POPESTIMATE2019) * 10000)
+
+# Add geometries
+Sys.getenv("CENSUS_API_KEY")
+
+acsdata <- get_acs(geography = "county", state = c(19, 41, 51), 
+                   variables = "B01003_001",
+                   year = 2018, survey = "acs5",
+                   cache_table = TRUE, output = "wide", geometry = TRUE,
+                   keep_geo_vars = TRUE)
+acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS, -B01003_001E, -B01003_001M)
+
+usgs_windpower <- left_join(acsdata, usgs_windpower, by = "GEOID")
 
 # Write dataframe to rds file
 write_rds(usgs_windpower, "data/natural/nat_usgs_2020.rds")

@@ -2,6 +2,7 @@ library(readr)
 library(dplyr)
 library(magrittr)
 library(janitor)
+library(tidycensus)
 
 # Read in USDA-NASS data files
 ag_land = read_csv("data/natural/nat_nass_2017_aglandtotal.csv") %>% clean_names()
@@ -61,5 +62,17 @@ nass_data %<>% mutate(nat_pctwater = AWATER_acres/total_area)
 nass_data %<>% mutate(nat_agritourrevper10kacres = (agritourism_revenue/total_area) * 10000)
 nass_data %<>% mutate(nat_forestryrevper10kacres = (forestry_revenue/total_area) * 10000)
 
+# Add geometries
+Sys.getenv("CENSUS_API_KEY")
+
+acsdata <- get_acs(geography = "county", state = c(19, 41, 51), 
+                   variables = "B01003_001",
+                   year = 2018, survey = "acs5",
+                   cache_table = TRUE, output = "wide", geometry = TRUE,
+                   keep_geo_vars = TRUE)
+acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS, -B01003_001E, -B01003_001M)
+
+nass_data <- left_join(acsdata, nass_data, by = c("STATEFP", "COUNTYFP", "GEOID"))
+  
 # Write combined dataframe to rds file
 write_rds(nass_data, "data/natural/nat_nass_2017.rds")

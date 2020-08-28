@@ -2,6 +2,7 @@ library(dplyr)
 library(magrittr)
 library(readxl)
 library(readr)
+library(tidycensus)
 
 # Read in USDA-FSA Conservation Reserve Program data
 fsa = read_xlsx("data/natural/nat_fsa_2020.xlsx", skip = 3)
@@ -37,6 +38,21 @@ fsa = left_join(counties, fsa)
 fsa %<>% mutate(nat_rarecrpper10kacres = (rare_hab/total_area) * 10000)
 fsa %<>% mutate(nat_polcrpper10kacres = (pol_hab/total_area) * 10000)
 fsa %<>% mutate(nat_wildlifecrpper10kacres = (wildlife/total_area) * 10000)
+
+# Clean up
+fsa <- fsa %>% select(-AFFGEOID, -LSAD, -ALAND, -AWATER, -STATE, -COUNTY, -COUNTYNS, -NAME)
+
+# Add geometries
+Sys.getenv("CENSUS_API_KEY")
+
+acsdata <- get_acs(geography = "county", state = c(19, 41, 51), 
+                   variables = "B01003_001",
+                   year = 2018, survey = "acs5",
+                   cache_table = TRUE, output = "wide", geometry = TRUE,
+                   keep_geo_vars = TRUE)
+acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS, -B01003_001E, -B01003_001M)
+
+fsa <- left_join(acsdata, fsa, by = c("GEOID", "STATEFP", "COUNTYFP"))
 
 # Write dataframe to rds file
 write_rds(fsa, "data/natural/nat_fsa_2020.rds")
