@@ -3,33 +3,46 @@ README - Natural capital data
 # nat_nass_2017 _aglandtotal, _agritourism, _forestry
 National Agricultural Statistics Service.
 County-level, 2017.
+Combined and cleaned data is found in nat_nass_2017.rds.
 Downloaded for the three states from https://quickstats.nass.usda.gov/; glossary: https://quickstats.nass.usda.gov/src/glossary.pdf
 Obtained:
 - Agricultural land: Census -- economics -- farms&land&assets -- farm operations -- area operated -- farm operations acres operated - total
-- Net income per acre: Census -- economics -- income — income farm related — receipts — income farm-related ag tourism & recreational services - receipts measured in dollars
-- Net income per acre: Census -- economics -- income — income farm related — receipts — income farm-related forest products (excl christmas trees & short term woody crops & maple syrup) - receipts measured in dollars
+- Agritourism revenue: Census -- economics -- income — income farm related — receipts — income farm-related ag tourism & recreational services - receipts measured in dollars
+- Forestry revenue: Census -- economics -- income — income farm related — receipts — income farm-related forest products (excl christmas trees & short term woody crops & maple syrup) - receipts measured in dollars
 
 # nat_fsa_2020
 Farm Services Agency Conservation Reserve Program data.
-County-level, January 2020
+County-level, January 2020.
+Cleaned data is found in nat_fsa_2020.rds.
 Downloaded from CRP Practices (Acres) By County Jan 2020 xls file at https://www.fsa.usda.gov/programs-and-services/conservation-programs/reports-and-statistics/conservation-reserve-program-statistics/index
 
 # nat_usgs_2020
 United States Geological Survey wind turbine data.
 Geolocations, 2020.
+Data aggregated to county level is found in nat_usgs_2020.rds.
 Downloaded from https://eerscmap.usgs.gov/uswtdb/data/
 
 # nat_rwj_2020 _iowa, _oregon, _virginia
 Robert Wood Johnson County Health Rankings data.
 Source for air pollution particulate data
 County-level, 2020.
+Combined and cleaned data is found in nat_rwj_2020.rds.
 Iowa data downloaded from https://www.countyhealthrankings.org/app/iowa/2020/downloads
 Oregon data downloaded from https://www.countyhealthrankings.org/app/oregon/2020/downloads
 Virginia data downloaded from https://www.countyhealthrankings.org/app/virginia/2020/downloads
 
-# nat_census_2019
+# nat_census_2019_area
 United States Census Bureau.
 County-level, 2019.
 Source for land area and water area data.
 Downloaded county shapefiles, then exported associated attribute table from QGIS into a csv.
 Downloaded from https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2019&layergroup=Counties+%28and+equivalent%29
+
+# nat_census_2019_pop
+United States Census Bureau.
+County-level, 2019.
+Source for population data.
+Downloaded from https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/
+
+# nat_final
+Assembled rds file of all 9 natural capital measures in their final forms before standardization.

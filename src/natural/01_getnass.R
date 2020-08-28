@@ -43,7 +43,7 @@ nass_data = full_join(ag_land, agritourism, by = c("GEOID", "state", "state_ansi
 nass_data = full_join(nass_data, forestry, by = c("GEOID", "state", "state_ansi", "county", "county_ansi"))
 
 # Read in County area data
-counties = read_csv("data/natural/nat_census_2019.csv")
+counties = read_csv("data/natural/nat_census_2019_area.csv")
 
 # Keep counties of interest
 counties %<>% filter(STATEFP %in% c(19, 41, 51))

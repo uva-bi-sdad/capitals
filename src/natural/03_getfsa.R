@@ -22,7 +22,7 @@ names(fsa) = c("GEOID", "STATE", "COUNTY", "rare_hab", "pol_hab", "wildlife")
 fsa$GEOID %<>% as.character()
 
 # Read in County area data
-counties = read_csv("data/natural/nat_census_2019.csv")
+counties = read_csv("data/natural/nat_census_2019_area.csv")
 
 # Keep counties of interest
 counties %<>% filter(STATEFP %in% c(19, 41, 51))
