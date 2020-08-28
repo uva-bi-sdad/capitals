@@ -21,5 +21,8 @@ rwj_va %<>% select(FIPS, State, County, `Average Daily PM2.5`, `Z-Score...201`)
 # Bind the individual state dataframes into a single dataframe
 rwj = rbind(rwj_ia, rwj_or, rwj_va)
 
+# Change names of columns
+names(rwj) = c("GEOID", "State", "County", "nat_particulatedensity", "nat_zparticulatedensity")
+
 # Save combined dataframe to an RDS file
 write_rds(rwj, "data/natural/nat_rwj_2020.rds")
