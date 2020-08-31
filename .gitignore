@@ -40,8 +40,6 @@ vignettes/*.pdf
 .Rproj.user
 *.Rproj
 
-/data/financial/fin_cbp_2014_orig.txt
-/data/financial/fin_cbp_2018_orig.txt
-
-./data/financial/fin_cbp_2014_orig.txt
-./data/financial/fin_cbp_2018_orig.txt
+# Shiny data directory
+src/ccdash/data/
+/src/ccdash/data/
