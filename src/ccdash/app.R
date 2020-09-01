@@ -42,7 +42,9 @@ ui <- dashboardPage(
       tabItem(tabName = "capitals",
               fluidRow(
                 box(title = "Community Capitals",
-                    width = 12
+                    width = 12,
+                    align = "center",
+                    img(src = "capitals.png", class = "topimage", height = "20%", style = "display: block; margin-left: auto; margin-right: auto; border: 1px solid #B4B4B4")
                 )
               ),
               
@@ -85,39 +87,60 @@ ui <- dashboardPage(
               fluidRow(     
                 box(title = "Financial Capital Index",
                     width = 12,
-                    "Box content here", 
-                    br(), 
-                    "More box content")
+                    column(
+                      width = 2,
+                      h5(strong("Index")),
+                      selectInput("fin_whichindex", label = NULL,
+                                  choices = list("Commerce Index",
+                                                 "Agriculture Index", 
+                                                 "Economic Diversification Index", 
+                                                 "Financial Well-Being Index", 
+                                                 "Employment Index"))
+                    ),
+                    column(
+                      width = 10,
+                      h5(strong("County-Level Map")),
+                      leafletOutput("plot_fin_index")
+                    )
+                )
               ),
+              
               fluidRow(
                 box(title = "Financial Capital Indicators",
                     width = 12,
-                    column(width = 6,
-                    selectInput("fin_whichind", label = NULL, 
-                                choices = list("Number of businesses per 10,000 people",
-                                               "Number of new businesses per 10,000 people",
-                                               "Percent county in agriculture acres",
-                                               "Land value per acre",
-                                               "Net income per farm operation",
-                                               "Percent employed in agriculture, forestry, fishing and hunting, mining industry",
-                                               "HHI of employment by industry",
-                                               "HHI of payroll by industry",
-                                               "Gini Index of income inequality",
-                                               "Percent households with income below poverty level in last 12 months",
-                                               "Percent households receiving public assistance or SNAP",
-                                               "Percent households receiving supplemental security income",
-                                               "Median household income",
-                                               "Percent population over age 25 with less than a four year degree",
-                                               "Share of people with a credit bureau record who have any debt in collections",
-                                               "Unemployment rate before COVID",
-                                               "Unemployment rate during COVID",
-                                               "Percent commuting 30 minutes or longer",
-                                               "Percent working age population in labor force")
-                    ),
-                    leafletOutput("plot_fin_ind")
+                    column(width = 2,
+                           h5(strong("Indicator")),
+                           selectInput("fin_whichind", label = NULL, 
+                                       choices = list("Land value per acre",
+                                                      "Percent county in agriculture acres",
+                                                      "Net income per farm operation",
+                                                      "Percent employed in agriculture, forestry, fishing and hunting, mining industry",
+                                                      "Number of businesses per 10,000 people",
+                                                      "Number of new businesses per 10,000 people",
+                                                      "HHI of employment by industry",
+                                                      "HHI of payroll by industry",
+                                                      "Gini Index of income inequality",
+                                                      "Percent households with income below poverty level in last 12 months",
+                                                      "Percent households receiving public assistance or SNAP",
+                                                      "Percent households receiving supplemental security income",
+                                                      "Median household income",
+                                                      "Percent population over age 25 with less than a four year degree",
+                                                      "Share of people with a credit bureau record who have any debt in collections",
+                                                      "Unemployment rate before COVID",
+                                                      "Unemployment rate during COVID",
+                                                      "Percent commuting 30 minutes or longer",
+                                                      "Percent working age population in labor force")
+                           ),
+                           "A bunch of text here."
                     ),
                     column(
-                      width = 6, 
+                      width = 5,
+                      h5(strong("County-Level Map")),
+                      leafletOutput("plot_fin_ind")
+                    ),
+                    column(
+                      width = 5, 
+                      h5(strong("Indicator Box Plot")),
                       plotlyOutput("plotly_fin_ind")
                     )
                 )
@@ -238,19 +261,19 @@ server <- function(input, output) {
                         "Unemployment rate during COVID" = "Unemployment rate during COVID",
                         "Percent commuting 30 minutes or longer" = "Percent commuting 30 minutes or longer",
                         "Percent working age population in labor force" = "Percent working age population in labor force")
-      
-      plot_ly(y = ~data_var, 
-              x = var_label,
-              showlegend = FALSE,
-              hoverinfo = "y",
-              type = "box",
-              name = "") %>% 
-        layout(title = "",
-               xaxis = list(title = "",
-                            zeroline = FALSE),
-               yaxis = list(title = "",
-                            zeroline = FALSE,
-                            hoverformat = ".2f"))
+    
+    plot_ly(y = ~data_var, 
+            x = var_label,
+            showlegend = FALSE,
+            hoverinfo = "y",
+            type = "box",
+            name = "") %>% 
+      layout(title = "",
+             xaxis = list(title = "",
+                          zeroline = FALSE),
+             yaxis = list(title = "",
+                          zeroline = FALSE,
+                          hoverformat = ".2f"))
   })
   
   output$plot_fin_ind <- renderLeaflet({
