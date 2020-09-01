@@ -25,7 +25,7 @@ ui <- dashboardPage(
       menuItem(text = "Natural Capital", tabName = "natural", icon = icon("tree")),
       menuItem(text = "Political Capital", tabName = "political", icon = icon("balance-scale-left")),
       menuItem(text = "Cultural Capital", tabName = "cultural", icon = icon("landmark")),
-      menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("landmark")),
+      menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("")),
       menuItem(text = "Contact", tabName = "contact", icon = icon(""))
     )
   ),
@@ -95,7 +95,8 @@ ui <- dashboardPage(
                                                  "Agriculture Index", 
                                                  "Economic Diversification Index", 
                                                  "Financial Well-Being Index", 
-                                                 "Employment Index"))
+                                                 "Employment Index")),
+                      "A bunch of text here."
                     ),
                     column(
                       width = 10,
@@ -357,6 +358,57 @@ server <- function(input, output) {
                   paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
                 })
   })
+  
+  output$plot_fin_index <- renderLeaflet({
+    data <- switch(input$fin_whichstate,
+                   "Iowa" = datafin %>% filter(STATEFP == 19),
+                   "Oregon" = datafin %>% filter(STATEFP == 41),
+                   "Virginia" = datafin %>% filter(STATEFP == 51))
+    
+    data_var <- switch(input$fin_whichindex,
+                       "Commerce Index" = data$fin_index_commerce,
+                       "Agriculture Index" = data$fin_index_agri, 
+                       "Economic Diversification Index" = data$fin_index_divers, 
+                       "Financial Well-Being Index" = data$fin_index_well, 
+                       "Employment Index" = data$fin_index_empl)
+    
+    var_label <- switch(input$fin_whichindex,
+                        "Commerce Index" = "Commerce Index",
+                        "Agriculture Index" = "Agriculture Index", 
+                        "Economic Diversification Index" = "Economic Diversification Index", 
+                        "Financial Well-Being Index" = "Financial Well-Being Index", 
+                        "Employment Index" = "Employment Index")
+    
+    pal <- colorNumeric("Blues", domain = data_var)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", var_label, ": </strong>",
+            round(data_var, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(data_var), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(data_var),
+                title = "Value",
+                opacity = 0.7)
+  })
+  
   
 }
 
