@@ -57,12 +57,10 @@ math_1718 <- math_1718 %>%
   rename(mth_n = ALL_MTH00NUMVALID_1718,
          mth_pctprof = ALL_MTH00PCTPROF_1718)
   
-  
 math_1617 <- math_1617 %>%
   filter(FIPST == "51") %>%   # VA only
   rename(mth_n = ALL_MTH00NUMVALID_1617,
          mth_pctprof = ALL_MTH00PCTPROF_1617)
-
 
 rla <- rla %>%
   filter(FIPST == "19" | FIPST == "41" | FIPST == "51") %>%

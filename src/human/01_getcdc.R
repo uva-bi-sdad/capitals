@@ -12,11 +12,11 @@ suicide <- read.delim("./data/human/human_cdc_2018 - suicide.txt", header = TRUE
 
 # only keep table data, cut off notes - each dataset has 270 rows
 
-alcohol <- alcohol[1:270, ]
-drug_unint <- drug_unint[1:270, ]
-drug_und <- drug_und[1:270, ]
-drug_other <- drug_other[1:270, ]
-suicide <- suicide[1:270, ]
+alcohol <- alcohol[1:270, ]       # alcohol-induced causes
+drug_unint <- drug_unint[1:270, ] # drug overdoses unintentional
+drug_und <- drug_und[1:270, ]     # drug overdoses undetermined
+drug_other <- drug_other[1:270, ] # drug overdoses other
+suicide <- suicide[1:270, ]       # suicide
 
 # rename columns so that we can merge cdc data into one dataframe
 
