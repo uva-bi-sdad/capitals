@@ -34,6 +34,12 @@ counties %<>% mutate(total_area = ALAND_acres + AWATER_acres)
 # Join fsa data to counties dataset
 fsa = left_join(counties, fsa)
 
+# Independent cities don't have data, so they are NA. (is.na(STATE) & is.na(COUNTY))
+# "Real" counties with NA are legitimate 0s. Code as such.
+fsa <- fsa %>% mutate(rare_hab = ifelse(!is.na(STATE) & !is.na(COUNTY) & is.na(rare_hab), 0, rare_hab),
+                      pol_hab = ifelse(!is.na(STATE) & !is.na(COUNTY) & is.na(pol_hab), 0, pol_hab),
+                      wildlife = ifelse(!is.na(STATE) & !is.na(COUNTY) & is.na(wildlife), 0, wildlife))
+
 # Create new columns with correct names and transformed data
 fsa %<>% mutate(nat_rarecrpper10kacres = (rare_hab/total_area) * 10000)
 fsa %<>% mutate(nat_polcrpper10kacres = (pol_hab/total_area) * 10000)
