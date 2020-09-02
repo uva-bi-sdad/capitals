@@ -87,54 +87,62 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(     
-                box(title = "Financial Capital Index",
-                    width = 12,
-                    column(
-                      width = 2,
-                      h5(strong("Index")),
-                      selectInput("fin_whichindex", label = NULL,
-                                  choices = list("Commerce Index",
-                                                 "Agriculture Index", 
-                                                 "Economic Diversification Index", 
-                                                 "Financial Well-Being Index", 
-                                                 "Employment Index")),
-                      "A bunch of text here."
-                    ),
-                    column(
-                      width = 10,
-                      h5(strong("County-Level Map")),
-                      leafletOutput("plot_fin_index")
-                    )
+                tabBox(title = "Financial Capital Index",
+                       id = "tab_indexfin",
+                       width = 12,
+                       side = "right",
+                       tabPanel(title = "Commerce Index", 
+                                h5(strong("County-Level Map")),
+                                leafletOutput("plot_fin_index_commerce")
+                       ),
+                       tabPanel(title = "Agriculture Index", 
+                                h5(strong("County-Level Map")),
+                                leafletOutput("plot_fin_index_agri")
+                       ),
+                       tabPanel(title = "Economic Diversification Index", 
+                                h5(strong("County-Level Map")),
+                                leafletOutput("plot_fin_index_econdiv")
+                       ),
+                       tabPanel(title = "Financial Well-Being Index", 
+                                h5(strong("County-Level Map")),
+                                leafletOutput("plot_fin_index_finwell")
+                       ),
+                       tabPanel(title = "Employment Index", 
+                                h5(strong("County-Level Map")),
+                                leafletOutput("plot_fin_index_emp")
+                       )
                 )
               ),
               
               fluidRow(
                 box(title = "Financial Capital Indicators",
                     width = 12,
-                    column(width = 2,
-                           h5(strong("Indicator")),
-                           selectInput("fin_whichind", label = NULL, 
-                                       choices = list("Land value per acre",
-                                                      "Percent county in agriculture acres",
-                                                      "Net income per farm operation",
-                                                      "Percent employed in agriculture, forestry, fishing and hunting, mining industry",
-                                                      "Number of businesses per 10,000 people",
-                                                      "Number of new businesses per 10,000 people",
-                                                      "HHI of employment by industry",
-                                                      "HHI of payroll by industry",
-                                                      "Gini Index of income inequality",
-                                                      "Percent households with income below poverty level in last 12 months",
-                                                      "Percent households receiving public assistance or SNAP",
-                                                      "Percent households receiving supplemental security income",
-                                                      "Median household income",
-                                                      "Percent population over age 25 with less than a four year degree",
-                                                      "Share of people with a credit bureau record who have any debt in collections",
-                                                      "Unemployment rate before COVID",
-                                                      "Unemployment rate during COVID",
-                                                      "Percent commuting 30 minutes or longer",
-                                                      "Percent working age population in labor force")
-                           ),
-                           "A bunch of text here."
+                    conditionalPanel(condition = "input.tab_indexfin == 'Commerce Index'",
+                                     column(width = 2,
+                                            h5(strong("Commerce Index Indicators")),
+                                            br(),
+                                            selectInput("fin_whichind", label = NULL,
+                                                         choices = list("Number of businesses per 10,000 people",
+                                                                        "Number of new businesses per 10,000 people",
+                                                                        "Land value per acre",
+                                                                        "Percent county in agriculture acres",
+                                                                        "Net income per farm operation",
+                                                                        "Percent employed in agriculture, forestry, fishing and hunting, mining industry",
+                                                                        "HHI of employment by industry",
+                                                                        "HHI of payroll by industry",
+                                                                        "Gini Index of income inequality",
+                                                                        "Percent households with income below poverty level in last 12 months",
+                                                                        "Percent households receiving public assistance or SNAP",
+                                                                        "Percent households receiving supplemental security income",
+                                                                        "Median household income",
+                                                                        "Percent population over age 25 with less than a four year degree",
+                                                                        "Share of people with a credit bureau record who have any debt in collections",
+                                                                        "Unemployment rate before COVID",
+                                                                        "Unemployment rate during COVID",
+                                                                        "Percent commuting 30 minutes or longer",
+                                                                        "Percent working age population in labor force")
+                                            )
+                                     )
                     ),
                     column(
                       width = 5,
@@ -149,6 +157,8 @@ ui <- dashboardPage(
                 )
               )
       ),
+      
+      
       
       # HUMAN CAPITAL CONTENT -------------------------
       tabItem(tabName = "human",
@@ -214,7 +224,7 @@ ui <- dashboardPage(
 # SERVER ----------------------------------------------------------------------------------------------------
 #
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   # Function for boxplots
   create_boxplot <- function(myvar, myvarlabel) {
@@ -403,25 +413,25 @@ server <- function(input, output) {
   })
   
   # Financial - Indicators - Index
-  output$plot_fin_index <- renderLeaflet({
-    
-    data_var <- switch(input$fin_whichindex,
-                       "Commerce Index" = fin_data()$fin_index_commerce,
-                       "Agriculture Index" = fin_data()$fin_index_agri, 
-                       "Economic Diversification Index" = fin_data()$fin_index_divers, 
-                       "Financial Well-Being Index" = fin_data()$fin_index_well, 
-                       "Employment Index" = fin_data()$fin_index_empl)
-    
-    var_label <- switch(input$fin_whichindex,
-                        "Commerce Index" = "Commerce Index",
-                        "Agriculture Index" = "Agriculture Index", 
-                        "Economic Diversification Index" = "Economic Diversification Index", 
-                        "Financial Well-Being Index" = "Financial Well-Being Index", 
-                        "Employment Index" = "Employment Index")
-    
-    create_index(fin_data(), data_var, var_label)
+  output$plot_fin_index_commerce <- renderLeaflet({
+    create_index(fin_data(), fin_data()$fin_index_commerce, "Commerce Index")
   })
   
+  output$plot_fin_index_agri <- renderLeaflet({
+    create_index(fin_data(), fin_data()$fin_index_agri, "Agriculture Index")
+  })
+  
+  output$plot_fin_index_econdiv <- renderLeaflet({
+    create_index(fin_data(), fin_data()$fin_index_divers, "Economic Diversification Index")
+  })
+  
+  output$plot_fin_index_finwell <- renderLeaflet({
+    create_index(fin_data(), fin_data()$fin_index_well, "Financial Well-Being Index")
+  })
+  
+  output$plot_fin_index_empl <- renderLeaflet({
+    create_index(fin_data(), fin_data()$fin_index_empl, "Employment Index")
+  })
   
 }
 
