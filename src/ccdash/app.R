@@ -303,13 +303,16 @@ server <- function(input, output) {
                 opacity = 0.7)
   }
   
+  # Switches
+  fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate) })
+  
   # Financial - Indicators - Boxplot
   output$plotly_fin_ind <- renderPlotly({
     
     data <- switch(input$fin_whichstate,
-                   "Iowa" = datafin %>% filter(STATEFP == 19),
-                   "Oregon" = datafin %>% filter(STATEFP == 41),
-                   "Virginia" = datafin %>% filter(STATEFP == 51))
+                    "Iowa" = datafin %>% filter(STATEFP == 19),
+                    "Oregon" = datafin %>% filter(STATEFP == 41),
+                    "Virginia" = datafin %>% filter(STATEFP == 51))
     
     data_var <- switch(input$fin_whichind,
                        "Number of businesses per 10,000 people" = data$fin_estper10k,
@@ -410,17 +413,13 @@ server <- function(input, output) {
   
   # Financial - Indicators - Index
   output$plot_fin_index <- renderLeaflet({
-    data <- switch(input$fin_whichstate,
-                   "Iowa" = datafin %>% filter(STATEFP == 19),
-                   "Oregon" = datafin %>% filter(STATEFP == 41),
-                   "Virginia" = datafin %>% filter(STATEFP == 51))
     
     data_var <- switch(input$fin_whichindex,
-                       "Commerce Index" = data$fin_index_commerce,
-                       "Agriculture Index" = data$fin_index_agri, 
-                       "Economic Diversification Index" = data$fin_index_divers, 
-                       "Financial Well-Being Index" = data$fin_index_well, 
-                       "Employment Index" = data$fin_index_empl)
+                       "Commerce Index" = fin_data()$fin_index_commerce,
+                       "Agriculture Index" = fin_data()$fin_index_agri, 
+                       "Economic Diversification Index" = fin_data()$fin_index_divers, 
+                       "Financial Well-Being Index" = fin_data()$fin_index_well, 
+                       "Employment Index" = fin_data()$fin_index_empl)
     
     var_label <- switch(input$fin_whichindex,
                         "Commerce Index" = "Commerce Index",
@@ -429,7 +428,7 @@ server <- function(input, output) {
                         "Financial Well-Being Index" = "Financial Well-Being Index", 
                         "Employment Index" = "Employment Index")
     
-    create_index(data, data_var, var_label)
+    create_index(fin_data(), data_var, var_label)
   })
   
   
