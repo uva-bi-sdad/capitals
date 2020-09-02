@@ -309,31 +309,26 @@ server <- function(input, output) {
   # Financial - Indicators - Boxplot
   output$plotly_fin_ind <- renderPlotly({
     
-    data <- switch(input$fin_whichstate,
-                    "Iowa" = datafin %>% filter(STATEFP == 19),
-                    "Oregon" = datafin %>% filter(STATEFP == 41),
-                    "Virginia" = datafin %>% filter(STATEFP == 51))
-    
     data_var <- switch(input$fin_whichind,
-                       "Number of businesses per 10,000 people" = data$fin_estper10k,
-                       "Number of new businesses per 10,000 people" = data$fin_newestper10k,
-                       "Percent county in agriculture acres" = data$fin_pctagacres,
-                       "Land value per acre" = data$fin_landvalacre,
-                       "Net income per farm operation" = data$fin_netincperfarm,
-                       "Percent employed in agriculture, forestry, fishing and hunting, mining industry" = data$fin_pctemplagri,
-                       "HHI of employment by industry" = data$fin_emphhi,
-                       "HHI of payroll by industry" = data$fin_aphhi,
-                       "Gini Index of income inequality" = data$fin_gini,
-                       "Percent households with income below poverty level in last 12 months" = data$fin_pctinpov,
-                       "Percent households receiving public assistance or SNAP" = data$fin_pctassist,
-                       "Percent households receiving supplemental security income" = data$fin_pctssi,
-                       "Median household income" = data$fin_medinc,
-                       "Percent population over age 25 with less than a four year degree" = data$fin_pctlessba,
-                       "Share of people with a credit bureau record who have any debt in collections" = data$fin_pctdebtcol,
-                       "Unemployment rate before COVID" = data$fin_unempprecovid,
-                       "Unemployment rate during COVID" = data$fin_unempcovid,
-                       "Percent commuting 30 minutes or longer" = data$fin_pctcommute,
-                       "Percent working age population in labor force" = data$fin_pctlabforce)
+                       "Number of businesses per 10,000 people" = fin_data()$fin_estper10k,
+                       "Number of new businesses per 10,000 people" = fin_data()$fin_newestper10k,
+                       "Percent county in agriculture acres" = fin_data()$fin_pctagacres,
+                       "Land value per acre" = fin_data()$fin_landvalacre,
+                       "Net income per farm operation" = fin_data()$fin_netincperfarm,
+                       "Percent employed in agriculture, forestry, fishing and hunting, mining industry" = fin_data()$fin_pctemplagri,
+                       "HHI of employment by industry" = fin_data()$fin_emphhi,
+                       "HHI of payroll by industry" = fin_data()$fin_aphhi,
+                       "Gini Index of income inequality" = fin_data()$fin_gini,
+                       "Percent households with income below poverty level in last 12 months" = fin_data()$fin_pctinpov,
+                       "Percent households receiving public assistance or SNAP" = fin_data()$fin_pctassist,
+                       "Percent households receiving supplemental security income" = fin_data()$fin_pctssi,
+                       "Median household income" = fin_data()$fin_medinc,
+                       "Percent population over age 25 with less than a four year degree" = fin_data()$fin_pctlessba,
+                       "Share of people with a credit bureau record who have any debt in collections" = fin_data()$fin_pctdebtcol,
+                       "Unemployment rate before COVID" = fin_data()$fin_unempprecovid,
+                       "Unemployment rate during COVID" = fin_data()$fin_unempcovid,
+                       "Percent commuting 30 minutes or longer" = fin_data()$fin_pctcommute,
+                       "Percent working age population in labor force" = fin_data()$fin_pctlabforce)
     
     var_label <- switch(input$fin_whichind,
                         "Number of businesses per 10,000 people" = "Number of businesses per 10,000 people",
@@ -361,31 +356,27 @@ server <- function(input, output) {
   
   # Financial - Indicators - Map
   output$plot_fin_ind <- renderLeaflet({
-    data <- switch(input$fin_whichstate,
-                   "Iowa" = datafin %>% filter(STATEFP == 19),
-                   "Oregon" = datafin %>% filter(STATEFP == 41),
-                   "Virginia" = datafin %>% filter(STATEFP == 51))
     
     data_var <- switch(input$fin_whichind,
-                       "Number of businesses per 10,000 people" = data$fin_estper10k,
-                       "Number of new businesses per 10,000 people" = data$fin_newestper10k,
-                       "Percent county in agriculture acres" = data$fin_pctagacres,
-                       "Land value per acre" = data$fin_landvalacre,
-                       "Net income per farm operation" = data$fin_netincperfarm,
-                       "Percent employed in agriculture, forestry, fishing and hunting, mining industry" = data$fin_pctemplagri,
-                       "HHI of employment by industry" = data$fin_emphhi,
-                       "HHI of payroll by industry" = data$fin_aphhi,
-                       "Gini Index of income inequality" = data$fin_gini,
-                       "Percent households with income below poverty level in last 12 months" = data$fin_pctinpov,
-                       "Percent households receiving public assistance or SNAP" = data$fin_pctassist,
-                       "Percent households receiving supplemental security income" = data$fin_pctssi,
-                       "Median household income" = data$fin_medinc,
-                       "Percent population over age 25 with less than a four year degree" = data$fin_pctlessba,
-                       "Share of people with a credit bureau record who have any debt in collections" = data$fin_pctdebtcol,
-                       "Unemployment rate before COVID" = data$fin_unempprecovid,
-                       "Unemployment rate during COVID" = data$fin_unempcovid,
-                       "Percent commuting 30 minutes or longer" = data$fin_pctcommute,
-                       "Percent working age population in labor force" = data$fin_pctlabforce)
+                       "Number of businesses per 10,000 people" = fin_data()$fin_estper10k,
+                       "Number of new businesses per 10,000 people" = fin_data()$fin_newestper10k,
+                       "Percent county in agriculture acres" = fin_data()$fin_pctagacres,
+                       "Land value per acre" = fin_data()$fin_landvalacre,
+                       "Net income per farm operation" = fin_data()$fin_netincperfarm,
+                       "Percent employed in agriculture, forestry, fishing and hunting, mining industry" = fin_data()$fin_pctemplagri,
+                       "HHI of employment by industry" = fin_data()$fin_emphhi,
+                       "HHI of payroll by industry" = fin_data()$fin_aphhi,
+                       "Gini Index of income inequality" = fin_data()$fin_gini,
+                       "Percent households with income below poverty level in last 12 months" = fin_data()$fin_pctinpov,
+                       "Percent households receiving public assistance or SNAP" = fin_data()$fin_pctassist,
+                       "Percent households receiving supplemental security income" = fin_data()$fin_pctssi,
+                       "Median household income" = fin_data()$fin_medinc,
+                       "Percent population over age 25 with less than a four year degree" = fin_data()$fin_pctlessba,
+                       "Share of people with a credit bureau record who have any debt in collections" = fin_data()$fin_pctdebtcol,
+                       "Unemployment rate before COVID" = fin_data()$fin_unempprecovid,
+                       "Unemployment rate during COVID" = fin_data()$fin_unempcovid,
+                       "Percent commuting 30 minutes or longer" = fin_data()$fin_pctcommute,
+                       "Percent working age population in labor force" = fin_data()$fin_pctlabforce)
     
     var_label <- switch(input$fin_whichind,
                         "Number of businesses per 10,000 people" = "Number of businesses per 10,000 people",
@@ -408,7 +399,7 @@ server <- function(input, output) {
                         "Percent commuting 30 minutes or longer" = "Percent commuting 30 minutes or longer",
                         "Percent working age population in labor force" = "Percent working age population in labor force")
     
-    create_indicator(data, data_var, var_label)
+    create_indicator(fin_data(), data_var, var_label)
   })
   
   # Financial - Indicators - Index
