@@ -68,4 +68,4 @@ miss_var_summary(acsdata) # nothing missing
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(acsdata, "./data/human/hum_acs_2018.rds")
+write_rds(acsdata, "./rivanna_data/human/hum_acs_2018.rds")
