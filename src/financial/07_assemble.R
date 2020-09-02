@@ -68,25 +68,31 @@ calcquint <- function(whichvar) {
 
 # Commerce index: Number of businesses per 10,000 people, Number of new businesses per 10,000 people
 # fin_estper10k, fin_newestper10k
-data <- data %>% mutate(fin_estper10k_q = calcquint(fin_estper10k),
+data <- data %>% group_by(STATEFP) %>%
+                 mutate(fin_estper10k_q = calcquint(fin_estper10k),
                         fin_newestper10k_q = calcquint(fin_newestper10k),
-                        fin_index_commerce = (fin_estper10k_q + fin_newestper10k_q) / 2)
+                        fin_index_commerce = (fin_estper10k_q + fin_newestper10k_q) / 2) %>%
+                 ungroup()
 
 # Agriculture Index
 # Percent county in agriculture acres, Land value per acre, Net income per farm operation, Percent employed in agriculture, forestry, fishing and hunting, mining industry
 # fin_pctagacres, fin_landvalacre, fin_netincperfarm, fin_pctemplagri
-data <- data %>% mutate(fin_pctagacres_q = calcquint(fin_pctagacres), 
+data <- data %>% group_by(STATEFP) %>%
+                 mutate(fin_pctagacres_q = calcquint(fin_pctagacres), 
                         fin_landvalacre_q = calcquint(fin_landvalacre),
                         fin_netincperfarm_q = calcquint(fin_netincperfarm),
                         fin_pctemplagri_q = calcquint(fin_pctemplagri),
-                        fin_index_agri = (fin_pctagacres_q + fin_landvalacre_q + fin_netincperfarm_q + fin_pctemplagri_q) / 4)
+                        fin_index_agri = (fin_pctagacres_q + fin_landvalacre_q + fin_netincperfarm_q + fin_pctemplagri_q) / 4) %>%
+                 ungroup()
 
 # Economic Diversification Index
 # HHI of employment by industry, HHI of payroll by industry
 # fin_emphhi, fin_aphhi
-data <- data %>% mutate(fin_emphhi_q = calcquint(fin_emphhi), 
+data <- data %>% group_by(STATEFP) %>%
+                 mutate(fin_emphhi_q = calcquint(fin_emphhi), 
                         fin_aphhi_q = calcquint(fin_aphhi),
-                        fin_index_divers = (fin_emphhi_q + fin_aphhi_q) / 2)
+                        fin_index_divers = (fin_emphhi_q + fin_aphhi_q) / 2) %>%
+                 ungroup()
 
 # Employment Index
 # Unemployment rate before COVID, Unemployment rate during COVID, Percent commuting 30min+, Percent of working age population in labor force
