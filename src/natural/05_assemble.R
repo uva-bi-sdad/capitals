@@ -45,4 +45,52 @@ miss_var_summary(nat_cap)
 
 # Only two actual variables of interest that are complete are nat_pctwater and nat_particulatedensity
 
+
+#
+# Quintiles -----------------------------------------------------------------------
+#
+
+# Code in the "asset" direction. Higher quintile = better.
+# Preserve NAs -- end result should be NA if any index indicator is NA. 
+
+# Define function
+calcquint <- function(whichvar) {
+  cut(whichvar, 
+      quantile(whichvar, 
+               prob = seq(0, 1, length = 6), na.rm = TRUE), 
+      labels = FALSE, include.lowest = TRUE, right = FALSE)   
+}
+
+# Quantity of Resources Index: Percent of county area in farmland, Percent of county area in water, Forestry sales per 10,000 acres, Agri-tourism and recreational revenue per 10,000 acres
+# nat_pctagacres, nat_pctwater, nat_forestryrevper10kacres, nat_agritourrevper10kacres
+data <- data %>% group_by(STATEFP) %>%
+  mutate(nat_pctagacres_q = calcquint(nat_pctagacres),
+         nat_pctwater_q = calcquint(nat_pctwater),
+         nat_forestryrevper10kacres_q = calcquint(nat_forestryrevper10kacres),
+         nat_agritourrevper10kacres_q = calcquint(nat_agritourrevper10kacres),
+         nat_index_quantres = (nat_pctagacres_q + nat_pctwater_q + nat_forestryrevper10kacres_q + nat_agritourrevper10kacres_q) / 4) %>%
+  ungroup()
+
+# Quality of Resources Index: Average daily density of fine particulate matter
+# nat_particulatedensity
+data <- data %>% group_by(STATEFP) %>%
+  mutate(nat_particulatedensity_q = calcquint(nat_particulatedensity),
+         nat_index_qualres = (nat_particulatedensity_q) / 1) %>%
+  ungroup()
+
+# Conservation Effort Index: Acres of pollinator habitat CRP per 10,000 total acres, Acres of wildlife habitat CRP per 10,000 total acres, Acres of rare and declining habitat CRP per 10,000 total acres, kW produced by wind turbines per 10,000 population
+# nat_polcrpper10kacres, nat_wildlifecrpper10kacres, nat_rarecrpper10kacres, nat_windkwper10k
+data <- data %>% group_by(STATEFP) %>%
+  mutate(nat_polcrpper10kacres_q = calcquint(nat_polcrpper10kacres),
+         nat_wildlifecrpper10kacres_q = calcquint(nat_wildlifecrpper10kacres),
+         nat_rarecrpper10kacres_q = calcquint(nat_rarecrpper10kacres),
+         nat_windkwper10k_q = calcquint(nat_windkwper10k),
+         nat_index_conserv = (nat_polcrpper10kacres_q + nat_wildlifecrpper10kacres_q + nat_rarecrpper10kacres_q + nat_windkwper10k_q) / 4) %>%
+  ungroup()
+
+
+#
+# Write -----------------------------------------------------------------------
+#
+
 write_rds(nat_cap, "data/natural/nat_final.rds")

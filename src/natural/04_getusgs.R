@@ -30,6 +30,9 @@ counties %<>% filter(STATE %in% c("19", "41", "51")) %>% select(GEOID, POPESTIMA
 # Join data
 usgs_windpower = left_join(counties, co_turbines)
 
+# Counties with NA are legitimate 0 (no windpower produced). Code as 0.
+usgs_windpower <- usgs_windpower %>% mutate(total_kw = ifelse(is.na(total_kw), 0, total_kw))
+
 # Adjust total_kw for population
 usgs_windpower %<>% mutate(nat_windkwper10k = (total_kw/POPESTIMATE2019) * 10000)
 
