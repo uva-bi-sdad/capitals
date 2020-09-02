@@ -3,6 +3,8 @@ library(dashboardthemes)
 library(dplyr)
 library(readr)
 library(leaflet)
+library(sf)
+library(plotly)
 
 datafin <- read_rds("~/Git/capitals/rivanna_data/financial/fin_final.Rds")
 
@@ -214,6 +216,94 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
   
+  # Function for boxplots
+  create_boxplot <- function(myvar, myvarlabel) {
+    
+    plot_ly(y = ~myvar, 
+            x = myvarlabel,
+            showlegend = FALSE,
+            hoverinfo = "y",
+            type = "box",
+            name = "") %>% 
+      layout(title = "",
+             xaxis = list(title = "",
+                          zeroline = FALSE),
+             yaxis = list(title = "",
+                          zeroline = FALSE,
+                          hoverformat = ".2f"))
+  }
+  
+  # Function for indicator maps
+  create_indicator <- function(data, myvar, myvarlabel) {
+    
+    pal <- colorQuantile("Blues", domain = myvar, probs = seq(0, 1, length = 6), right = TRUE)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Value by<br>Quintile Group",
+                opacity = 0.7,
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                })
+  }
+  
+  # Function for index maps
+  create_index <- function(data, myvar, myvarlabel) {
+    
+    pal <- colorNumeric("Blues", domain = myvar)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Index Value",
+                opacity = 0.7)
+  }
+  
+  # Financial - Indicators - Boxplot
   output$plotly_fin_ind <- renderPlotly({
     
     data <- switch(input$fin_whichstate,
@@ -263,20 +353,10 @@ server <- function(input, output) {
                         "Percent commuting 30 minutes or longer" = "Percent commuting 30 minutes or longer",
                         "Percent working age population in labor force" = "Percent working age population in labor force")
     
-    plot_ly(y = ~data_var, 
-            x = var_label,
-            showlegend = FALSE,
-            hoverinfo = "y",
-            type = "box",
-            name = "") %>% 
-      layout(title = "",
-             xaxis = list(title = "",
-                          zeroline = FALSE),
-             yaxis = list(title = "",
-                          zeroline = FALSE,
-                          hoverformat = ".2f"))
+    create_boxplot(data_var, var_label)
   })
   
+  # Financial - Indicators - Map
   output$plot_fin_ind <- renderLeaflet({
     data <- switch(input$fin_whichstate,
                    "Iowa" = datafin %>% filter(STATEFP == 19),
@@ -325,40 +405,10 @@ server <- function(input, output) {
                         "Percent commuting 30 minutes or longer" = "Percent commuting 30 minutes or longer",
                         "Percent working age population in labor force" = "Percent working age population in labor force")
     
-    pal <- colorQuantile("Blues", domain = data_var, probs = seq(0, 1, length = 6), right = TRUE)
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", var_label, ": </strong>",
-            round(data_var, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(data_var), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(data_var),
-                title = "Value by<br>Quintile Group",
-                opacity = 0.7,
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
+    create_indicator(data, data_var, var_label)
   })
   
+  # Financial - Indicators - Index
   output$plot_fin_index <- renderLeaflet({
     data <- switch(input$fin_whichstate,
                    "Iowa" = datafin %>% filter(STATEFP == 19),
@@ -379,34 +429,7 @@ server <- function(input, output) {
                         "Financial Well-Being Index" = "Financial Well-Being Index", 
                         "Employment Index" = "Employment Index")
     
-    pal <- colorNumeric("Blues", domain = data_var)
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", var_label, ": </strong>",
-            round(data_var, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(data_var), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(data_var),
-                title = "Value",
-                opacity = 0.7)
+    create_index(data, data_var, var_label)
   })
   
   
