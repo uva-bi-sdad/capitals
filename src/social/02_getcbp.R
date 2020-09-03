@@ -10,7 +10,7 @@ library(tidyverse)
 # 813110 is religious, 813410 is civic, 813910 is business, 813940 is political, 813920 is professional, 813930 is labor
 # 713950 is bowling, 713940 is fitness, 713910 is golf, 711211 is sports teams
 
-data <- read.table("rivanna_data/social/cbp16.txt", sep = ",", header = T)
+data <- read.table("rivanna_data/social/soc_cbp_2016.txt", sep = ",", header = T)
 data_state <- data %>%
   filter(naics %in% c("813110", "813410", "813910", "813940", "813920", "813930", "713950", "713940", "713910","711211"), fipstate %in% c("19", "41", "51"))
 
@@ -120,4 +120,4 @@ cbp_data[is.na(cbp_data)] = 0
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(cbp_data, "./rivanna_data/social/cbp_data.rds")
+write_rds(cbp_data, "./rivanna_data/social/soc_cbp_2016.rds")
