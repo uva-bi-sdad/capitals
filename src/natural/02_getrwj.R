@@ -5,9 +5,9 @@ library(readr)
 library(tidycensus)
 
 # Read in Robert Wood Johnson County Health Ranking files sheet with all measures
-rwj_ia = read_xlsx("data/natural/nat_rwj_2020_iowa.xlsx", sheet = "Ranked Measure Data", skip = 1)
-rwj_or = read_xlsx("data/natural/nat_rwj_2020_oregon.xlsx", sheet = "Ranked Measure Data", skip = 1)
-rwj_va = read_xlsx("data/natural/nat_rwj_2020_virginia.xlsx", sheet = "Ranked Measure Data", skip = 1)
+rwj_ia = read_xlsx("rivanna_data/natural/nat_rwj_2020_iowa.xlsx", sheet = "Ranked Measure Data", skip = 1)
+rwj_or = read_xlsx("rivanna_data/natural/nat_rwj_2020_oregon.xlsx", sheet = "Ranked Measure Data", skip = 1)
+rwj_va = read_xlsx("rivanna_data/natural/nat_rwj_2020_virginia.xlsx", sheet = "Ranked Measure Data", skip = 1)
 
 # Get rid of statewide data row
 rwj_ia = rwj_ia[-1,]
@@ -38,4 +38,4 @@ acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS
 rwj <- left_join(acsdata, rwj, by = "GEOID")
   
 # Save combined dataframe to an RDS file
-write_rds(rwj, "data/natural/nat_rwj_2020.rds")
+write_rds(rwj, "rivanna_data/natural/nat_rwj_2020.rds")

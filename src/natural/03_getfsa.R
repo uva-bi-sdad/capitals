@@ -5,7 +5,7 @@ library(readr)
 library(tidycensus)
 
 # Read in USDA-FSA Conservation Reserve Program data
-fsa = read_xlsx("data/natural/nat_fsa_2020.xlsx", skip = 3)
+fsa = read_xlsx("rivanna_data/natural/nat_fsa_2020.xlsx", skip = 3)
 
 # Get rid of first row, which has secondary column names
 fsa = fsa[-1,]
@@ -22,7 +22,7 @@ names(fsa) = c("GEOID", "STATE", "COUNTY", "rare_hab", "pol_hab", "wildlife")
 fsa$GEOID %<>% as.character()
 
 # Read in County area data
-counties = read_csv("data/natural/nat_census_2019_area.csv")
+counties = read_csv("rivanna_data/natural/nat_census_2019_area.csv")
 
 # Keep counties of interest
 counties %<>% filter(STATEFP %in% c(19, 41, 51))
@@ -61,4 +61,4 @@ acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS
 fsa <- left_join(acsdata, fsa, by = c("GEOID", "STATEFP", "COUNTYFP"))
 
 # Write dataframe to rds file
-write_rds(fsa, "data/natural/nat_fsa_2020.rds")
+write_rds(fsa, "rivanna_data/natural/nat_fsa_2020.rds")

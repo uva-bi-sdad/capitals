@@ -4,7 +4,7 @@ library(readr)
 library(tidycensus)
 
 # Read in USGS wind turbine data
-turbines = read_csv("data/natural/nat_usgs_2020.csv")
+turbines = read_csv("rivanna_data/natural/nat_usgs_2020.csv")
 
 # Keep only wind turbines in the three states of interest
 turbines %<>% filter(t_state %in% c("IA", "OR", "VA"))
@@ -16,7 +16,7 @@ co_turbines = turbines %>% group_by(t_fips) %>% summarise(total_kw = sum(t_cap, 
 names(co_turbines) = c("GEOID", "total_kw")
 
 # Read in County population file
-counties = read_csv("data/natural/nat_census_2019_pop.csv")
+counties = read_csv("rivanna_data/natural/nat_census_2019_pop.csv")
 
 # Add GEOID column for joining
 counties %<>% mutate(GEOID = paste0(STATE, COUNTY))
@@ -49,4 +49,4 @@ acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS
 usgs_windpower <- left_join(acsdata, usgs_windpower, by = "GEOID")
 
 # Write dataframe to rds file
-write_rds(usgs_windpower, "data/natural/nat_usgs_2020.rds")
+write_rds(usgs_windpower, "rivanna_data/natural/nat_usgs_2020.rds")

@@ -11,9 +11,9 @@ library(stringr)
 # These are legitimate NAs and should be coded as such.
 
 # Read in USDA-NASS data files
-ag_land = read_csv("data/natural/nat_nass_2017_aglandtotal.csv") %>% clean_names()
-agritourism = read_csv("data/natural/nat_nass_2017_agritourism.csv") %>% clean_names()
-forestry = read_csv("data/natural/nat_nass_2017_forestry.csv") %>% clean_names()
+ag_land = read_csv("rivanna_data/natural/nat_nass_2017_aglandtotal.csv") %>% clean_names()
+agritourism = read_csv("rivanna_data/natural/nat_nass_2017_agritourism.csv") %>% clean_names()
+forestry = read_csv("rivanna_data/natural/nat_nass_2017_forestry.csv") %>% clean_names()
 
 # Create new columns with accurate names and select relevant columns
 ag_land %<>% mutate(acres_operated = value) %>% select(state, state_ansi, county, county_ansi, acres_operated)
@@ -53,7 +53,7 @@ nass_data <- nass_data %>% mutate(agritourism_revenue = ifelse(is.na(agritourism
                                   forestry_revenue = ifelse(is.na(forestry_revenue), 0,  forestry_revenue))
   
 # Read in County area data
-counties = read_csv("data/natural/nat_census_2019_area.csv")
+counties = read_csv("rivanna_data/natural/nat_census_2019_area.csv")
  
 # Independent cities don't have data and should stay NA.
 
@@ -100,4 +100,4 @@ acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS
 nass_data <- left_join(acsdata, nass_data, by = c("STATEFP", "COUNTYFP", "GEOID"))
   
 # Write combined dataframe to rds file
-write_rds(nass_data, "data/natural/nat_nass_2017.rds")
+write_rds(nass_data, "rivanna_data/natural/nat_nass_2017.rds")

@@ -6,10 +6,10 @@ library(magrittr)
 library(sf)
 
 # Read in each individual data file
-nass = read_rds("data/natural/nat_nass_2017.rds")
-rwj = read_rds("data/natural/nat_rwj_2020.rds") %>% st_drop_geometry()
-fsa = read_rds("data/natural/nat_fsa_2020.rds") %>% st_drop_geometry()
-usgs = read_rds("data/natural/nat_usgs_2020.rds") %>% st_drop_geometry()
+nass = read_rds("rivanna_data/natural/nat_nass_2017.rds")
+rwj = read_rds("rivanna_data/natural/nat_rwj_2020.rds") %>% st_drop_geometry()
+fsa = read_rds("rivanna_data/natural/nat_fsa_2020.rds") %>% st_drop_geometry()
+usgs = read_rds("rivanna_data/natural/nat_usgs_2020.rds") %>% st_drop_geometry()
 
 
 # Join data files
@@ -93,4 +93,4 @@ data <- data %>% group_by(STATEFP) %>%
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(nat_cap, "data/natural/nat_final.rds")
+write_rds(nat_cap, "rivanna_data/natural/nat_final.rds")
