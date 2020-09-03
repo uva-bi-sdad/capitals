@@ -55,7 +55,7 @@ miss_var_summary(data)
 # Code in the "asset" direction. Higher quintile = better.
 # Preserve NAs -- end result should be NA if any index indicator is NA. 
 
-# Define function
+# Define function: Quintiles
 calcquint <- function(whichvar) {
   cut(whichvar, 
       quantile(whichvar, 
@@ -63,19 +63,98 @@ calcquint <- function(whichvar) {
       labels = FALSE, include.lowest = TRUE, right = FALSE)   
 }
 
+# Define function: Terciles
+calcterc <- function(whichvar) {
+  cut(whichvar, 
+      quantile(whichvar, 
+               prob = seq(0, 1, length = 4), na.rm = TRUE), 
+      labels = FALSE, include.lowest = TRUE, right = FALSE)   
+}
+
 # Health index
 # Average number of reported poor physical health days in a month, Average number of reported poor mental health days in a month, Percentage of adults that report no leisure-time physical activity
 # Primary care physicians per 100,000 population, Mental health providers per 100,000 population
 # hum_numpoorphys, hum_numpoormental, hum_pctnophys, hum_ratepcp, hum_ratementalhp
+# ! NEED TO REVERSE CODE QUINTILE PLACEMENTS FOR: hum_numpoorphys, hum_numpoormental, hum_pctnophys
+data <- data %>% group_by(STATEFP) %>%
+  mutate(hum_numpoorphys_q = calcquint(hum_numpoorphys), 
+         hum_numpoorphys_q = case_when(hum_numpoorphys_q == 5 ~ 1,
+                                       hum_numpoorphys_q == 4 ~ 2,
+                                       hum_numpoorphys_q == 3 ~ 3,
+                                       hum_numpoorphys_q == 2 ~ 4,
+                                       hum_numpoorphys_q == 1 ~ 5,
+                                      is.na(hum_numpoorphys_q) ~ NA_real_),
+         hum_numpoormental_q = calcquint(hum_numpoormental),
+         hum_numpoormental_q = case_when(hum_numpoormental_q == 5 ~ 1,
+                                         hum_numpoormental_q == 4 ~ 2,
+                                         hum_numpoormental_q == 3 ~ 3,
+                                         hum_numpoormental_q == 2 ~ 4,
+                                         hum_numpoormental_q == 1 ~ 5,
+                                         is.na(hum_numpoormental_q) ~ NA_real_),
+         hum_pctnophys_q = calcquint(hum_pctnophys),
+         hum_pctnophys_q = case_when(hum_pctnophys_q == 5 ~ 1,
+                                     hum_pctnophys_q == 4 ~ 2,
+                                     hum_pctnophys_q == 3 ~ 3,
+                                     hum_pctnophys_q == 2 ~ 4,
+                                     hum_pctnophys_q == 1 ~ 5,
+                                     is.na(hum_pctnophys_q) ~ NA_real_),
+         hum_numpoormental_q = calcquint(hum_numpoormental),
+         hum_ratementalhp_q = calcquint(hum_ratementalhp),
+         hum_index_health = (hum_numpoorphys_q + hum_numpoormental_q + hum_pctnophys_q + hum_numpoormental_q + hum_ratementalhp_q) / 5) %>%
+  ungroup()
 
 # Child care index
 # Women to men pay ratio, Percent of children living in a single-parent household, Percent of women who did not receive HS diploma or equivalent
 # hum_ratioFMpay, hum_pctsngparent, hum_pctFnohs
+# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_pctsngparent, hum_pctFnohs
+data <- data %>% group_by(STATEFP) %>%
+  mutate(hum_ratioFMpay_q = calcquint(hum_ratioFMpay), 
+         hum_pctsngparent_q = calcquint(hum_pctsngparent),
+         hum_pctsngparent_q = case_when(hum_pctsngparent_q == 5 ~ 1,
+                                         hum_pctsngparent_q == 4 ~ 2,
+                                         hum_pctsngparent_q == 3 ~ 3,
+                                         hum_pctsngparent_q == 2 ~ 4,
+                                         hum_pctsngparent_q == 1 ~ 5,
+                                         is.na(hum_pctsngparent_q) ~ NA_real_),
+         hum_pctFnohs_q = calcquint(hum_pctFnohs),
+         hum_pctFnohs_q = case_when(hum_pctFnohs_q == 5 ~ 1,
+                                    hum_pctFnohs_q == 4 ~ 2,
+                                    hum_pctFnohs_q == 3 ~ 3,
+                                    hum_pctFnohs_q == 2 ~ 4,
+                                    hum_pctFnohs_q == 1 ~ 5,
+                                    is.na(hum_pctFnohs_q) ~ NA_real_),
+         hum_index_child = (hum_ratioFMpay_q + hum_pctsngparent_q + hum_pctFnohs_q) / 3) %>%
+  ungroup()
 
+# CAN'T DIVIDE INTO QUINTILES, QUARTILES, OR TERCILES
 # Despair index
 # Number of alcohol deaths per 100,000 population, Number of drug dreaths per 100,000 population, Number of suicide deaths per 100,000 population
 # hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
-
+# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
+data <- data %>% group_by(STATEFP) %>%
+  mutate(hum_ratealcdeaths_q = calcterc(hum_ratealcdeaths),
+         hum_ratealcdeaths_q = case_when(hum_ratealcdeaths_q == 5 ~ 1,
+                                         hum_ratealcdeaths_q == 4 ~ 2,
+                                         hum_ratealcdeaths_q == 3 ~ 3,
+                                         hum_ratealcdeaths_q == 2 ~ 4,
+                                         hum_ratealcdeaths_q == 1 ~ 5,
+                                        is.na(hum_ratealcdeaths_q) ~ NA_real_),
+         hum_ratedrgdeaths_q = calcterc(hum_ratedrgdeaths),
+         hum_ratedrgdeaths_q = case_when(hum_ratedrgdeaths_q == 5 ~ 1,
+                                         hum_ratedrgdeaths_q == 4 ~ 2,
+                                         hum_ratedrgdeaths_q == 3 ~ 3,
+                                         hum_ratedrgdeaths_q == 2 ~ 4,
+                                         hum_ratedrgdeaths_q == 1 ~ 5,
+                                    is.na(hum_ratedrgdeaths_q) ~ NA_real_),
+         hum_ratesuideaths_q = calcterc(hum_ratesuideaths),
+         hum_ratesuideaths_q = case_when(hum_ratesuideaths_q == 5 ~ 1,
+                                         hum_ratesuideaths_q == 4 ~ 2,
+                                         hum_ratesuideaths_q == 3 ~ 3,
+                                         hum_ratesuideaths_q == 2 ~ 4,
+                                         hum_ratesuideaths_q == 1 ~ 5,
+                                         is.na(hum_ratesuideaths_q) ~ NA_real_),
+         hum_index_despair = (hum_ratealcdeaths_q + hum_ratedrgdeaths_q + hum_ratesuideaths_q) / 3) %>%
+  ungroup()
 
 
 #

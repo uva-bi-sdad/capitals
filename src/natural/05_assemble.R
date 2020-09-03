@@ -60,7 +60,7 @@ calcquint <- function(whichvar) {
       labels = FALSE, include.lowest = TRUE, right = FALSE)   
 }
 
-# Define function: Quartiles
+# Define function: Terciles
 calcterc <- function(whichvar) {
   cut(whichvar, 
       quantile(whichvar, 
