@@ -97,15 +97,86 @@ data <- data %>% group_by(STATEFP) %>%
 # Employment Index
 # Unemployment rate before COVID, Unemployment rate during COVID, Percent commuting 30min+, Percent of working age population in labor force
 # fin_unempcovid, fin_unempprecovid, fin_pctcommute, fin_pctlabforce
-
-# create fin_index_empl
+# ! NEED REVERSE CODE QUINTILE PLACEMENTS FOR: fin_unempcovid, fin_unempprecovid, fin_pctcommute
+data <- data %>% group_by(STATEFP) %>%
+  mutate(fin_unempcovid_q = calcquint(fin_unempcovid), 
+         fin_unempcovid_q = case_when(fin_unempcovid_q == 5 ~ 1,
+                                      fin_unempcovid_q == 4 ~ 2,
+                                      fin_unempcovid_q == 3 ~ 3,
+                                      fin_unempcovid_q == 2 ~ 4,
+                                      fin_unempcovid_q == 1 ~ 5,
+                                      is.na(fin_unempcovid_q) ~ NA_real_),
+         fin_unempprecovid_q = calcquint(fin_unempprecovid),
+         fin_unempprecovid_q = case_when(fin_unempprecovid_q == 5 ~ 1,
+                                         fin_unempprecovid_q == 4 ~ 2,
+                                         fin_unempprecovid_q == 3 ~ 3,
+                                         fin_unempprecovid_q == 2 ~ 4,
+                                         fin_unempprecovid_q == 1 ~ 5,
+                                         is.na(fin_unempprecovid_q) ~ NA_real_),
+         fin_pctcommute_q = calcquint(fin_pctcommute),
+         fin_pctcommute_q = case_when(fin_pctcommute_q == 5 ~ 1,
+                                      fin_pctcommute_q == 4 ~ 2,
+                                      fin_pctcommute_q == 3 ~ 3,
+                                      fin_pctcommute_q == 2 ~ 4,
+                                      fin_pctcommute_q == 1 ~ 5,
+                                      is.na(fin_pctcommute_q) ~ NA_real_),
+         fin_pctlabforce_q = calcquint(fin_pctlabforce),
+         fin_index_empl = (fin_unempcovid_q + fin_unempprecovid_q + fin_pctcommute_q + fin_pctlabforce_q) / 4) %>%
+  ungroup()
 
 # Financial Well-Being Index
 # Gini Index of income inequality, Percent with income below poverty level in last 12 months, Percent households receiving public assistance or SNAP, Percent households receiving suplemental security income
 # Median household income, Percent of people older than 25 with less than a four year degree, Share of people with a credit bureau record who have any debt in collections
 # fin_gini, fin_pctinpov, fin_pctassist, fin_pctssi, fin_medinc, fin_pctlessba, fin_pctdebtcol
+# ! NEED REVERSE CODE QUINTILE PLACEMENTS FOR: fin_gini, fin_pctinpov, fin_pctassist, fin_pctssi, fin_pctlessba, fin_pctdebtcol
 
-# create fin_index_well
+data <- data %>% group_by(STATEFP) %>%
+  mutate(fin_gini_q = calcquint(fin_gini), 
+         fin_gini_q = case_when(fin_gini_q == 5 ~ 1,
+                                fin_gini_q == 4 ~ 2,
+                                fin_gini_q == 3 ~ 3,
+                                fin_gini_q == 2 ~ 4,
+                                fin_gini_q == 1 ~ 5,
+                                is.na(fin_gini_q) ~ NA_real_),
+         fin_pctinpov_q = calcquint(fin_pctinpov),
+         fin_pctinpov_q = case_when(fin_pctinpov_q == 5 ~ 1,
+                                    fin_pctinpov_q == 4 ~ 2,
+                                    fin_pctinpov_q == 3 ~ 3,
+                                    fin_pctinpov_q == 2 ~ 4,
+                                    fin_pctinpov_q == 1 ~ 5,
+                                    is.na(fin_pctinpov_q) ~ NA_real_),
+         fin_pctassist_q = calcquint(fin_pctassist),
+         fin_pctassist_q = case_when(fin_pctassist_q == 5 ~ 1,
+                                     fin_pctassist_q == 4 ~ 2,
+                                     fin_pctassist_q == 3 ~ 3,
+                                     fin_pctassist_q == 2 ~ 4,
+                                     fin_pctassist_q == 1 ~ 5,
+                                      is.na(fin_pctassist_q) ~ NA_real_),
+         fin_medinc_q = calcquint(fin_medinc),
+         fin_pctssi_q = calcquint(fin_pctssi),
+         fin_pctssi_q = case_when(fin_pctssi_q == 5 ~ 1,
+                                  fin_pctssi_q == 4 ~ 2,
+                                  fin_pctssi_q == 3 ~ 3,
+                                  fin_pctssi_q == 2 ~ 4,
+                                  fin_pctssi_q == 1 ~ 5,
+                                  is.na(fin_pctssi_q) ~ NA_real_),
+         fin_pctlessba_q = calcquint(fin_pctlessba),
+         fin_pctlessba_q = case_when(fin_pctlessba_q == 5 ~ 1,
+                                     fin_pctlessba_q == 4 ~ 2,
+                                     fin_pctlessba_q == 3 ~ 3,
+                                     fin_pctlessba_q == 2 ~ 4,
+                                     fin_pctlessba_q == 1 ~ 5,
+                                     is.na(fin_pctlessba_q) ~ NA_real_),
+         fin_pctdebtcol_q = calcquint(fin_pctdebtcol),
+         fin_pctdebtcol_q = case_when(fin_pctdebtcol_q == 5 ~ 1,
+                                      fin_pctdebtcol_q == 4 ~ 2,
+                                      fin_pctdebtcol_q == 3 ~ 3,
+                                      fin_pctdebtcol_q == 2 ~ 4,
+                                      fin_pctdebtcol_q == 1 ~ 5,
+                                     is.na(fin_pctdebtcol_q) ~ NA_real_),
+         fin_index_well = (fin_gini_q + fin_pctinpov_q + fin_pctassist_q + fin_medinc_q + fin_pctssi_q + fin_pctlessba_q + fin_pctdebtcol_q) / 7) %>%
+  ungroup()
+
 
 #
 # Write -----------------------------------------------------------------------

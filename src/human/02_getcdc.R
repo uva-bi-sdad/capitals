@@ -3,6 +3,7 @@ library(dplyr)
 library(readxl)
 library(readr)
 library(janitor)
+library(sf)
 
 # read in CDC Wonder data --------------------------
 
@@ -88,7 +89,11 @@ acs <- readRDS("./rivanna_data/human/hum_acs_2018.rds")
 acs <- acs %>%
   select(STATEFP, COUNTYFP, GEOID, geometry)
 
-cdc_geo <- merge(acs, cdc, by=c("STATEFP", "COUNTYFP", "GEOID"), all.x = TRUE)
+# The two cities Bedford City VA: reverted to town in 2013; Clifton Forge, VA: reverted back to town in 2001
+setdiff(cdc$GEOID, acs$GEOID) # "51515" "51560"
+setdiff(acs$GEOID, cdc$GEOID) # 0 
+
+cdc_geo <- left_join(acs, cdc, by = c("STATEFP", "COUNTYFP", "GEOID"))
 
 
 # check missingness ----------------------------------
