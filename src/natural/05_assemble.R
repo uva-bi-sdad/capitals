@@ -89,14 +89,22 @@ nat_cap <- nat_cap %>% group_by(STATEFP) %>%
 # QUINTILE, QUARTILE, TERCILE BREAKS ARE NOT UNIQUE
 # Conservation Effort Index: Acres of pollinator habitat CRP per 10,000 total acres, Acres of wildlife habitat CRP per 10,000 total acres, Acres of rare and declining habitat CRP per 10,000 total acres, kW produced by wind turbines per 10,000 population
 # nat_polcrpper10kacres, nat_wildlifecrpper10kacres, nat_rarecrpper10kacres, nat_windkwper10k
-nat_cap <- nat_cap %>% group_by(STATEFP) %>%
-  mutate(nat_polcrpper10kacres_q = calcterc(nat_polcrpper10kacres),
-         nat_wildlifecrpper10kacres_q = calcterc(nat_wildlifecrpper10kacres),
-         nat_rarecrpper10kacres_q = calcterc(nat_rarecrpper10kacres),
-         nat_windkwper10k_q = calcterc(nat_windkwper10k),
-         nat_index_conserv = (nat_polcrpper10kacres_q + nat_wildlifecrpper10kacres_q + nat_rarecrpper10kacres_q + nat_windkwper10k_q) / 4) %>%
-  ungroup()
+# nat_cap <- nat_cap %>% group_by(STATEFP) %>%
+#   mutate(nat_polcrpper10kacres_q = calcterc(nat_polcrpper10kacres),
+#          nat_wildlifecrpper10kacres_q = calcterc(nat_wildlifecrpper10kacres),
+#          nat_rarecrpper10kacres_q = calcterc(nat_rarecrpper10kacres),
+#          nat_windkwper10k_q = calcterc(nat_windkwper10k),
+#          nat_index_conserv = (nat_polcrpper10kacres_q + nat_wildlifecrpper10kacres_q + nat_rarecrpper10kacres_q + nat_windkwper10k_q) / 4) %>%
+#   ungroup()
 
+# Instead, could sum habitat types and treat as one variable
+# nat_cap <- nat_cap %>% mutate(nat_habitat = nat_polcrpper10kacres + nat_wildlifecrpper10kacres + nat_rarecrpper10kacres)
+# 
+# nat_cap <- nat_cap %>% group_by(STATEFP) %>%
+#   mutate(nat_habitat_q = calcterc(nat_habitat),
+#          nat_windkwper10k_q = calcterc(nat_windkwper10k),
+#          nat_index_conserv = (nat_habitat_q + nat_windkwper10k_q) / 2) %>%
+#   ungroup()
 
 #
 # Write -----------------------------------------------------------------------
