@@ -81,7 +81,7 @@ data <- data %>% group_by(STATEFP) %>%
   mutate(hum_pcths_q = calcquint(hum_pcths), 
          hum_reading_q = calcquint(hum_reading),
          hum_math_q = calcquint(hum_math),
-         hum_index_health = (hum_pcths_q + hum_reading_q + hum_math_q) / 3) %>%
+         hum_index_edu = (hum_pcths_q + hum_reading_q + hum_math_q) / 3) %>%
   ungroup()
 
 # Health index
