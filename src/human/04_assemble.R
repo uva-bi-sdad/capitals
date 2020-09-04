@@ -34,18 +34,21 @@ data <- data %>%
 #
 
 # This is for both cities and counties.
-pct_complete_case(data) # 5.59
-pct_complete_var(data) # 72.2
-pct_miss_var(data) # 27.7
+pct_complete_case(data) # 3.7
+pct_complete_var(data) # 65
+pct_miss_var(data) # 35
 
 n_var_complete(data) # 13 variables complete
 n_var_miss(data) # 5 have missingness
 miss_var_summary(data)
+
 # 1 hum_ratedrgdeaths    246    91.8 
 # 2 hum_ratealcdeaths    243    90.7 
 # 3 hum_ratesuideaths    238    88.8 
-# 4 hum_ratementalhp      14     5.22
-# 5 hum_ratepcp            6     2.24
+# 4 hum_reading           28    10.4 
+# 5 hum_math              26     9.70
+# 6 hum_ratementalhp      14     5.22
+# 7 hum_ratepcp            6     2.24
 
 
 #
@@ -70,6 +73,16 @@ calcterc <- function(whichvar) {
                prob = seq(0, 1, length = 4), na.rm = TRUE), 
       labels = FALSE, include.lowest = TRUE, right = FALSE)   
 }
+
+# Education index
+# Percent of population with at least a high school degree, Reading proficiency, Math proficiency
+# hum_pcths, hum_reading, hum_math
+data <- data %>% group_by(STATEFP) %>%
+  mutate(hum_pcths_q = calcquint(hum_pcths), 
+         hum_reading_q = calcquint(hum_reading),
+         hum_math_q = calcquint(hum_math),
+         hum_index_health = (hum_pcths_q + hum_reading_q + hum_math_q) / 3) %>%
+  ungroup()
 
 # Health index
 # Average number of reported poor physical health days in a month, Average number of reported poor mental health days in a month, Percentage of adults that report no leisure-time physical activity
