@@ -3,6 +3,9 @@ library(dplyr)
 library(readxl)
 library(readr)
 
+# also get math and reading scores from here! it's on the additional measures tab. Reading scores: ER, Math scores: EW
+
+
 # read in RWJ County Health Rankings data ----------------------------------
 
 ia <- read_excel("./rivanna_data/human/human_rwj_2020 - Iowa.xlsx", sheet = "Ranked Measure Data", skip=1)

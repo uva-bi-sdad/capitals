@@ -80,7 +80,7 @@ data16 <- get_acs(geography = "county", state = c(19, 41, 51),
                 cache_table = TRUE, output = "wide", geometry = TRUE,
                 keep_geo_vars = TRUE)
 
-# Get data from 2009/14 5-year estimates for counties
+# Get data from 2010/14 5-year estimates for counties
 data14 <- get_acs(geography = "county", state = c(19, 41, 51), 
                 variables = acsvars14,
                 year = 2014, survey = "acs5",
