@@ -46,7 +46,7 @@ data_geo <- left_join(acs, data, by = c("STATEFP", "COUNTYFP", "GEOID"))
 
 # check missingness ----------------------------------
 
-miss_var_summary(data_geo)
+miss_var_summary(data_geo) # there's a lot missing with this data set.
 
 #
 # Write ------------------------------------------------------------------------
