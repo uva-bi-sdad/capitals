@@ -8,7 +8,7 @@ library(readr)
 # under the data tab and "2019 - Based on Census 2010 geographies" drop down.  Then
 # selected and downloaded "County"
 
-data <- read_excel("./src/built/COUNTY_2019.xlsx")
+data <- read_excel("./rivanna_data/built/COUNTY_2019.xlsx")
 
 #
 # Clean ------------------------------------------------------------------------

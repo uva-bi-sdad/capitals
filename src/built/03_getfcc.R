@@ -8,7 +8,7 @@ library(readr)
 # Used their filtering function to filter type column down to county, id down to
 # only start with 51, 41, or 19, speed to equal 25, and tech to equal acfosw.
 
-data <- read_csv("./src/built/Area_Table_June_2019.csv",
+data <- read_csv("./rivanna_data/built/Area_Table_June_2019.csv",
                  col_types = cols(id = col_character()))
 
 #
@@ -50,4 +50,5 @@ fccdata <- data %>% transmute(
   pct_has_2 = (has_2 / B01003_001E) * 100,
   pct_has_3more = (has_3more / B01003_001E) * 100
 )
-View(fccdata)
+
+write_rds(fccdata, "./rivanna_data/built/built_fcc_2019.Rds")
