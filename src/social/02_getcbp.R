@@ -1,4 +1,8 @@
 library(tidyverse)
+library(naniar)
+library(readr)
+library(janitor)
+library(sf)
 
 #
 # Get data ------------------------------------------------------------------------
@@ -115,9 +119,35 @@ cbp_data <- left_join(cbp_data, golf)
 cbp_data <- left_join(cbp_data, sports)
 
 cbp_data[is.na(cbp_data)] = 0
+
+# add geometry data from ACS ------------------------------------
+
+cbp_data$STATEFP <- cbp_data$fipstate
+cbp_data$COUNTYFP <-cbp_data$fipscty
+
+acs <- readRDS("./rivanna_data/social/soc_acs_2018.rds")
+
+acs <- acs %>%
+  select(STATEFP, COUNTYFP, GEOID, geometry)
+
+class(cbp_data$COUNTYFP)
+
+cbp_data$STATEFP <- as.character(cbp_data$STATEFP)
+cbp_data$COUNTYFP <- as.character(cbp_data$COUNTYFP)
+acs$COUNTYFP <- as.character(acs$COUNTYFP)
+
+cbp_geo <- left_join(acs, cbp_data, by = c("STATEFP", "COUNTYFP"))
+nrow(cbp_geo)
+
+cbp_geo <- cbp_geo %>%
+  select(-c(fipstate, fipscty))
+
+# check missingness ----------------------------------
+
+miss_var_summary(cbp_geo) # there is one place missing and it's in oregon, county fips code 69
   
 #
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(cbp_data, "./rivanna_data/social/soc_cbp_2016.rds")
+write_rds(cbp_geo, "./rivanna_data/social/soc_cbp_2016.rds")
