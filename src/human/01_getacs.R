@@ -27,7 +27,9 @@ acsvars <- c(
   # MEDIAN EARNINGS IN THE PAST 12 MONTHS (IN 2018 INFLATION-ADJUSTED DOLLARS) BY SEX BY EDUCATIONAL ATTAINMENT FOR THE POPULATION 25 YEARS AND OVER
   "B20004_007", "B20004_013",
   # white males with high school education or less"
-  "C15002A_002", "C15002A_003", "C15002A_004"
+  "C15002A_002", "C15002A_003", "C15002A_004",
+  # employment status (unemployed in labor force)
+  "B23025_003", "B23025_005"
 )
 
 # Select S table
@@ -71,7 +73,8 @@ acsdata <- data %>% transmute(
   hum_ratioFMpay = B20004_013E / B20004_007E,
   hum_pctFnohs = (B15002_020E + B15002_021E + B15002_022E + B15002_023E + B15002_024E + B15002_025E +
                     B15002_026E + B15002_027E) / B15002_019E * 100,
-  hum_whitemhs = (C15002A_003E + C15002A_004E) / C15002A_002E * 100
+  hum_whitemhs = (C15002A_003E + C15002A_004E) / C15002A_002E * 100,
+  hum_pctunemp = B23025_005E / B23025_003E * 100
 )
 
 # Note this is already in %!!!
