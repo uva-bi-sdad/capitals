@@ -68,43 +68,52 @@ calcterc <- function(whichvar) {
       labels = FALSE, include.lowest = TRUE, right = FALSE)   
 }
 
+# Recode 0s to LOWEST quintile.
+
 # QUINTILE, QUARTILE, TERCILE BREAKS ARE NOT UNIQUE            
 # Quantity of Resources Index: Percent of county area in farmland, Percent of county area in water, Forestry sales per 10,000 acres, Agri-tourism and recreational revenue per 10,000 acres
 # nat_pctagacres, nat_pctwater, nat_forestryrevper10kacres, nat_agritourrevper10kacres
 nat_cap <- nat_cap %>% group_by(STATEFP) %>%
-  mutate(nat_pctagacres_q = calcterc(nat_pctagacres),
-         nat_pctwater_q = calcterc(nat_pctwater),
-         nat_forestryrevper10kacres_q = calcterc(nat_forestryrevper10kacres),
-         nat_agritourrevper10kacres_q = calcterc(nat_agritourrevper10kacres),
+  mutate(nat_pctagacres_q = ifelse(nat_pctagacres != 0, calcquint(nat_pctagacres[nat_pctagacres != 0]), 1),
+         nat_pctwater_q = ifelse(nat_pctwater != 0, calcquint(nat_pctwater[nat_pctagacres != 0]), 1),
+         nat_forestryrevper10kacres_q = ifelse(nat_forestryrevper10kacres != 0, calcquint(nat_forestryrevper10kacres[nat_forestryrevper10kacres != 0]), 1),
+         nat_agritourrevper10kacres_q = ifelse(nat_agritourrevper10kacres != 0, calcquint(nat_agritourrevper10kacres[nat_agritourrevper10kacres != 0]), 1),
          nat_index_quantres = (nat_pctagacres_q + nat_pctwater_q + nat_forestryrevper10kacres_q + nat_agritourrevper10kacres_q) / 4) %>%
   ungroup()
 
 # Quality of Resources Index: Average daily density of fine particulate matter
 # nat_particulatedensity
+# ! NEED TO REVERSE CODE nat_particulatedensity
 nat_cap <- nat_cap %>% group_by(STATEFP) %>%
   mutate(nat_particulatedensity_q = calcquint(nat_particulatedensity),
+         nat_particulatedensity_q = case_when(nat_particulatedensity_q == 5 ~ 1,
+                                              nat_particulatedensity_q == 4 ~ 2,
+                                              nat_particulatedensity_q == 3 ~ 3,
+                                              nat_particulatedensity_q == 2 ~ 4,
+                                              nat_particulatedensity_q == 1 ~ 5,
+                                              is.na(nat_particulatedensity_q) ~ NA_real_),
          nat_index_qualres = (nat_particulatedensity_q) / 1) %>%
   ungroup()
 
-# QUINTILE, QUARTILE, TERCILE BREAKS ARE NOT UNIQUE
+# BREAKS ARE NOT UNIQUE
 # Conservation Effort Index: Acres of pollinator habitat CRP per 10,000 total acres, Acres of wildlife habitat CRP per 10,000 total acres, Acres of rare and declining habitat CRP per 10,000 total acres, kW produced by wind turbines per 10,000 population
-# nat_polcrpper10kacres, nat_wildlifecrpper10kacres, nat_rarecrpper10kacres, nat_windkwper10k
+# # nat_polcrpper10kacres, nat_wildlifecrpper10kacres, nat_rarecrpper10kacres, nat_windkwper10k
 # nat_cap <- nat_cap %>% group_by(STATEFP) %>%
-#   mutate(nat_polcrpper10kacres_q = calcterc(nat_polcrpper10kacres),
-#          nat_wildlifecrpper10kacres_q = calcterc(nat_wildlifecrpper10kacres),
-#          nat_rarecrpper10kacres_q = calcterc(nat_rarecrpper10kacres),
-#          nat_windkwper10k_q = calcterc(nat_windkwper10k),
+#   mutate(nat_polcrpper10kacres_q = ifelse(nat_polcrpper10kacres != 0, calcquint(nat_polcrpper10kacres[nat_polcrpper10kacres != 0]), 1), 
+#          nat_wildlifecrpper10kacres_q = ifelse(nat_wildlifecrpper10kacres != 0, calcquint(nat_wildlifecrpper10kacres[nat_wildlifecrpper10kacres != 0]), 1),
+#          nat_rarecrpper10kacres_q = ifelse(nat_rarecrpper10kacres != 0, calcquint(nat_rarecrpper10kacres[nat_rarecrpper10kacres != 0]), 1),
+#          nat_windkwper10k_q = ifelse(nat_windkwper10k != 0, calcterc(nat_windkwper10k[nat_windkwper10k != 0]), 1), 
 #          nat_index_conserv = (nat_polcrpper10kacres_q + nat_wildlifecrpper10kacres_q + nat_rarecrpper10kacres_q + nat_windkwper10k_q) / 4) %>%
 #   ungroup()
 
 # Instead, could sum habitat types and treat as one variable
-# nat_cap <- nat_cap %>% mutate(nat_habitat = nat_polcrpper10kacres + nat_wildlifecrpper10kacres + nat_rarecrpper10kacres)
-# 
-# nat_cap <- nat_cap %>% group_by(STATEFP) %>%
-#   mutate(nat_habitat_q = calcterc(nat_habitat),
-#          nat_windkwper10k_q = calcterc(nat_windkwper10k),
-#          nat_index_conserv = (nat_habitat_q + nat_windkwper10k_q) / 2) %>%
-#   ungroup()
+nat_cap <- nat_cap %>% mutate(nat_habitat = nat_polcrpper10kacres + nat_wildlifecrpper10kacres + nat_rarecrpper10kacres)
+
+nat_cap <- nat_cap %>% group_by(STATEFP) %>%
+  mutate(nat_habitat_q = ifelse(nat_habitat != 0, calcquint(nat_habitat[nat_habitat != 0]), 1),
+         nat_windkwper10k_q = ifelse(nat_windkwper10k != 0, calcquint(nat_windkwper10k[nat_windkwper10k != 0]), 1),
+         nat_index_conserv = (nat_habitat_q + nat_windkwper10k_q) / 2) %>%
+  ungroup()
 
 #
 # Write -----------------------------------------------------------------------
