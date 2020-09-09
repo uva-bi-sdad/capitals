@@ -14,8 +14,8 @@ data <- read.csv("./rivanna_data/social/soc_census_2020.csv")
 
 data <- data %>%
   transmute(GEOID = GEO_ID,
-            overall_census_rate = CRRALL,
-            overall_avg_census_rate = CAVG) %>%
+            soc_overallcensusrate = CRRALL,
+            soc_overallavgcensusrate = CAVG) %>%
   separate(GEOID, c("place", "GEOID"), "US")
 
 # add geometry data from ACS ------------------------------------

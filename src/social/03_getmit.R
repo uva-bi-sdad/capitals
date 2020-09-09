@@ -14,9 +14,9 @@ data <- data %>%
   transmute(state = state,
             county = county,
             GEOID = fips,
-            totalvotes = trump16 + clinton16 + otherpres16,
-            totalvoters = cvap) %>%
-  mutate(voter_rate = (totalvotes/totalvoters)*100)
+            soc_totalvotes = trump16 + clinton16 + otherpres16,
+            soc_totalvoters = cvap) %>%
+  mutate(soc_voterrate = (soc_totalvotes/soc_totalvoters)*100)
 # %>%
 # distinct()
 
@@ -31,10 +31,6 @@ acs <- acs %>%
   select(STATEFP, COUNTYFP, GEOID, geometry)
   
 data$GEOID <- as.character(data$GEOID)
-
-# The two cities Bedford City VA: reverted to town in 2013; Clifton Forge, VA: reverted back to town in 2001
-setdiff(data$GEOID, acs$GEOID) # NULL
-setdiff(acs$GEOID, data$GEOID) # 268 values
 
 data_geo <- left_join(acs, data, by = c("STATEFP", "COUNTYFP", "GEOID"))
 
