@@ -32,10 +32,12 @@ data$STATEFP <- as.character(data$STATEFP)
 data$COUNTYFP <- as.character(data$COUNTYFP)
 
 data$GEOID <- as.character(data$GEOID)
-acs$GEOID <- as.character(acs$GEOID)
+# missing quite a few counties with the census 2010 data
+# only have 145 counties v 268 from acs.... oh maybe because i'm using 2018 acs data LOL
 
 
 # add geometry data from ACS ------------------------------------
+#maybe make an acs with 2010 acs data...
 
 acs <- readRDS("./rivanna_data/social/soc_acs_2018.rds")
 
