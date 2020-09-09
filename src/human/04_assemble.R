@@ -32,7 +32,7 @@ data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "count
 #
 
 data <- data %>%
-  select(-County, -county, -pop, -State, -AFFGEOID, -COUNTYNS, -LSAD)
+  select(-County, -county, -population, -State, -AFFGEOID, -COUNTYNS, -LSAD)
 
 
 #
@@ -40,21 +40,21 @@ data <- data %>%
 #
 
 # This is for both cities and counties.
-pct_complete_case(data) # 3.7
-pct_complete_var(data) # 65
-pct_miss_var(data) # 35
+pct_complete_case(data) # 79.85075
+pct_complete_var(data) # 70.83333
+pct_miss_var(data) # 29.16667
 
-n_var_complete(data) # 13 variables complete
-n_var_miss(data) # 5 have missingness
+n_var_complete(data) # 17 variables complete
+n_var_miss(data) # 7 have missingness
 miss_var_summary(data)
 
-# 1 hum_ratedrgdeaths    246    91.8 
-# 2 hum_ratealcdeaths    243    90.7 
-# 3 hum_ratesuideaths    238    88.8 
-# 4 hum_reading           28    10.4 
-# 5 hum_math              26     9.70
-# 6 hum_ratementalhp      14     5.22
-# 7 hum_ratepcp            6     2.24
+# 1 hum_reading             28    10.4 
+# 2 hum_math                26     9.70
+# 3 hum_cruderatedeaths     16     5.97
+# 4 hum_ageratedeaths       16     5.97
+# 5 hum_ratementalhp        14     5.22
+# 6 hum_ratepcp              6     2.24
+# 7 hum_deaths               5     1.87
 
 
 #
@@ -145,35 +145,42 @@ data <- data %>% group_by(STATEFP) %>%
          hum_index_child = (hum_ratioFMpay_q + hum_pctsngparent_q + hum_pctFnohs_q) / 3) %>%
   ungroup()
 
-# CAN'T DIVIDE INTO QUINTILES, QUARTILES, OR TERCILES
 # Despair index
-# Number of alcohol deaths per 100,000 population, Number of drug dreaths per 100,000 population, Number of suicide deaths per 100,000 population
-# hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
-# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
-# data <- data %>% group_by(STATEFP) %>%
-#   mutate(hum_ratealcdeaths_q = calcterc(hum_ratealcdeaths),
-#          hum_ratealcdeaths_q = case_when(hum_ratealcdeaths_q == 5 ~ 1,
-#                                          hum_ratealcdeaths_q == 4 ~ 2,
-#                                          hum_ratealcdeaths_q == 3 ~ 3,
-#                                          hum_ratealcdeaths_q == 2 ~ 4,
-#                                          hum_ratealcdeaths_q == 1 ~ 5,
-#                                         is.na(hum_ratealcdeaths_q) ~ NA_real_),
-#          hum_ratedrgdeaths_q = calcterc(hum_ratedrgdeaths),
-#          hum_ratedrgdeaths_q = case_when(hum_ratedrgdeaths_q == 5 ~ 1,
-#                                          hum_ratedrgdeaths_q == 4 ~ 2,
-#                                          hum_ratedrgdeaths_q == 3 ~ 3,
-#                                          hum_ratedrgdeaths_q == 2 ~ 4,
-#                                          hum_ratedrgdeaths_q == 1 ~ 5,
-#                                     is.na(hum_ratedrgdeaths_q) ~ NA_real_),
-#          hum_ratesuideaths_q = calcterc(hum_ratesuideaths),
-#          hum_ratesuideaths_q = case_when(hum_ratesuideaths_q == 5 ~ 1,
-#                                          hum_ratesuideaths_q == 4 ~ 2,
-#                                          hum_ratesuideaths_q == 3 ~ 3,
-#                                          hum_ratesuideaths_q == 2 ~ 4,
-#                                          hum_ratesuideaths_q == 1 ~ 5,
-#                                          is.na(hum_ratesuideaths_q) ~ NA_real_),
-#          hum_index_despair = (hum_ratealcdeaths_q + hum_ratedrgdeaths_q + hum_ratesuideaths_q) / 3) %>%
-#   ungroup()
+# Percent divorced or separated, Percent population in labor force unemployed, Percent white men with high school education or lower,
+# Age-adjusted rate of alcohol, overdose, and suicide deaths per 100,000 population between 2010-2018
+# hum_pctdivorc, hum_pctunemp,  hum_whitemhs, hum_ageratedeaths
+# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_pctdivorc, hum_pctunemp,  hum_whitemhs, hum_ageratedeaths
+data <- data %>% group_by(STATEFP) %>%
+  mutate(hum_pctdivorc_q = calcquint(hum_pctdivorc),
+         hum_pctdivorc_q = case_when(hum_pctdivorc_q == 5 ~ 1,
+                                     hum_pctdivorc_q == 4 ~ 2,
+                                     hum_pctdivorc_q == 3 ~ 3,
+                                     hum_pctdivorc_q == 2 ~ 4,
+                                     hum_pctdivorc_q == 1 ~ 5,
+                                     is.na(hum_pctdivorc_q) ~ NA_real_),
+         hum_pctunemp_q = calcquint(hum_pctunemp),
+         hum_pctunemp_q = case_when(hum_pctunemp_q == 5 ~ 1,
+                                         hum_pctunemp_q == 4 ~ 2,
+                                         hum_pctunemp_q == 3 ~ 3,
+                                         hum_pctunemp_q == 2 ~ 4,
+                                         hum_pctunemp_q == 1 ~ 5,
+                                    is.na(hum_pctunemp_q) ~ NA_real_),
+         hum_whitemhs_q = calcquint(hum_whitemhs),
+         hum_whitemhs_q = case_when(hum_whitemhs_q == 5 ~ 1,
+                                         hum_whitemhs_q == 4 ~ 2,
+                                         hum_whitemhs_q == 3 ~ 3,
+                                         hum_whitemhs_q == 2 ~ 4,
+                                         hum_whitemhs_q == 1 ~ 5,
+                                         is.na(hum_whitemhs_q) ~ NA_real_),
+         hum_ageratedeaths_q = calcquint(hum_ageratedeaths),
+         hum_ageratedeaths_q = case_when(hum_ageratedeaths_q == 5 ~ 1,
+                                    hum_ageratedeaths_q == 4 ~ 2,
+                                    hum_ageratedeaths_q == 3 ~ 3,
+                                    hum_ageratedeaths_q == 2 ~ 4,
+                                    hum_ageratedeaths_q == 1 ~ 5,
+                                    is.na(hum_ageratedeaths_q) ~ NA_real_),
+         hum_index_despair = (hum_pctdivorc_q + hum_pctunemp_q + hum_whitemhs_q + hum_ageratedeaths_q) / 4) %>%
+  ungroup()
 
 
 #
