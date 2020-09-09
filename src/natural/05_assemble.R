@@ -4,6 +4,9 @@ library(sf)
 library(naniar)
 library(magrittr)
 library(sf)
+library(readxl)
+library(janitor)
+
 
 # Read in each individual data file
 nass = read_rds("rivanna_data/natural/nat_nass_2017.rds")
@@ -11,15 +14,20 @@ rwj = read_rds("rivanna_data/natural/nat_rwj_2020.rds") %>% st_drop_geometry()
 fsa = read_rds("rivanna_data/natural/nat_fsa_2020.rds") %>% st_drop_geometry()
 usgs = read_rds("rivanna_data/natural/nat_usgs_2020.rds") %>% st_drop_geometry()
 
+rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
+                       sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
+rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
+
 
 # Join data files
 nat_cap = left_join(nass, rwj, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "ALAND", "AWATER", "NAME.y"))
 nat_cap = left_join(nat_cap, fsa, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "ALAND", "AWATER", "NAME.y", "ALAND_acres", "AWATER_acres", "total_area"))
 nat_cap = left_join(nat_cap, usgs, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "ALAND", "AWATER", "NAME.y"))
+nat_cap <- left_join(nat_cap, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "county_name"))
 
 
 # Keep columns of interest
-nat_cap %<>% select(STATEFP, State, COUNTYFP, County, GEOID, starts_with("nat_"))
+nat_cap %<>% select(STATEFP, State, COUNTYFP, County, GEOID, starts_with("nat_"), irr2010, geometry)
 
 
 #

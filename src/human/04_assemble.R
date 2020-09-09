@@ -2,7 +2,8 @@ library(dplyr)
 library(readr)
 library(sf)
 library(naniar)
-
+library(readxl)
+library(janitor)
 
 #
 # Read in -----------------------------------------------------------------------
@@ -12,6 +13,10 @@ data_acs <- read_rds("./rivanna_data/human/hum_acs_2018.rds")
 data_cdc <- read_rds("./rivanna_data/human/hum_cdc_2018.rds") %>% st_drop_geometry()
 data_rwj <- read_rds("./rivanna_data/human/hum_rwj_2020.rds") %>% st_drop_geometry()
 
+rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
+                       sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
+rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
+
 
 #
 # Join -----------------------------------------------------------------------
@@ -19,6 +24,7 @@ data_rwj <- read_rds("./rivanna_data/human/hum_rwj_2020.rds") %>% st_drop_geomet
 
 data <- left_join(data_acs, data_cdc, by = c("STATEFP", "COUNTYFP", "GEOID"))
 data <- left_join(data, data_rwj, by = c("STATEFP", "COUNTYFP", "GEOID"))
+data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "county_name"))
 
 
 #
@@ -144,30 +150,30 @@ data <- data %>% group_by(STATEFP) %>%
 # Number of alcohol deaths per 100,000 population, Number of drug dreaths per 100,000 population, Number of suicide deaths per 100,000 population
 # hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
 # ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_ratealcdeaths, hum_ratedrgdeaths, hum_ratesuideaths
-data <- data %>% group_by(STATEFP) %>%
-  mutate(hum_ratealcdeaths_q = calcterc(hum_ratealcdeaths),
-         hum_ratealcdeaths_q = case_when(hum_ratealcdeaths_q == 5 ~ 1,
-                                         hum_ratealcdeaths_q == 4 ~ 2,
-                                         hum_ratealcdeaths_q == 3 ~ 3,
-                                         hum_ratealcdeaths_q == 2 ~ 4,
-                                         hum_ratealcdeaths_q == 1 ~ 5,
-                                        is.na(hum_ratealcdeaths_q) ~ NA_real_),
-         hum_ratedrgdeaths_q = calcterc(hum_ratedrgdeaths),
-         hum_ratedrgdeaths_q = case_when(hum_ratedrgdeaths_q == 5 ~ 1,
-                                         hum_ratedrgdeaths_q == 4 ~ 2,
-                                         hum_ratedrgdeaths_q == 3 ~ 3,
-                                         hum_ratedrgdeaths_q == 2 ~ 4,
-                                         hum_ratedrgdeaths_q == 1 ~ 5,
-                                    is.na(hum_ratedrgdeaths_q) ~ NA_real_),
-         hum_ratesuideaths_q = calcterc(hum_ratesuideaths),
-         hum_ratesuideaths_q = case_when(hum_ratesuideaths_q == 5 ~ 1,
-                                         hum_ratesuideaths_q == 4 ~ 2,
-                                         hum_ratesuideaths_q == 3 ~ 3,
-                                         hum_ratesuideaths_q == 2 ~ 4,
-                                         hum_ratesuideaths_q == 1 ~ 5,
-                                         is.na(hum_ratesuideaths_q) ~ NA_real_),
-         hum_index_despair = (hum_ratealcdeaths_q + hum_ratedrgdeaths_q + hum_ratesuideaths_q) / 3) %>%
-  ungroup()
+# data <- data %>% group_by(STATEFP) %>%
+#   mutate(hum_ratealcdeaths_q = calcterc(hum_ratealcdeaths),
+#          hum_ratealcdeaths_q = case_when(hum_ratealcdeaths_q == 5 ~ 1,
+#                                          hum_ratealcdeaths_q == 4 ~ 2,
+#                                          hum_ratealcdeaths_q == 3 ~ 3,
+#                                          hum_ratealcdeaths_q == 2 ~ 4,
+#                                          hum_ratealcdeaths_q == 1 ~ 5,
+#                                         is.na(hum_ratealcdeaths_q) ~ NA_real_),
+#          hum_ratedrgdeaths_q = calcterc(hum_ratedrgdeaths),
+#          hum_ratedrgdeaths_q = case_when(hum_ratedrgdeaths_q == 5 ~ 1,
+#                                          hum_ratedrgdeaths_q == 4 ~ 2,
+#                                          hum_ratedrgdeaths_q == 3 ~ 3,
+#                                          hum_ratedrgdeaths_q == 2 ~ 4,
+#                                          hum_ratedrgdeaths_q == 1 ~ 5,
+#                                     is.na(hum_ratedrgdeaths_q) ~ NA_real_),
+#          hum_ratesuideaths_q = calcterc(hum_ratesuideaths),
+#          hum_ratesuideaths_q = case_when(hum_ratesuideaths_q == 5 ~ 1,
+#                                          hum_ratesuideaths_q == 4 ~ 2,
+#                                          hum_ratesuideaths_q == 3 ~ 3,
+#                                          hum_ratesuideaths_q == 2 ~ 4,
+#                                          hum_ratesuideaths_q == 1 ~ 5,
+#                                          is.na(hum_ratesuideaths_q) ~ NA_real_),
+#          hum_index_despair = (hum_ratealcdeaths_q + hum_ratedrgdeaths_q + hum_ratesuideaths_q) / 3) %>%
+#   ungroup()
 
 
 #

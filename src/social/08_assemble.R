@@ -2,6 +2,8 @@ library(dplyr)
 library(readr)
 library(sf)
 library(naniar)
+library(readxl)
+library(janitor)
 
 
 #
@@ -11,13 +13,19 @@ library(naniar)
 data_acs <- read_rds("./rivanna_data/social/soc_acs_2018_remaining.Rds")
 data_chr <- read_rds("./rivanna_data/social/soc_chr_2020.Rds") %>% st_drop_geometry()
 
+rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
+                       sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
+rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
+
 
 #
 # Join -----------------------------------------------------------------------
 #
 
-data <- left_join(data_acs, data_chr, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "NAME.y")) %>%
-  select(-COUNTYNS, -AFFGEOID, -LSAD, -state)
+data <- left_join(data_acs, data_chr, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "NAME.y"))
+data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "county_name"))
+
+data <- data %>% select(-COUNTYNS, -AFFGEOID, -LSAD, -state)
 
 
 #
@@ -26,7 +34,6 @@ data <- left_join(data_acs, data_chr, by = c("STATEFP", "COUNTYFP", "GEOID", "NA
 
 pct_complete_case(data) # 55.9
 pct_complete_var(data) # 78.3
-21.7
 
 n_var_complete(data) # 18 variables complete
 n_var_miss(data) # 5 have missingness

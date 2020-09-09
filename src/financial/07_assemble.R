@@ -2,6 +2,8 @@ library(dplyr)
 library(readr)
 library(sf)
 library(naniar)
+library(readxl)
+library(janitor)
 
 
 #
@@ -14,6 +16,10 @@ data_laus <- read_rds("./rivanna_data/financial/fin_laus_2020.Rds") %>% st_drop_
 data_nass <- read_rds("./rivanna_data/financial/fin_nass_2017.Rds") %>% st_drop_geometry()
 data_urban <- read_rds("./rivanna_data/financial/fin_urban_2018.Rds") %>% st_drop_geometry()
 
+rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
+                       sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
+rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
+
 
 #
 # Join -----------------------------------------------------------------------
@@ -23,6 +29,7 @@ data <- left_join(data_acs, data_cbp, by = c("STATEFP", "COUNTYFP", "COUNTYNS", 
 data <- left_join(data, data_laus, by = c("STATEFP", "COUNTYFP", "COUNTYNS", "GEOID", "NAME.x", "NAME.y"))
 data <- left_join(data, data_nass, by = c("STATEFP", "COUNTYFP", "COUNTYNS", "GEOID", "NAME.x", "NAME.y", "ALAND", "AWATER")) %>% select(-county, -state)
 data <- left_join(data, data_urban, by = c("STATEFP", "COUNTYFP", "COUNTYNS", "GEOID", "NAME.x", "NAME.y", "ALAND", "AWATER"))
+data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "county_name"))
 
 
 #
@@ -30,7 +37,7 @@ data <- left_join(data, data_urban, by = c("STATEFP", "COUNTYFP", "COUNTYNS", "G
 #
 
 # What do to with independent cities?
-data <- data %>% select(STATEFP, state, COUNTYFP, county, GEOID, NAME.x, NAME.y, area_name, starts_with("fin_"), geometry)
+data <- data %>% select(STATEFP, state, COUNTYFP, county, GEOID, NAME.x, NAME.y, area_name, starts_with("fin_"), irr2010, geometry)
 
 
 #
