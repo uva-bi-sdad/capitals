@@ -10,9 +10,18 @@ library(janitor)
 # Read in -----------------------------------------------------------------------
 #
 
+# Teja's part
 data_acs <- read_rds("./rivanna_data/social/soc_acs_2018_remaining.Rds")
 data_chr <- read_rds("./rivanna_data/social/soc_chr_2020.Rds") %>% st_drop_geometry()
 
+# Morgan's part
+data_acsm18 <- read_rds("./rivanna_data/social/soc_acs_2018.rds")
+data_acsm16 <- read_rds("./rivanna_data/social/soc_acs_2016.rds")
+data_cbp <- read_rds("./rivanna_data/social/soc_cbp_2016.rds")
+data_mit <- read_rds("./rivanna_data/social/soc_mit_2018.rds") %>% st_drop_geometry()
+data_census20 <- read_rds("./rivanna_data/social/soc_census_2020.rds") %>% st_drop_geometry()
+
+# Rurality
 rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
                        sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
 rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
@@ -151,6 +160,48 @@ data <- data %>% group_by(STATEFP) %>%
   mutate(soc_assoc_q = calcquint(soc_assoc),
          soc_index_assoc = (soc_assoc_q) / 1) %>%
   ungroup()
+
+
+#
+# Social capital index ------------------------------------------------------
+#
+
+# First factor: The aggregate for all of above variables (all the org variables) divided by population per 1,000
+# Second factor: Voter turnout
+# Third factor: Census response rate
+# Fourth factor: Number of non-profit organizations without including those with an international approach 
+
+# Establishments: soc_assoctotal (soc_religiouspop, soc_civicpop, soc_businesspop, soc_politicalpop, soc_professionalpop, soc_laborpop, soc_bowlingpop, soc_fitnesspop, soc_golfpop, soc_sportspop)
+# Voter turnout: soc_voterrate
+# Census response rate: soc_overallcensusrate
+# Nonprofits: soc_nonprofitpop
+
+# data_cbp: soc_assoctotal, soc_nonprofitpop
+# data_mit: soc_voterrate
+# data_census20: soc_overallcensusrate
+
+# No reverse coding here. 
+data_sci <- left_join(data_cbp, data_mit, by = c("STATEFP", "COUNTYFP", "GEOID"))
+data_sci <- left_join(data_sci, data_census20, by = c("STATEFP", "COUNTYFP", "GEOID"))
+
+data_sci <- data_sci %>% group_by(STATEFP) %>%
+  mutate(soc_assoctotal_q = calcquint(soc_assoctotal),
+         soc_voterrate_q = calcquint(soc_voterrate),
+         soc_overallcensusrate_q = calcquint(soc_overallcensusrate),
+         soc_nonprofitpop_q = calcquint(soc_nonprofitpop),
+         soc_index_cap = (soc_assoctotal_q + soc_voterrate_q + soc_overallcensusrate_q + soc_nonprofitpop_q) / 4) %>%
+  ungroup()
+
+data_sci <- st_drop_geometry(data_sci)
+
+
+#
+# Join both ------------------------------------------------------
+#
+
+
+data <- left_join(data, data_sci, by = c("STATEFP", "COUNTYFP", "GEOID"))
+miss_var_summary(data)
 
 
 #

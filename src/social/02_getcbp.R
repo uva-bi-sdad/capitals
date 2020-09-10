@@ -15,7 +15,7 @@ library(sf)
 # 713950 is bowling, 713940 is fitness, 713910 is golf, 711211 is sports teams
 # "81321/", "81331/", "81341/" are non profit codes
 
-data <- read.table("rivanna_data/social/soc_cbp_2016.txt", sep = ",", header = T)
+data <- read.table("rivanna_data/social/soc_cbp_2016.txt", sep = ",", header = T, colClasses = c("fipstate" = "character", "fipscty" = "character"))
 data_state <- data %>%
   filter(naics %in% c("813110", "813410", "813910", "813940", "813920", "813930", "713950", "713940", "713910","711211", "81321/", "81331/", "81341/"), fipstate %in% c("19", "41", "51"))
 
@@ -153,23 +153,16 @@ cbp_data$soc_nonprofit <- (cbp_data$nonprofit_1_est + cbp_data$nonprofit_2_est +
 
 # add geometry data from ACS ------------------------------------
 
-cbp_data$STATEFP <- cbp_data$fipstate
-cbp_data$COUNTYFP <- cbp_data$fipscty
-cbp_data$STATEFP <- as.integer(cbp_data$STATEFP)
-cbp_data$COUNTYFP <- as.integer(cbp_data$COUNTYFP)
-
 acs <- readRDS("./rivanna_data/social/soc_acs_2016.rds")
 
 acs <- acs %>%
   select(STATEFP, COUNTYFP, GEOID, soc_totalpop, geometry)
-acs$STATEFP <- as.integer(acs$STATEFP)
-acs$COUNTYFP <- as.integer(acs$COUNTYFP)
 
-cbp_geo <- left_join(acs, cbp_data, by = c("STATEFP", "COUNTYFP"))
+cbp_geo <- left_join(acs, cbp_data, by = c("STATEFP" = "fipstate", "COUNTYFP" = "fipscty"))
 nrow(cbp_geo)
 
 cbp_geo <- cbp_geo %>%
-  select(-c(fipstate, fipscty, nonprofit_1_est, nonprofit_2_est, nonprofit_3_est))
+  select(-nonprofit_1_est, -nonprofit_2_est, -nonprofit_3_est)
 
 cbp_geo$perthousand <- cbp_geo$soc_totalpop/1000
 
@@ -183,9 +176,13 @@ cbp_geo$soc_bowlingpop <- cbp_geo$soc_bowlingest / cbp_geo$perthousand
 cbp_geo$soc_fitnesspop <- cbp_geo$soc_fitnessest / cbp_geo$perthousand
 cbp_geo$soc_golfpop <- cbp_geo$soc_golfest / cbp_geo$perthousand
 cbp_geo$soc_sportspop <- cbp_geo$soc_sportsest / cbp_geo$perthousand
-cbp_geo$soc_nonproitpop <- cbp_geo$soc_nonprofit / cbp_geo$perthousand
+cbp_geo$soc_nonprofitpop <- cbp_geo$soc_nonprofit / cbp_geo$perthousand
 
 cbp_data[is.na(cbp_data)] = 0
+
+# Total
+cbp_geo <- cbp_geo %>% mutate(soc_assoctotal = soc_religiouspop + soc_civicspop + soc_businesspop + soc_politicalpop + 
+                              soc_professionalpop + soc_laborpop + soc_bowlingpop + soc_fitnesspop + soc_golfpop + soc_sportspop)
 
 # check missingness ----------------------------------
 
