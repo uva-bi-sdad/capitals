@@ -9,9 +9,10 @@ library(shinyjs)
 library(rintrojs)
 library(shinyBS)
 library(shinyWidgets)
+library(DT)
 
-
-datafin <- read_rds("data/fin_final.Rds")
+datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
+measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
 
 #
@@ -356,7 +357,18 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
       # DATA AND METHODS CONTENT -------------------------
       tabItem(tabName = "datamethods",
               fluidRow(
-                box()
+                box(title = "Select Capital:",
+                    width = 12,
+                  selectInput("topic", "", width = "100%", choices = c(
+                    "All",
+                    "Financial",
+                    "Human",
+                    "Social",
+                    "Natural", 
+                    "Built", 
+                    "Political", 
+                    "Cultural")),
+                  DTOutput("measures_table"))
               )
       ),
       
@@ -590,6 +602,39 @@ server <- function(input, output, session) {
   # 
   
   
+  #--------- Measures table ---------------#
+  measures_topic <- reactive({
+    input$topic
+  })
+  
+  output$measures_table <- renderDataTable({
+    if(measures_topic() == "All"){
+      table <- as.data.frame(measures)
+      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
+    }
+    else{
+      data <- switch(input$topic,
+                     "Financial" = "financial",
+                     "Human" = "human",
+                     "Social" = "social",
+                     "Natural" = "natural", 
+                     "Built" = "built",
+                     "Political" = "political", 
+                     "Cultural" = "cultural")
+      
+      table <- measures[measures$capital == data, ]
+      table <- as.data.frame(table)
+      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
+    }
+  })
+  
+  
+  
+  
+  
+  
+  
+  
   #
   # Home Page InfoBox outputs -------------------------------------------------
   # 
@@ -643,7 +688,7 @@ server <- function(input, output, session) {
     )
   })
     
-  
+
 }
 
 
