@@ -10,7 +10,7 @@ library(naniar)
 
 # Read in segmented trail data (Previously exported from QGIS)
 trails = st_read("data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.shp")
-
+  
 # Find length of each trail segment
 trails$length = st_length(trails)
 
@@ -21,8 +21,7 @@ trails %<>% filter(STATEFP %in% c("19", "41", "51"))
 trails %<>% st_drop_geometry()
 
 # Sum trail lengths by county (in meters)
-county_trails = trails %>% group_by(GEOID) %>% summarise(total_trails = sum(length))
-
+county_trails = trails %>% group_by(GEOID) %>% summarise(total_trails = sum(length)) %>% ungroup()
 
 # Get counties and geometries from acs
 Sys.getenv("CENSUS_API_KEY")
@@ -53,5 +52,6 @@ miss_var_summary(county_trails)
 
 # Replace NAs with zeros
 county_trails$total_trails %<>% replace_na(0)
+
 
 write_rds(county_trails, "data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.rds")
