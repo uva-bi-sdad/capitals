@@ -337,7 +337,283 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                          )
                                   )
                                )
-              )
+              ),
+              
+              
+              #
+              #  ECONOMIC DIVERSIFICATION PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.finidx_choice == 'ECONOMIC DIVERSIFICATION'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Economic Diversificiation Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_fin_index_econdiv")
+                                 )
+                                 
+                               ),
+                               
+                               fluidRow(
+                                 tabBox(title = "Economic Diversification Measures",
+                                        id = "tab_indexfin_econdiv",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Herfindahl-Hirschman Index of Employment",
+                                                 fluidRow(
+                                                   h4(strong("Herfindahl-Hirschman Index of Employment by Industry"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_fin_econdiv_emphhi")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_fin_econdiv_emphhi")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Herfindahl-Hirschman Index of Payroll",
+                                                 fluidRow(
+                                                   h4(strong("Herfindahl-Hirschman Index of Payroll by Industry"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_fin_econdiv_payhhi")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_fin_econdiv_payhhi")
+                                                   )
+                                                 )
+                                        )
+                                        
+                                 )
+                             )
+            ),
+            
+            #
+            #  FINANCIAL WELL-BEING PANEL ------------------------------------------
+            #
+            
+            conditionalPanel("input.finidx_choice == 'FINANCIAL WELL-BEING'",
+                             
+                             fluidRow(
+                               
+                               box(title = "Financial Well-Being Index",
+                                   width = 12,
+                                   h5(strong("County-Level Map")),
+                                   leafletOutput("plot_fin_index_finwell")
+                               )
+                               
+                             ),
+                             
+                             fluidRow(
+                               tabBox(title = "Financial Well-Being Measures",
+                                      id = "tab_indexfin_finwell",
+                                      width = 12,
+                                      side = "right",
+                                      tabPanel(title = "Gini Index",
+                                               fluidRow(
+                                                 h4(strong("Gini Index of Income Inequality"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_gini")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_gini")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Poverty Level",
+                                               fluidRow(
+                                                 h4(strong("Percent with Income Below Poverty Level in Last 12 Months"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_pov")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_pov")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Public Assistance/SNAP",
+                                               fluidRow(
+                                                 h4(strong("Percent Households Receiving Public Assistance or SNAP"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_assist")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_assist")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Supplemental Security Income",
+                                               fluidRow(
+                                                 h4(strong("Percent Households Receiving Supplemental Security Income"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_ssi")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_ssi")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Median Household Income",
+                                               fluidRow(
+                                                 h4(strong("Median Household Income"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_medinc")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_medinc")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Four Year Degree",
+                                               fluidRow(
+                                                 h4(strong("Percent of People Older than 25 with Less than a Four Year Degree"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_lessba")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_lessba")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Debt in Collection",
+                                               fluidRow(
+                                                 h4(strong("Share of People with a Credit Bureau Record Who Have Any Debt in Collections"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_finwell_debtcol")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_finwell_debtcol")
+                                                 )
+                                               )
+                                      )
+                                      
+                                      
+                               )
+                             )
+            ),
+            #
+            #  FINANCIAL WELL-BEING PANEL ------------------------------------------
+            #
+            
+            conditionalPanel("input.finidx_choice == 'EMPLOYMENT'",
+                             
+                             fluidRow(
+                               
+                               box(title = "Employment Index",
+                                   width = 12,
+                                   h5(strong("County-Level Map")),
+                                   leafletOutput("plot_fin_index_empl")
+                               )
+                               
+                             ),
+                             
+                             fluidRow(
+                               tabBox(title = "Employment Measures",
+                                      id = "tab_indexfin_employ",
+                                      width = 12,
+                                      side = "right",
+                                      tabPanel(title = "Unemployment Rate Before COVID",
+                                               fluidRow(
+                                                 h4(strong("Unemployment Rate Before COVID"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_employ_unempprecovid")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_employ_unempprecovid")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Unemployment Rate During COVID",
+                                               fluidRow(
+                                                 h4(strong("Unemployment Rate During COVID"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_employ_unempcovid")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_employ_unempcovid")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Commuting 30min+",
+                                               fluidRow(
+                                                 h4(strong("Percent Commuting 30min+"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_employ_commute")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_employ_commute")
+                                                 )
+                                               )
+                                      ),
+                                      tabPanel(title = "Labor Force",
+                                               fluidRow(
+                                                 h4(strong("Percent of Working Age Population in Labor Force"), align = "center"),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_fin_employ_labforce")
+                                                 ),
+                                                 column(
+                                                   width = 6,
+                                                   h5(strong("Indicator Box Plot")),
+                                                   plotlyOutput("plotly_fin_employ_labforce")
+                                                 )
+                                               )
+                                      )
+                                      
+                               )
+                             )
+            )
+            
+            
       ),
       
       
@@ -664,9 +940,243 @@ server <- function(input, output, session) {
      create_indicator(fin_data(), data_var, var_label)
    })
    
+  #
+  # Financial - Economic Diversification Indicators - Boxplot and Map ------------------------------------
+  #  
    
-  
-  
+   
+   output$plotly_fin_econdiv_emphhi <- renderPlotly({
+     
+     data_var <- fin_data()$fin_emphhi
+     var_label <- "Herfindahl-Hirschman Index of Employment by Industry"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_econdiv_emphhi <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_emphhi
+     var_label <- "Herfindahl-Hirschman Index of Employment by Industry"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+   output$plotly_fin_econdiv_payhhi <- renderPlotly({
+     
+     data_var <- fin_data()$fin_aphhi
+     var_label <- "Herfindahl-Hirschman Index of Payroll by Industry"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_econdiv_payhhi <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_aphhi
+     var_label <- "Herfindahl-Hirschman Index of Payroll by Industry"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+  #
+  # Financial - Financial Well-Being Indicators - Boxplot and Map ------------------------------------
+  #  
+   
+   output$plotly_fin_finwell_gini <- renderPlotly({
+     
+     data_var <- fin_data()$fin_gini
+     var_label <- "Gini Index of Income Inequality"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_gini <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_gini
+     var_label <- "Gini Index of Income Inequality"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })   
+   
+   output$plotly_fin_finwell_pov <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctinpov
+     var_label <- "Percent with Income Below Poverty Level in Last 12 Months"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_pov <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctinpov
+     var_label <- "Percent with Income Below Poverty Level in Last 12 Months"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })   
+   
+   output$plotly_fin_finwell_assist <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctassist
+     var_label <- "Percent Households Receiving Public Assistance or SNAP"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_assist <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctassist
+     var_label <- "Percent Households Receiving Public Assistance or SNAP"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })   
+   
+   output$plotly_fin_finwell_ssi <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctssi
+     var_label <- "Percent Households Receiving Supplemental Security Income"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_ssi <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctssi
+     var_label <- "Percent Households Receiving Supplemental Security Income"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })   
+   
+   output$plotly_fin_finwell_medinc <- renderPlotly({
+     
+     data_var <- fin_data()$fin_medinc
+     var_label <- "Median Household Income"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_medinc <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_medinc
+     var_label <- "Median Household Income"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })   
+   
+   output$plotly_fin_finwell_lessba <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctlessba
+     var_label <- "Percent of People Older than 25 with Less than a Four Year Degree"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_lessba <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctlessba
+     var_label <- "Percent of People Older than 25 with Less than a Four Year Degree"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_fin_finwell_debtcol <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctdebtcol
+     var_label <- "Share of People with a Credit Bureau Record Who Have Any Debt in Collections"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_finwell_debtcol <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctdebtcol
+     var_label <- "Share of People with a Credit Bureau Record Who Have Any Debt in Collections"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   }) 
+   
+  #
+  # Financial - Employment Indicators - Boxplot and Map ------------------------------------
+  #  
+   
+   output$plotly_fin_employ_unempprecovid <- renderPlotly({
+     
+     data_var <- fin_data()$fin_unempprecovid
+     var_label <- "Unemployment Rate Before COVID"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_employ_unempprecovid <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_unempprecovid
+     var_label <- "Unemployment Rate Before COVID"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })  
+   
+   output$plotly_fin_employ_unempcovid <- renderPlotly({
+     
+     data_var <- fin_data()$fin_unempcovid
+     var_label <- "Unemployment Rate During COVID"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_employ_unempcovid <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_unempcovid
+     var_label <- "Unemployment Rate During COVID"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })  
+   
+   output$plotly_fin_employ_commute <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctcommute
+     var_label <- "Percent Commuting 30min+"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_employ_commute <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctcommute
+     var_label <- "Percent Commuting 30min+"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })  
+   
+   output$plotly_fin_employ_labforce <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctlabforce
+     var_label <- "Percent of Working Age Population in Labor Force"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_employ_labforce <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctlabforce
+     var_label <- "Percent of Working Age Population in Labor Force"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })  
+   
+   
+   
+   
   #--------- Measures table ---------------#
   measures_topic <- reactive({
     input$topic
