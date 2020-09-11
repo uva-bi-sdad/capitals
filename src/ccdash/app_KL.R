@@ -270,43 +270,73 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                  )
                                  
                                ),
-                               # fluidRow(
-                               #   tabBox(title = "Agriculture Measures",
-                               #          id = "tab_indexfin_ag",
-                               #          width = 12,
-                               #          side = "right",
-                               #          tabPanel(title = "Number of Businesses",
-                               #                   fluidRow(
-                               #                     h4(strong("Number of Businesses per 10,000 People"), align = "center"),
-                               #                     column(
-                               #                       width = 6,
-                               #                       h5(strong("County-Level Map")),
-                               #                       leafletOutput("plot_fin_co_bus")
-                               #                     ),
-                               #                     column(
-                               #                       width = 6,
-                               #                       h5(strong("Indicator Box Plot")),
-                               #                       plotlyOutput("plotly_fin_co_bus")
-                               #                     )
-                               #                   )
-                               #          ),
-                               #          tabPanel(title = "Number of New Businesses",
-                               #                   fluidRow(
-                               #                     h4(strong("Number of New Businesses per 10,000 People"), align = "center"),
-                               #                     column(
-                               #                       width = 6,
-                               #                       h5(strong("County-Level Map")),
-                               #                       leafletOutput("plot_fin_co_newbus")
-                               #                     ),
-                               #                     column(
-                               #                       width = 6,
-                               #                       h5(strong("Indicator Box Plot")),
-                               #                       plotlyOutput("plotly_fin_co_newbus")
-                               #                     )
-                               #                   )
-                               #          )
-                               #   )
-                               #)
+                                fluidRow(
+                                  tabBox(title = "Agriculture Measures",
+                                         id = "tab_indexfin_ag",
+                                         width = 12,
+                                         side = "right",
+                                         tabPanel(title = "Agriculture Acres",
+                                                  fluidRow(
+                                                    h4(strong("Percent County in Agriculture Acres"), align = "center"),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("County-Level Map")),
+                                                      leafletOutput("plot_fin_ag_acres")
+                                                    ),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("Indicator Box Plot")),
+                                                      plotlyOutput("plotly_fin_ag_acres")
+                                                    )
+                                                  )
+                                         ),
+                                         tabPanel(title = "Land Value",
+                                                  fluidRow(
+                                                    h4(strong("Land Value Per Acre"), align = "center"),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("County-Level Map")),
+                                                      leafletOutput("plot_fin_ag_landval")
+                                                    ),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("Indicator Box Plot")),
+                                                      plotlyOutput("plotly_fin_ag_landval")
+                                                    )
+                                                  )
+                                         ), 
+                                         tabPanel(title = "Net Income",
+                                                  fluidRow(
+                                                    h4(strong("Net Income Per Farm Operation"), align = "center"),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("County-Level Map")),
+                                                      leafletOutput("plot_fin_ag_netin")
+                                                    ),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("Indicator Box Plot")),
+                                                      plotlyOutput("plotly_fin_ag_netin")
+                                                    )
+                                                  )
+                                         ), 
+                                         tabPanel(title = "Percent Employed",
+                                                  fluidRow(
+                                                    h4(strong("Percent Employed in Agriculture, Forestry, Fishing and Hunting, Mining Industry"), align = "center"),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("County-Level Map")),
+                                                      leafletOutput("plot_fin_ag_employ")
+                                                    ),
+                                                    column(
+                                                      width = 6,
+                                                      h5(strong("Indicator Box Plot")),
+                                                      plotlyOutput("plotly_fin_ag_employ")
+                                                    )
+                                                  )
+                                         )
+                                  )
+                               )
               )
       ),
       
@@ -565,41 +595,76 @@ server <- function(input, output, session) {
   # Financial - Agriculture Indicators - Boxplot and Map ------------------------------------
   #
   
-  # output$plotly_fin_co_bus <- renderPlotly({
-  #   
-  #   data_var <- fin_data()$fin_estper10k
-  #   var_label <- "Number of businesses per 10,000 people"
-  #   
-  #   create_boxplot(fin_data(), data_var, var_label)
-  # })
-  # 
-  # 
-  # output$plot_fin_co_bus <- renderLeaflet({
-  #   
-  #   data_var <- fin_data()$fin_estper10k
-  #   var_label <- "Number of businesses per 10,000 people"
-  #   
-  #   create_indicator(fin_data(), data_var, var_label)
-  # })
-  # 
-  # 
-  # output$plotly_fin_co_newbus <- renderPlotly({
-  #   
-  #   data_var <- fin_data()$fin_newestper10k
-  #   var_label <- "Number of new businesses per 10,000 people"
-  #   
-  #   create_boxplot(fin_data(), data_var, var_label)
-  # })
-  # 
-  # 
-  # output$plot_fin_co_newbus <- renderLeaflet({
-  #   
-  #   data_var <- fin_data()$fin_newestper10k
-  #   var_label <- "Number of new businesses per 10,000 people"
-  #   
-  #   create_indicator(fin_data(), data_var, var_label)
-  # })
-  # 
+   output$plotly_fin_ag_acres <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctagacres
+     var_label <- "Percent of County in Agriculture Acres"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_ag_acres <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctagacres
+     var_label <- "Percent of County in Agriculture Acres"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plotly_fin_ag_landval <- renderPlotly({
+     
+     data_var <- fin_data()$fin_landvalacre
+     var_label <- "Land Value Per Acre"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_ag_landval <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_landvalacre
+     var_label <- "Land Value Per Acre"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+   output$plotly_fin_ag_netin <- renderPlotly({
+     
+     data_var <- fin_data()$fin_netincperfarm
+     var_label <- "Net Income Per Farm Operation"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_ag_netin <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_netincperfarm
+     var_label <- "Net Income Per Farm Operation"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+   output$plotly_fin_ag_employ <- renderPlotly({
+     
+     data_var <- fin_data()$fin_pctemplagri
+     var_label <- "Percent Employed in Agriculture, Forestry, Fishing and Hunting, Mining Industry"
+     
+     create_boxplot(fin_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_fin_ag_employ <- renderLeaflet({
+     
+     data_var <- fin_data()$fin_pctemplagri
+     var_label <- "Percent Employed in Agriculture, Forestry, Fishing and Hunting, Mining Industry"
+     
+     create_indicator(fin_data(), data_var, var_label)
+   })
+   
+   
   
   
   #--------- Measures table ---------------#
