@@ -11,6 +11,7 @@ library(shinyBS)
 library(shinyWidgets)
 library(DT)
 
+datahum <- read_rds("~/capitals/rivanna_data/human/hum_final_sarah.Rds")
 datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
 measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
@@ -201,7 +202,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                 ),
               
               #
-              #  COMMERCE PANEL ------------------------------------------
+              # COMMERCE PANEL ------------------------------------------
               #
               
               conditionalPanel("input.finidx_choice == 'COMMERCE'",
@@ -341,7 +342,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
               
               
               #
-              #  ECONOMIC DIVERSIFICATION PANEL ------------------------------------------
+              # ECONOMIC DIVERSIFICATION PANEL ------------------------------------------
               #
               
               conditionalPanel("input.finidx_choice == 'ECONOMIC DIVERSIFICATION'",
@@ -397,8 +398,8 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
             ),
             
             #
-            #  FINANCIAL WELL-BEING PANEL ------------------------------------------
-            #
+              # FINANCIAL WELL-BEING PANEL ------------------------------------------
+              #
             
             conditionalPanel("input.finidx_choice == 'FINANCIAL WELL-BEING'",
                              
@@ -528,8 +529,8 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                              )
             ),
             #
-            #  FINANCIAL WELL-BEING PANEL ------------------------------------------
-            #
+              # EMPLOYMENT ------------------------------------------
+              #
             
             conditionalPanel("input.finidx_choice == 'EMPLOYMENT'",
                              
@@ -620,9 +621,137 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
       
       # HUMAN CAPITAL CONTENT -------------------------
       tabItem(tabName = "human",
+              
               fluidRow(
-                box()
-              )
+                box(title = "About Human Capital",
+                    width = 9,
+                    "Box content here", 
+                    br(), 
+                    "More content"
+                ),
+                box(title = "Select Your State",
+                    width = 3,
+                    selectInput("hum_whichstate", label = NULL,
+                                choices = list("Iowa",
+                                               "Oregon",
+                                               "Virginia"), 
+                                selected = "Iowa")
+                )
+              ),
+              
+              fluidRow(
+                box(title = "Select Your Index",
+                    width = 12,
+                    
+                    radioGroupButtons(
+                      inputId = "humidx_choice", #label = "Make a choice :",
+                      choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
+                                  "DESPAIR"),
+                      justified = FALSE, status = "primary", individual = TRUE)
+                )
+                
+              ),
+              #
+              # HEALTH PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.humidx_choice == 'HEALTH'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Health Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_hum_index_health")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Health Measures",
+                                        id = "tab_indexhum_health",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Physical Health",
+                                                 fluidRow(
+                                                   h4(strong("Average Number of Reported Poor Physical Health Days in a Month"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_health_poorphys")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_health_poorphys")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Mental Health",
+                                                 fluidRow(
+                                                   h4(strong("Average Number of Reported Poor Mental Health Days in a Month"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_health_poorment")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_health_poorment")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Physical Activity",
+                                                 fluidRow(
+                                                   h4(strong("Percentage of Adults that Report No Leisure-time Physical Activity"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_health_nophys")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_health_nophys")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Primary Care Physicians",
+                                                 fluidRow(
+                                                   h4(strong("Primary Care Physicians per 100,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_health_primcare")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_health_primcare")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Mental Health Providers",
+                                                 fluidRow(
+                                                   h4(strong("Mental Health Providers per 100,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_health_menthealthprov")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_health_menthealthprov")
+                                                   )
+                                                 )
+                                        )
+                                        
+                                        
+                                 
+                                 )
+                               )
+              )                 
       ),
       
       # SOCIAL CAPITAL CONTENT -------------------------
@@ -801,31 +930,53 @@ server <- function(input, output, session) {
   
   # Switches
   fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate) })
-  
+  hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
 
   #
   # Capital Index Maps ------------------------------------------------
   #
+      #
+      # Financial-------------------------------------------------------
+      #
+      output$plot_fin_index_commerce <- renderLeaflet({
+        create_index(fin_data(), fin_data()$fin_index_commerce, "Commerce Index")
+      })
+      
+      output$plot_fin_index_agri <- renderLeaflet({
+        create_index(fin_data(), fin_data()$fin_index_agri, "Agriculture Index")
+      })
+      
+      output$plot_fin_index_econdiv <- renderLeaflet({
+        create_index(fin_data(), fin_data()$fin_index_divers, "Economic Diversification Index")
+      })
+      
+      output$plot_fin_index_finwell <- renderLeaflet({
+        create_index(fin_data(), fin_data()$fin_index_well, "Financial Well-Being Index")
+      })
+      
+      output$plot_fin_index_empl <- renderLeaflet({
+        create_index(fin_data(), fin_data()$fin_index_empl, "Employment Index")
+      })
   
-  output$plot_fin_index_commerce <- renderLeaflet({
-    create_index(fin_data(), fin_data()$fin_index_commerce, "Commerce Index")
-  })
-  
-  output$plot_fin_index_agri <- renderLeaflet({
-    create_index(fin_data(), fin_data()$fin_index_agri, "Agriculture Index")
-  })
-  
-  output$plot_fin_index_econdiv <- renderLeaflet({
-    create_index(fin_data(), fin_data()$fin_index_divers, "Economic Diversification Index")
-  })
-  
-  output$plot_fin_index_finwell <- renderLeaflet({
-    create_index(fin_data(), fin_data()$fin_index_well, "Financial Well-Being Index")
-  })
-  
-  output$plot_fin_index_empl <- renderLeaflet({
-    create_index(fin_data(), fin_data()$fin_index_empl, "Employment Index")
-  })
+      #
+      # Human Index Maps ------------------------------------------------
+      #
+      
+      output$plot_hum_index_health <- renderLeaflet({
+        create_index(hum_data(), hum_data()$hum_index_health, "Health Index")
+      })
+      
+      output$plot_hum_index_edu <- renderLeaflet({
+        create_index(hum_data(), hum_data()$hum_index_edu, "Education Index")
+      })
+      
+      output$plot_hum_index_childcare <- renderLeaflet({
+        create_index(hum_data(), hum_data()$hum_index_child, "Child Care Index")
+      })
+      
+      output$plot_hum_index_despair <- renderLeaflet({
+        create_index(hum_data(), hum_data()$hum_index_despair, "Despair Index")
+      })
   
   #
   # Financial - Commerce Indicators - Boxplot and Map ------------------------------------
@@ -1174,6 +1325,94 @@ server <- function(input, output, session) {
      create_indicator(fin_data(), data_var, var_label)
    })  
    
+  #
+  # Human - Health Indicators - Boxplot and Map ------------------------------------
+  #  
+   
+   output$plotly_hum_health_poorphys <- renderPlotly({
+     
+     data_var <- hum_data()$hum_numpoorphys
+     var_label <- "Average Number of Reported Poor Physical Health Days in a Month"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_health_poorphys <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_numpoorphys
+     var_label <- "Average Number of Reported Poor Physical Health Days in a Month"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
+   
+   output$plotly_hum_health_poorment <- renderPlotly({
+     
+     data_var <- hum_data()$hum_numpoormental
+     var_label <- "Average Number of Reported Poor Physical Mental Days in a Month"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_health_poorment <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_numpoormental
+     var_label <- "Average Number of Reported Poor Physical Mental Days in a Month"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
+   
+   output$plotly_hum_health_nophys <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pctnophys
+     var_label <- "Percentage of Adults that Report No Leisure-time Physical Activity"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_health_nophys <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pctnophys
+     var_label <- "Percentage of Adults that Report No Leisure-time Physical Activity"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
+   
+   output$plotly_hum_health_primcare <- renderPlotly({
+     
+     data_var <- hum_data()$hum_ratepcp
+     var_label <- "Primary Care Physicians per 100,000 Population"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_health_primcare <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_ratepcp
+     var_label <- "Primary Care Physicians per 100,000 Population"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
+   
+   output$plotly_hum_health_menthealthprov <- renderPlotly({
+     
+     data_var <- hum_data()$hum_ratementalhp
+     var_label <- "Mental Health Providers per 100,000 Population"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_health_menthealthprov <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_ratementalhp
+     var_label <- "Mental Health Providers per 100,000 Population"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
    
    
    
