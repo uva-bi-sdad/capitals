@@ -42,17 +42,17 @@ power %<>% filter(STATEFP %in% c("19", "41", "51"))
 power$max_cap = pmax(as.numeric(power$SUMMER_CAP), as.numeric(power$WINTER_CAP))
 
 # Count the number of electric power plants in each county and fix names/geometry
-count_plants = power %>% group_by(GEOID) %>% count()
-count_plants %<>% st_set_geometry(NULL)
-names(count_plants) = c("GEOID", "plant_count")
-count_plants %<>% select(GEOID, plant_count)
+county_plants = power %>% group_by(GEOID) %>% count()
+county_plants %<>% st_drop_geometry()
+names(county_plants) = c("GEOID", "plant_count")
+county_plants %<>% select(GEOID, plant_count)
 
 # 14 observations have -999999 listed in both SUMMER_CAP and WINTER_CAP. Those plants were counted in the general plant count, but are assumed to be zeroes for this sum
 total_power = power %>% filter(max_cap != -999999) %>% group_by(GEOID) %>% summarise(power = sum(max_cap))
 total_power %<>% st_set_geometry(NULL)
 
 # Join data
-counties_power <- left_join(acsdata, count_plants, by = c("GEOID"))
+counties_power <- left_join(acsdata, county_plants, by = c("GEOID"))
 counties_power = left_join(counties_power, total_power, by = c("GEOID"))
 
 
@@ -66,12 +66,12 @@ wells_3state = wells %>% filter(STATE %in% c("IA", "OR", "VA"))
 write_rds(wells_3state, "data/natural/nat_hifld_2020/nat_hifld_2020_wells.rds")
 
 # Count the number of wells in each county and clean up names and geometry
-count_wells = wells_3state %>% group_by(COUNTYFIPS) %>% count()
-count_wells %<>% st_set_geometry(NULL)
-names(count_wells) = c("GEOID", "well_count")
+county_wells = wells_3state %>% group_by(COUNTYFIPS) %>% count()
+county_wells %<>% st_drop_geometry()
+names(county_wells) = c("GEOID", "well_count")
 
 # Join data
-hifld = left_join(counties_power, count_wells, by = c("GEOID"))
+hifld = left_join(counties_power, county_wells, by = c("GEOID"))
 
 
 
