@@ -10,6 +10,8 @@ library(naniar)
 # and EPA FRS Wastewater Treatment Plants to investigate quality, and if viable,
 # identify points in OR/VA/IA and tally by county.
 
+# ** Unable to download Aircraft Landing Facilities right now "An error occurred fetching data." **
+
 cell = st_read("rivanna_data/built/Cellular_Towers-shp/CellularTowers.shp")
 electric = st_read("rivanna_data/built/Electric_Substations-shp/Substations.shp")
 ems = st_read("rivanna_data/built/ems-shp/ems.shp")
@@ -61,3 +63,25 @@ hifld_built <- left_join(county_cell, county_electric, by = c("GEOID")) %>%
   left_join(., county_waste_water, by = c("GEOID")) %>%
   left_join(., county_fire, by = c("GEOID"))
 
+# Missingness analysis (missing values are zeros)
+pct_complete_case(hifld_built) # 92.09486
+pct_complete_var(hifld_built) # 50
+pct_miss_var(hifld_built) # 50
+
+n_var_complete(hifld_built) # 3
+n_var_miss(hifld_built) # 3
+miss_var_summary(hifld_built)
+# waste_water_treatment_count     16    6.32
+# electric_substations_count       3    1.19
+# ems_stations_count               2    0.791
+# GEOID                            0    0
+# cell_tower_count                 0    0
+# fire_station_count               0    0
+
+
+# Replace NAs with zeros
+hifld_built$waste_water_treatment_count %<>% replace_na(0)
+hifld_built$electric_substations_count %<>% replace_na(0)
+hifld_built$ems_stations_count %<>% replace_na(0)
+
+write_rds(hifld_built, "rivanna_data/built/nat_hifldbuilt_2020.rds")
