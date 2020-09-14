@@ -11,7 +11,7 @@ library(shinyBS)
 library(shinyWidgets)
 library(DT)
 
-datahum <- read_rds("~/capitals/rivanna_data/human/hum_final_sarah.Rds")
+datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
 measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 

@@ -74,8 +74,6 @@ names(county_wells) = c("GEOID", "well_count")
 hifld = left_join(counties_power, county_wells, by = c("GEOID"))
 
 
-
-
 # Missingness analysis (missing values are zeros)
 pct_complete_case(hifld) # 1.86
 pct_complete_var(hifld) # 72.73

@@ -4,6 +4,8 @@ library(sf)
 library(naniar)
 library(readxl)
 library(janitor)
+library(stringr)
+
 
 #
 # Read in -----------------------------------------------------------------------
@@ -187,19 +189,19 @@ data <- data %>% group_by(STATEFP) %>%
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "./rivanna_data/human/hum_final.Rds")
-
-# make state and county columns
-
-library(stringr)
-
-data <- read_rds("./rivanna_data/human/hum_final.Rds")
-
+# Make state and county columns
 data$state <- ifelse(data$STATEFP == "19", "Iowa", ifelse(data$STATEFP == "41", "Oregon", "Virginia"))
-
 data$county <- str_remove_all(pattern = c(", Virginia|, Oregon|, Iowa"), data$NAME.y)
 
-write_rds(data, "./rivanna_data/human/hum_final_sarah.Rds")
+# Write
+write_rds(data, "./rivanna_data/human/hum_final.Rds")
+
+
+
+
+
+
+
 
 
 
