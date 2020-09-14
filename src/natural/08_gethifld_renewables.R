@@ -61,4 +61,4 @@ miss_var_summary(counties_ren_power)
 counties_ren_power$plant_count %<>% replace_na(0)
 counties_ren_power$ren_power %<>% replace_na(0)
 
-write_rds(hifld, "data/natural/nat_hifld_2020/nat_hifld_2020_renewables.rds")
+write_rds(counties_ren_power, "data/natural/nat_hifld_2020/nat_hifld_2020_renewables.rds")
