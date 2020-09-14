@@ -189,7 +189,7 @@ data_sci <- data_sci %>% group_by(STATEFP) %>%
          soc_voterrate_q = calcquint(soc_voterrate),
          soc_overallcensusrate_q = calcquint(soc_overallcensusrate),
          soc_nonprofitpop_q = calcquint(soc_nonprofitpop),
-         soc_index_cap = (soc_assoctotal_q + soc_voterrate_q + soc_overallcensusrate_q + soc_nonprofitpop_q) / 4) %>%
+         soc_index_eng = (soc_assoctotal_q + soc_voterrate_q + soc_overallcensusrate_q + soc_nonprofitpop_q) / 4) %>%
   ungroup()
 
 data_sci <- st_drop_geometry(data_sci)
