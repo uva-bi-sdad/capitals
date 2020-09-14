@@ -13,6 +13,7 @@ library(DT)
 
 datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
+datasoc <- read_rds("~/capitals/rivanna_data/social/soc_final.Rds")
 measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
 
@@ -751,15 +752,466 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                  
                                  )
                                )
-              )                 
+              ),
+              #
+              # EDUCATION PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.humidx_choice == 'EDUCATION'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Education Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_hum_index_edu")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Education Measures",
+                                        id = "tab_indexhum_edu",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "High School",
+                                                 fluidRow(
+                                                   h4(strong("Percent of Population with At Least a High School Degree"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_edu_hs")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_edu_hs")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Reading Proficiency",
+                                                 fluidRow(
+                                                   h4(strong("Reading Proficiency"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_edu_read")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_edu_read")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Math Proficiency",
+                                                 fluidRow(
+                                                   h4(strong("Math Proficiency"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_edu_math")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_edu_math")
+                                                   )
+                                                 )
+                                        )
+                                 )
+                            )
+            ),
+            #
+              # CHILD CARE PANEL ------------------------------------------
+              #
+            
+              conditionalPanel("input.humidx_choice == 'CHILD CARE'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Child Care Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_hum_index_childcare")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Child Care Measures",
+                                        id = "tab_indexhum_childcare",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Women to Men Pay Ratio",
+                                                 fluidRow(
+                                                   h4(strong("Women to Men Pay Ratio"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_childcare_payratio")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_childcare_payratio")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Single-Parent Households",
+                                                 fluidRow(
+                                                   h4(strong("Percent of Children Living in a Single-Parent Household"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_childcare_singpar")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_childcare_singpar")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Women Without a HS Diploma or Equivalent",
+                                                 fluidRow(
+                                                   h4(strong("Percent of Women Who did not Receive HS Diploma or Equivalent"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_childcare_womenhs")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_childcare_womenhs")
+                                                   )
+                                                 )
+                                        )
+                                 )
+                               )
+              ),
+            
+              #
+              # DESPAIR PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.humidx_choice == 'DESPAIR'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Despair Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_hum_index_despair")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Despair Measures",
+                                        id = "tab_indexhum_despair",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Divorce/Separation",
+                                                 fluidRow(
+                                                   h4(strong("Percent Divorced or Separated"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_despair_divorce")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_despair_divorce")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Unemployed Population in Labor Force",
+                                                 fluidRow(
+                                                   h4(strong("Percent Population in Labor Force Unemployed"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_despair_unemp")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_despair_unemp")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "White Men with High School Education or Lower",
+                                                 fluidRow(
+                                                   h4(strong("Percent White Men with High School Education or Lower"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_despair_whitemhs")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_despair_whitemhs")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Rate of Alcohol, Overdose, and Suicide Deaths",
+                                                 fluidRow(
+                                                   h4(strong("Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_hum_despair_aggdeaths")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_hum_despair_aggdeaths")
+                                                   )
+                                                 )
+                                        )
+                                 )
+                               )
+              )
+            
+            
+            
+          
       ),
       
       # SOCIAL CAPITAL CONTENT -------------------------
+  
+      
       tabItem(tabName = "social",
+              
               fluidRow(
-                box()
+                box(title = "About Social Capital",
+                    width = 9,
+                    "Box content here", 
+                    br(), 
+                    "More content"
+                ),
+                box(title = "Select Your State",
+                    width = 3,
+                    selectInput("soc_whichstate", label = NULL,
+                                choices = list("Iowa",
+                                               "Oregon",
+                                               "Virginia"), 
+                                selected = "Iowa")
+                )
+              ),
+              
+              fluidRow(
+                box(title = "Select Your Index",
+                    width = 12,
+                    
+                    radioGroupButtons(
+                      inputId = "socidx_choice", #label = "Make a choice :",
+                      choices = c("SOCIAL ENGAGEMENT", "SOCIAL RELATIONSHIPS", "ISOLATION"),
+                      justified = FALSE, status = "primary", individual = TRUE)
+                )
+                
+              ),
+              
+              #
+              # SOCIAL ENGAGEMENT PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.socidx_choice == 'SOCIAL ENGAGEMENT'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Social Engagment Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_soc_index_socengage")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Social Engagement Measures",
+                                        id = "tab_indexsoc_eng",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Census Response Rate",
+                                                 fluidRow(
+                                                   h4(strong("Census 2020 Mail and Online Self Response Rate"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_eng_census")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_eng_census")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Election Turnout",
+                                                 fluidRow(
+                                                   h4(strong("Presidential Election 2016 Voter Turnout"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_eng_turnout")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_eng_turnout")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Civic Associations and Establishments",
+                                                 fluidRow(
+                                                   h4(strong("Number of Civic Associations and Establishments per 1,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_eng_civic")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_eng_civic")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Non-Profit Organizations",
+                                                 fluidRow(
+                                                   h4(strong("Number of Non-Profit Organizations Including those with an International Approach"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_eng_nonprof")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_eng_nonprof")
+                                                   )
+                                                 )
+                                        )
+                                       
+                                 )
+                               )
+              ),
+              #
+              # SOCIAL RELATIONSHIPS PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.socidx_choice == 'SOCIAL RELATIONSHIPS'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Social Relationships Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_soc_index_relationships")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Social Relationships Measures",
+                                        id = "tab_indexsoc_rel",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Juvenile Arrests",
+                                                 fluidRow(
+                                                   h4(strong("Number of Juvenile Arrests per 1000 Juveniles"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_juvarrests")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_juvarrests")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Violent Crimes",
+                                                 fluidRow(
+                                                   h4(strong("Number of Violent Crimes per 100,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_violentcrimes")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_violentcrimes")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Grandparent Householders Responsible for Grandchildren",
+                                                 fluidRow(
+                                                   h4(strong("Percent Grandparent Householders Responsible for Own Grandchildren"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_grandparent")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_grandparent")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Homeowners",
+                                                 fluidRow(
+                                                   h4(strong("Percent Homeowners"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_homeown")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_homeown")
+                                                   )
+                                                 )
+                                        ), 
+                                        tabPanel(title = "Living in the Same House as One Year Prior",
+                                                 fluidRow(
+                                                   h4(strong("Percent Population Living in the Same House that They Lived in One Year Prior"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_samehouse")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_samehouse")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Households with Nonrelatives Present",
+                                                 fluidRow(
+                                                   h4(strong("Percent Households with Nonrelatives Present"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_rel_nonrel")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_rel_nonrel")
+                                                   )
+                                                 )
+                                        )
+                                        
+                                 )
+                               )
               )
-      ), 
+      ),        
       
       # BUILT CAPITAL CONTENT -------------------------
       tabItem(tabName = "built",
@@ -929,9 +1381,10 @@ server <- function(input, output, session) {
   }
   
   # Switches
-  fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate) })
+  fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate)})
   hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
-
+  soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
+  
   #
   # Capital Index Maps ------------------------------------------------
   #
@@ -976,6 +1429,18 @@ server <- function(input, output, session) {
       
       output$plot_hum_index_despair <- renderLeaflet({
         create_index(hum_data(), hum_data()$hum_index_despair, "Despair Index")
+      })
+      #
+      # Social Index Maps--------------------------------------------------
+      #
+      output$plot_soc_index_socengage <- renderLeaflet({
+        create_index(soc_data(), soc_data()$soc_index_eng, "Social Engagement Index")
+      })
+      output$plot_soc_index_relationships <- renderLeaflet({
+        create_index(soc_data(), soc_data()$soc_index_relat, "Social Relationships Index")
+      })
+      output$plot_soc_index_isolation <- renderLeaflet({
+        create_index(soc_data(), soc_data()$soc_index_isol, "Social Isolation Index")
       })
   
   #
@@ -1412,11 +1877,347 @@ server <- function(input, output, session) {
      var_label <- "Mental Health Providers per 100,000 Population"
      
      create_indicator(hum_data(), data_var, var_label)
+   })
+   
+  # 
+  # Human - Education Indicators - Boxplot and Map ------------------------------------
+  # 
+   
+   output$plotly_hum_edu_hs <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pcths
+     var_label <- "Percent of Population with At Least a High School Degree"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_edu_hs <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pcths
+     var_label <- "Percent of Population with At Least a High School Degree"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_hum_edu_read <- renderPlotly({
+     
+     data_var <- hum_data()$hum_reading
+     var_label <- "Reading Proficiency"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_edu_read <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_reading
+     var_label <- "Reading Proficiency"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_hum_edu_math <- renderPlotly({
+     
+     data_var <- hum_data()$hum_math
+     var_label <- "Math Proficiency"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   
+   output$plot_hum_edu_math <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_math
+     var_label <- "Math Proficiency"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+  # 
+  # Human - Child Care Indicators - Boxplot and Map ------------------------------------
+  #   
+   output$plotly_hum_childcare_payratio <- renderPlotly({
+     
+     data_var <- hum_data()$hum_ratioFMpay
+     var_label <- "Women to Men Pay Ratio"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_childcare_payratio <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_ratioFMpay
+     var_label <- "Women to Men Pay Ratio"
+     
+     create_indicator(hum_data(), data_var, var_label)
    })  
    
+   output$plotly_hum_childcare_singpar <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pctsngparent
+     var_label <- "Percent of Children Living in a Single-Parent Household"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
    
+   output$plot_hum_childcare_singpar <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pctsngparent
+     var_label <- "Percent of Children Living in a Single-Parent Household"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
    
-  #--------- Measures table ---------------#
+   output$plotly_hum_childcare_womenhs <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pctFnohs
+     var_label <- "Percent of Women Who did not Receive HS Diploma or Equivalent"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_childcare_womenhs <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pctFnohs
+     var_label <- "Percent of Women Who did not Receive HS Diploma or Equivalent"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   })  
+  
+  #
+  # Human - Despair Indicators - Boxplot and Map ------------------------------------
+  #   
+   output$plotly_hum_despair_divorce <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pctdivorc
+     var_label <- "Percent Divorced or Separated"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_despair_divorce <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pctdivorc
+     var_label <- "Percent Divorced or Separated"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_hum_despair_unemp <- renderPlotly({
+     
+     data_var <- hum_data()$hum_pctunemp
+     var_label <- "Percent Population in Labor Force Unemployed"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_despair_unemp <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_pctunemp
+     var_label <- "Percent Population in Labor Force Unemployed"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_hum_despair_whitemhs <- renderPlotly({
+     
+     data_var <- hum_data()$hum_whitemhs
+     var_label <- "Percent White Men with High School Education or Lower"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_despair_whitemhs <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_whitemhs
+     var_label <- "Percent White Men with High School Education or Lower"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_hum_despair_aggdeaths <- renderPlotly({
+     
+     data_var <- hum_data()$hum_ageratedeaths
+     var_label <- "Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"
+     
+     create_boxplot(hum_data(), data_var, var_label)
+   })
+   
+   output$plot_hum_despair_aggdeaths <- renderLeaflet({
+     
+     data_var <- hum_data()$hum_ageratedeaths
+     var_label <- "Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"
+     
+     create_indicator(hum_data(), data_var, var_label)
+   }) 
+  #
+  # Social - Engagement - Boxplot and Map ------------------
+  # 
+   output$plotly_soc_eng_census <- renderPlotly({
+     
+     data_var <- soc_data()$soc_overallcensusrate
+     var_label <- "Census 2020 Mail and Online Self Response Rate"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_eng_census <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_overallcensusrate
+     var_label <- "Census 2020 Mail and Online Self Response Rate"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   })  
+   
+   output$plotly_soc_eng_turnout <- renderPlotly({
+     
+     data_var <- soc_data()$soc_voterrate
+     var_label <- "Presidential Election 2016 Voter Turnout"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_eng_turnout <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_voterrate
+     var_label <- "Presidential Election 2016 Voter Turnout"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_eng_civic <- renderPlotly({
+     
+     data_var <- soc_data()$soc_assoctotal
+     var_label <- "Number of Civic Associations and Establishments per 1,000 Population"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_eng_civic <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_assoctotal
+     var_label <- "Number of Civic Associations and Establishments per 1,000 Population"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_eng_nonprof <- renderPlotly({
+     
+     data_var <- soc_data()$soc_nonprofitpop
+     var_label <- "Number of Non-Profit Organizations Including those with an International Approach"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_eng_nonprof <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_nonprofitpop
+     var_label <- "Number of Non-Profit Organizations Including those with an International Approach"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   })
+  # 
+  # Social - Relationships - Boxplot and Map ------------------
+  #    
+   output$plotly_soc_rel_juvarrests <- renderPlotly({
+     
+     data_var <- soc_data()$soc_juvarrest
+     var_label <- "Number of Juvenile Arrests per 1000 Juveniles"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_juvarrests <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_juvarrest
+     var_label <- "Number of Juvenile Arrests per 1000 Juveniles"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_rel_violentcrimes <- renderPlotly({
+     
+     data_var <- soc_data()$soc_violcrime
+     var_label <- "Number of Violent Crimes per 100,000 Population"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_violentcrimes <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_violcrime
+     var_label <- "Number of Violent Crimes per 100,000 Population"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_rel_grandparent <- renderPlotly({
+     
+     data_var <- soc_data()$soc_grandp
+     var_label <- "Percent Grandparent Householders Responsible for Own Grandchildren"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_grandparent <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_grandp
+     var_label <- "Percent Grandparent Householders Responsible for Own Grandchildren"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_rel_homeown <- renderPlotly({
+     
+     data_var <- soc_data()$soc_homeown
+     var_label <- "Percent Homeowners"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_homeown <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_homeown
+     var_label <- "Percent Homeowners"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_rel_samehouse <- renderPlotly({
+     
+     data_var <- soc_data()$soc_samehouse
+     var_label <- "Percent Population Living in the Same House that They Lived in One Year Prior"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_samehouse <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_samehouse
+     var_label <- "Percent Population Living in the Same House that They Lived in One Year Prior"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_rel_nonrel <- renderPlotly({
+     
+     data_var <- soc_data()$soc_nonrelat
+     var_label <- "Percent Households with Nonrelatives Present"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_rel_nonrel <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_nonrelat
+     var_label <- "Percent Households with Nonrelatives Present"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+  # 
+  #--------- Measures table -------------------------
+  #
   measures_topic <- reactive({
     input$topic
   })
@@ -1442,14 +2243,9 @@ server <- function(input, output, session) {
     }
   })
   
+
   
   
-  
-  
-  
-  
-  
-  #
   # Home Page InfoBox outputs -------------------------------------------------
   # 
   
