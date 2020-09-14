@@ -1210,6 +1210,119 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                         
                                  )
                                )
+              ),
+              # ISOLATION PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.socidx_choice == 'ISOLATION'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Isolation Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_soc_index_isolation")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Social Relationships Measures",
+                                        id = "tab_indexsoc_iso",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Computing Devices",
+                                                 fluidRow(
+                                                   h4(strong("Percent Households with a Computing Device (Computer or Smartphone)"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_comp")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_comp")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Commute",
+                                                 fluidRow(
+                                                   h4(strong("Percent Workers with More than an Hour of Commute by Themselves"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_commute")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_commute")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Spoken English Proficiency",
+                                                 fluidRow(
+                                                   h4(strong("Percent of Residents That Are Not Proficient in Speaking English"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_english")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_english")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Residents Who are 65+ and Live Alone",
+                                                 fluidRow(
+                                                   h4(strong("Percent of All County Residents Who are Both Over 65 and Live Alone"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_65alone")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_65alone")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Poor Mental Health Days",
+                                                 fluidRow(
+                                                   h4(strong("Percent of People Who Indicated That They Have More Than 14 Poor Mental Health Days per Month (Frequent Mental Distress)"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_mentalhealth")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_mentalhealth")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Suicide Rate",
+                                                 fluidRow(
+                                                   h4(strong("Number of Suicides per 1,000 Population"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_iso_suicide")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_soc_iso_suicide")
+                                                   )
+                                                 )
+                                        )
+                                        
+                                 )
+                               )
               )
       ),        
       
@@ -2214,6 +2327,105 @@ server <- function(input, output, session) {
      
      create_indicator(soc_data(), data_var, var_label)
    }) 
+  # 
+  # Social - Isolation - Boxplot and Map ------------------
+  #       
+   output$plotly_soc_iso_comp <- renderPlotly({
+     
+     data_var <- soc_data()$soc_computer
+     var_label <- "Percent Households with a <br>Computing Device (Computer or Smartphone)"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_comp <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_computer
+     var_label <- "Percent Households with a Computing Device (Computer or Smartphone)"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_iso_commute <- renderPlotly({
+     
+     data_var <- soc_data()$soc_commalone
+     var_label <- "Percent Workers with More than <br>an Hour of Commute by Themselves"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_commute <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_commalone
+     var_label <- "Percent Workers with More than an Hour of Commute by Themselves"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_iso_english <- renderPlotly({
+     
+     data_var <- soc_data()$soc_limiteng
+     var_label <- "Percent of Residents that <br>are not Proficient in Speaking English"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_english <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_limiteng
+     var_label <- "Percent of Residents that are not Proficient in Speaking English"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_iso_65alone <- renderPlotly({
+     
+     data_var <- soc_data()$soc_65alone
+     var_label <- "Percent of All County Residents <br>Who are Both Over 65 and Live Alone"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_65alone <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_65alone
+     var_label <- "Percent of All County Residents Who are Both Over 65 and Live Alone"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_iso_mentalhealth <- renderPlotly({
+     
+     data_var <- soc_data()$soc_freqmental
+     var_label <- "Percent of People Who Indicated That They <br>Have More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_mentalhealth <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_freqmental
+     var_label <- "Percent of People Who Indicated That They <br>Have More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_soc_iso_suicide <- renderPlotly({
+     
+     data_var <- soc_data()$soc_suicrate
+     var_label <- "Number of Suicides per 1,000 Population"
+     
+     create_boxplot(soc_data(), data_var, var_label)
+   })
+   
+   output$plot_soc_iso_suicide <- renderLeaflet({
+     
+     data_var <- soc_data()$soc_suicrate
+     var_label <- "Number of Suicides per 1,000 Population"
+     
+     create_indicator(soc_data(), data_var, var_label)
+   }) 
+   
    
   # 
   #--------- Measures table -------------------------
