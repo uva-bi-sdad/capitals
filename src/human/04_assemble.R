@@ -38,6 +38,23 @@ data <- data %>%
 
 
 #
+# Recode rurality  -----------------------------------------------------------------------
+#
+
+data <- data %>% mutate(irr2010_discretize = case_when(irr2010 < 0.15 ~ "[0.12, 0.15)",
+                                                       irr2010 >= 0.15 & irr2010 < 0.25 ~ "[0.15, 0.25)",
+                                                       irr2010 >= 0.25 & irr2010 < 0.35 ~ "[0.25, 0.35)",
+                                                       irr2010 >= 0.35 & irr2010 < 0.45 ~ "[0.35, 0.45)",
+                                                       irr2010 >= 0.45 & irr2010 < 0.55 ~ "[0.45, 0.55)",
+                                                       irr2010 >= 0.55 & irr2010 < 0.65 ~ "[0.55, 0.65)",
+                                                       irr2010 >= 0.65 ~ "[0.65, 0.68]"
+                                                       ))
+
+data$irr2010_discretize <- factor(data$irr2010_discretize,
+                                  levels = c("[0.12, 0.15)", "[0.15, 0.25)", "[0.25, 0.35)", "[0.35, 0.45)",
+                                             "[0.45, 0.55)", "[0.55, 0.65)", "[0.65, 0.68]"))
+
+#
 # Missingness -----------------------------------------------------------------------
 #
 
@@ -188,47 +205,13 @@ data <- data %>% group_by(STATEFP) %>%
 data$state <- ifelse(data$STATEFP == "19", "Iowa", ifelse(data$STATEFP == "41", "Oregon", "Virginia"))
 data$county <- str_remove_all(pattern = c(", Virginia|, Oregon|, Iowa"), data$NAME.y)
 
-#
-# Discretize Rurality ----------------------------------------------
-#
-
-#Create a variable to assign colors to ranges of the IRR
-IRR <- data.frame()
-IRR <- data %>%
-  select(GEOID, county, state, irr2010) %>% 
-  st_drop_geometry()
-
-IRR$group[which(IRR$irr2010>=0.45 & IRR$irr2010<0.55)]="[0.45, 0.55)"
-IRR$group[which(IRR$irr2010<0.15)]="[0.12, 0.15)"
-IRR$group[which(IRR$irr2010>=0.15 & IRR$irr2010<0.25)]="[0.15, 0.25)"
-IRR$group[which(IRR$irr2010>=0.25 & IRR$irr2010<0.35)]="[0.25, 0.35)"
-IRR$group[which(IRR$irr2010>=0.35 & IRR$irr2010<0.45)]="[0.35, 0.45)"
-IRR$group[which(IRR$irr2010>=0.55 & IRR$irr2010<0.65)]="[0.55, 0.65)"
-IRR$group[which(IRR$irr2010>=0.65)]="[0.65, 0.68]"
-IRR$group<-factor(IRR$group,
-                  levels = c("[0.12, 0.15)","[0.15, 0.25)","[0.25, 0.35)","[0.35, 0.45)",
-                           "[0.45, 0.55)","[0.55, 0.65)","[0.65, 0.68]"))
-names(IRR)<-c("GEOID","county","state","irr2010","irr2010_discretize")
-
-#Divergent Palette color for the IRR box plots points
-# DIV<-c("#B2521A","#D47417","#EB8E38","#C0C0C4","#C3B144","#7F842C","#4E5827")
-# DIVwarm<-colorRampPalette(DIV[1:3])(4)
-# DIVcool<-colorRampPalette(DIV[5:7])(4)
-# DIV.P1<-c(DIVwarm,"#F9F1CB",DIVcool)
-# show_col(DIV.P1)
-# GATES.EM2<-DIV.P1[c(9,8,7,6,5,4,2)]; show_col(GATES.EM2)
-
-data_discretize <- left_join(data, IRR, by = c("GEOID", "state", "county"))
-data_discretize <- data_discretize %>%
-  select(-irr2010.y) %>%
-  rename(irr2010 = irr2010.x)
 
 #
 # Write -----------------------------------------------------------------------
 #
 
 # Write
-write_rds(data_discretize, "./rivanna_data/human/hum_final.Rds")
+write_rds(data, "./rivanna_data/human/hum_final.Rds")
 
 
 
