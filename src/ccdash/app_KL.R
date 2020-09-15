@@ -11,11 +11,14 @@ library(shinyBS)
 library(shinyWidgets)
 library(DT)
 
-datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
+datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datasoc <- read_rds("~/capitals/rivanna_data/social/soc_final.Rds")
-measures <- read.csv("~/capitals/rivanna_data/measures.csv")
+datanat <- read_rds("~/capitals/rivanna_data/natural/nat_final_sarah.Rds")
 
+
+
+measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -1335,8 +1338,155 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
       
       # NATURAL CAPITAL CONTENT -------------------------
       tabItem(tabName = "natural",
+              
               fluidRow(
-                box()
+                box(title = "About Natural Capital",
+                    width = 9,
+                    "Box content here", 
+                    br(), 
+                    "More content"
+                ),
+                box(title = "Select Your State",
+                    width = 3,
+                    selectInput("nat_whichstate", label = NULL,
+                                choices = list("Iowa",
+                                               "Oregon",
+                                               "Virginia"), 
+                                selected = "Iowa")
+                )
+              ),
+              
+              fluidRow(
+                box(title = "Select Your Index",
+                    width = 12,
+                    
+                    radioGroupButtons(
+                      inputId = "natidx_choice", #label = "Make a choice :",
+                      choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
+                      justified = FALSE, status = "primary", individual = TRUE)
+                )
+                
+              ),
+              #
+              # QUANTITY OF RESOURCES PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Quantity of Resources Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_nat_index_quantres")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Quantity of Resources Measures",
+                                        id = "tab_indexnat_quantres",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "County Area in Farmland",
+                                                 fluidRow(
+                                                   h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_quantres_farmland")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_nat_quantres_farmland")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "County Area in Water",
+                                                 fluidRow(
+                                                   h4(strong("Percent of County Area in Water"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_quantres_water")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_nat_quantres_water")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Forestry Sales",
+                                                 fluidRow(
+                                                   h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_quantres_forestsales")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_nat_quantres_forestsales")
+                                                   )
+                                                 )
+                                        ),
+                                        tabPanel(title = "Agri-Tourism and Recreational Revenue",
+                                                 fluidRow(
+                                                   h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_quantres_rev")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_nat_quantres_rev")
+                                                   )
+                                                 )
+                                        )
+                                 )
+                               )
+              ),
+              #
+              # QUALITY OF RESOURCES PANEL ------------------------------------------
+              #
+              
+              conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
+                               
+                               fluidRow(
+                                 
+                                 box(title = "Quality of Resources Index",
+                                     width = 12,
+                                     h5(strong("County-Level Map")),
+                                     leafletOutput("plot_nat_index_qualres")
+                                 )
+                                 
+                               ),
+                               fluidRow(
+                                 tabBox(title = "Quality of Resources Measures",
+                                        id = "tab_indexnat_qualres",
+                                        width = 12,
+                                        side = "right",
+                                        tabPanel(title = "Fine Particulate Matter",
+                                                 fluidRow(
+                                                   h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_qualres_part")
+                                                   ),
+                                                   column(
+                                                     width = 6,
+                                                     h5(strong("Indicator Box Plot")),
+                                                     plotlyOutput("plotly_nat_qualres_part")
+                                                   )
+                                                 )
+                                        )
+                                 )
+                               )
               )
       ),  
       
@@ -1389,7 +1539,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
 
 server <- function(input, output, session) {
   
-  cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "#FFEE99")
+  cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "grey")
   
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
@@ -1497,6 +1647,7 @@ server <- function(input, output, session) {
   fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate)})
   hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
+  nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
   
   #
   # Capital Index Maps ------------------------------------------------
@@ -1555,6 +1706,18 @@ server <- function(input, output, session) {
       output$plot_soc_index_isolation <- renderLeaflet({
         create_index(soc_data(), soc_data()$soc_index_isol, "Social Isolation Index")
       })
+      
+      #
+      # Natural Index Maps--------------------------------------------------
+      #
+      output$plot_nat_index_quantres <- renderLeaflet({
+        create_index(nat_data(), nat_data()$nat_index_quantres, "Quantity of Resources Index")
+      })
+      
+      output$plot_nat_index_qualres <- renderLeaflet({
+        create_index(nat_data(), nat_data()$nat_index_qualres, "Quantity of Resources Index")
+      })
+      
   
   #
   # Financial - Commerce Indicators - Boxplot and Map ------------------------------------
@@ -2428,6 +2591,163 @@ server <- function(input, output, session) {
    
    
   # 
+  # 
+  # Natural - Quantity of Resources - Boxplot and Map ------------------
+  #    
+   output$plotly_nat_quantres_farmland <- renderPlotly({
+     
+     data_var <- nat_data()$nat_pctagacres
+     var_label <- "Percent of County Area in Farmland"
+     
+     create_boxplot(nat_data(), data_var, var_label)
+   })
+   
+   output$plot_nat_quantres_farmland <- renderLeaflet({
+     
+     data_var <- nat_data()$nat_pctagacres
+     var_label <- "Percent of County Area in Farmland"
+     
+     create_indicator(nat_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_nat_quantres_water <- renderPlotly({
+     
+     data_var <- nat_data()$nat_pctwater
+     var_label <- "Percent of County Area in Water"
+     
+     create_boxplot(nat_data(), data_var, var_label)
+   })
+   
+   output$plot_nat_quantres_water <- renderLeaflet({
+     
+     data_var <- nat_data()$nat_pctwater
+     var_label <- "Percent of County Area in Water"
+     
+     create_indicator(nat_data(), data_var, var_label)
+   }) 
+   
+   output$plotly_nat_quantres_forestsales <- renderPlotly({
+     
+     data_var <- nat_data()$nat_forestryrevper10kacres
+     var_label <- "Forestry Sales per 10,000 Acres"
+     
+     create_boxplot(nat_data(), data_var, var_label)
+   })
+   
+   #custom plot for forest sales
+   
+   output$plot_nat_quantres_forestsales <- renderLeaflet({
+ 
+     custom <- nat_data()
+     custom$cat <- ifelse(custom$nat_forestryrevper10kacres == 0, "0", 
+                          ifelse(is.na(custom$nat_forestryrevper10kacres) == T, NA, 
+                                 as.character(cut(custom$nat_forestryrevper10kacres, 
+                                                  breaks=c(quantile(custom[custom$nat_forestryrevper10kacres != 0, "nat_forestryrevper10kacres"] %>% st_drop_geometry(), 
+                                                                    probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
+     custom$cat <- factor(custom$cat , levels = c("0", "[35.5,956]", "(956,1.59e+03]", "(1.59e+03,5.24e+03]", "(5.24e+03,2.94e+04]"))
+     
+     pal <- colorFactor(cbGreens[1:5], custom$cat,
+                        na.color = cbGreens[6])
+     
+     var_label <- "Forestry Sales per 10,000 Acres"
+     
+     labels <- lapply(
+       paste("<strong>Area: </strong>",
+             custom$NAME.y,
+             "<br />",
+             "<strong>", var_label, ": </strong>",
+             round(custom$nat_agritourrevper10kacres, 2)),
+       htmltools::HTML
+     )
+     
+     leaflet(data = custom) %>%
+       addProviderTiles(providers$CartoDB.Positron) %>%
+       addPolygons(fillColor = ~pal(cat),
+                   fillOpacity = 0.7, 
+                   stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
+                   labelOptions = labelOptions(direction = "bottom",
+                                               style = list(
+                                                 "font-size" = "12px",
+                                                 "border-color" = "rgba(0,0,0,0.5)",
+                                                 direction = "auto"))) %>%
+       addLegend("bottomleft",
+                 pal= pal,
+                 values =  ~(cat),
+                 title = "Value", 
+                 opacity = 0.7)
+   }) 
+   
+   output$plotly_nat_quantres_rev <- renderPlotly({
+     
+     data_var <- nat_data()$nat_agritourrevper10kacres
+     var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
+     
+     create_boxplot(nat_data(), data_var, var_label)
+   })
+   
+   # custom plot for agritourism
+   output$plot_nat_quantres_rev <- renderLeaflet({
+    
+   custom <- nat_data()
+      
+   custom$cat <- ifelse(custom$nat_agritourrevper10kacres == 0, "0", 
+                                 ifelse(is.na(custom$nat_agritourrevper10kacres) == T, NA, 
+                                        as.character(cut(custom$nat_agritourrevper10kacres, 
+                                                         breaks=c(quantile(custom[custom$nat_agritourrevper10kacres != 0, "nat_agritourrevper10kacres"] %>% st_drop_geometry(), 
+                                                                           probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
+   
+   custom$cat <- factor(custom$cat , levels = c("0", "[26.6,371]", "(371,608]", "(608,1.41e+03]", "(1.41e+03,1.65e+04]"))
+
+   pal <- colorFactor(cbGreens[1:5], custom$cat,
+                      na.color = cbGreens[6])
+   
+   var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
+   
+   labels <- lapply(
+     paste("<strong>Area: </strong>",
+           custom$NAME.y,
+           "<br />",
+           "<strong>", var_label, ": </strong>",
+           round(custom$nat_agritourrevper10kacres, 2)),
+     htmltools::HTML
+   )
+   
+   leaflet(data = custom) %>%
+     addProviderTiles(providers$CartoDB.Positron) %>%
+     addPolygons(fillColor = ~pal(cat),
+                 fillOpacity = 0.7, 
+                 stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
+                 labelOptions = labelOptions(direction = "bottom",
+                                             style = list(
+                                               "font-size" = "12px",
+                                               "border-color" = "rgba(0,0,0,0.5)",
+                                               direction = "auto"))) %>%
+     addLegend("bottomleft",
+               pal= pal,
+               values =  ~(cat),
+               title = "Value", 
+               opacity = 0.7)
+   }) 
+  #
+  # Natural - Quality of Resources - Boxplot and Map ------------------
+  #      
+   output$plotly_nat_qualres_part <- renderPlotly({
+     
+     data_var <- nat_data()$nat_particulatedensity
+     var_label <- "Average Daily Density of Fine Particulate Matter"
+     
+     create_boxplot(nat_data(), data_var, var_label)
+   })
+   
+   output$plot_nat_qualres_part <- renderLeaflet({
+     
+     data_var <- nat_data()$nat_particulatedensity
+     var_label <- "Average Daily Density of Fine Particulate Matter"
+     
+     create_indicator(nat_data(), data_var, var_label)
+   }) 
+   
+   
   #--------- Measures table -------------------------
   #
   measures_topic <- reactive({
