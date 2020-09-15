@@ -156,10 +156,10 @@ names(IRR)<-c("GEOID","County","State","irr2010","irr2010_discretize")
 data_discretize <- left_join(nat_cap, IRR, by = c("GEOID", "State", "County"))
 data_discretize <- data_discretize %>%
   select(-irr2010.y) %>%
-  rename(irr2010 = irr2010.x)
+  rename(irr2010 = irr2010.x, state = State, county = County) 
 
 #
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data_discretize, "rivanna_data/natural/nat_final.rds")
+write_rds(data_discretize, "rivanna_data/natural/nat_final_sarah.Rds")
