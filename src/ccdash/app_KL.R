@@ -16,6 +16,8 @@ datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datasoc <- read_rds("~/capitals/rivanna_data/social/soc_final.Rds")
 datanat <- read_rds("~/capitals/rivanna_data/natural/nat_final_sarah.Rds")
 
+
+
 measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
 #
@@ -1537,7 +1539,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
 
 server <- function(input, output, session) {
   
-  cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "#FFEE99")
+  cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "grey")
   
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
@@ -2632,12 +2634,47 @@ server <- function(input, output, session) {
      create_boxplot(nat_data(), data_var, var_label)
    })
    
+   #custom plot for forest sales
+   
    output$plot_nat_quantres_forestsales <- renderLeaflet({
+ 
+     custom <- nat_data()
+     custom$cat <- ifelse(custom$nat_forestryrevper10kacres == 0, "0", 
+                          ifelse(is.na(custom$nat_forestryrevper10kacres) == T, NA, 
+                                 as.character(cut(custom$nat_forestryrevper10kacres, 
+                                                  breaks=c(quantile(custom[custom$nat_forestryrevper10kacres != 0, "nat_forestryrevper10kacres"] %>% st_drop_geometry(), 
+                                                                    probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
+     custom$cat <- factor(custom$cat , levels = c("0", "[35.5,956]", "(956,1.59e+03]", "(1.59e+03,5.24e+03]", "(5.24e+03,2.94e+04]"))
      
-     data_var <- nat_data()$nat_forestryrevper10kacres
+     pal <- colorFactor(cbGreens[1:5], custom$cat,
+                        na.color = cbGreens[6])
+     
      var_label <- "Forestry Sales per 10,000 Acres"
      
-     create_indicator(nat_data(), data_var, var_label)
+     labels <- lapply(
+       paste("<strong>Area: </strong>",
+             custom$NAME.y,
+             "<br />",
+             "<strong>", var_label, ": </strong>",
+             round(custom$nat_agritourrevper10kacres, 2)),
+       htmltools::HTML
+     )
+     
+     leaflet(data = custom) %>%
+       addProviderTiles(providers$CartoDB.Positron) %>%
+       addPolygons(fillColor = ~pal(cat),
+                   fillOpacity = 0.7, 
+                   stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
+                   labelOptions = labelOptions(direction = "bottom",
+                                               style = list(
+                                                 "font-size" = "12px",
+                                                 "border-color" = "rgba(0,0,0,0.5)",
+                                                 direction = "auto"))) %>%
+       addLegend("bottomleft",
+                 pal= pal,
+                 values =  ~(cat),
+                 title = "Value", 
+                 opacity = 0.7)
    }) 
    
    output$plotly_nat_quantres_rev <- renderPlotly({
@@ -2648,12 +2685,48 @@ server <- function(input, output, session) {
      create_boxplot(nat_data(), data_var, var_label)
    })
    
+   # custom plot for agritourism
    output$plot_nat_quantres_rev <- renderLeaflet({
-     
-     data_var <- nat_data()$nat_agritourrevper10kacres
-     var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
-     
-     create_indicator(nat_data(), data_var, var_label)
+    
+   custom <- nat_data()
+      
+   custom$cat <- ifelse(custom$nat_agritourrevper10kacres == 0, "0", 
+                                 ifelse(is.na(custom$nat_agritourrevper10kacres) == T, NA, 
+                                        as.character(cut(custom$nat_agritourrevper10kacres, 
+                                                         breaks=c(quantile(custom[custom$nat_agritourrevper10kacres != 0, "nat_agritourrevper10kacres"] %>% st_drop_geometry(), 
+                                                                           probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
+   
+   custom$cat <- factor(custom$cat , levels = c("0", "[26.6,371]", "(371,608]", "(608,1.41e+03]", "(1.41e+03,1.65e+04]"))
+
+   pal <- colorFactor(cbGreens[1:5], custom$cat,
+                      na.color = cbGreens[6])
+   
+   var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
+   
+   labels <- lapply(
+     paste("<strong>Area: </strong>",
+           custom$NAME.y,
+           "<br />",
+           "<strong>", var_label, ": </strong>",
+           round(custom$nat_agritourrevper10kacres, 2)),
+     htmltools::HTML
+   )
+   
+   leaflet(data = custom) %>%
+     addProviderTiles(providers$CartoDB.Positron) %>%
+     addPolygons(fillColor = ~pal(cat),
+                 fillOpacity = 0.7, 
+                 stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
+                 labelOptions = labelOptions(direction = "bottom",
+                                             style = list(
+                                               "font-size" = "12px",
+                                               "border-color" = "rgba(0,0,0,0.5)",
+                                               direction = "auto"))) %>%
+     addLegend("bottomleft",
+               pal= pal,
+               values =  ~(cat),
+               title = "Value", 
+               opacity = 0.7)
    }) 
   #
   # Natural - Quality of Resources - Boxplot and Map ------------------
