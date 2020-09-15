@@ -145,4 +145,4 @@ nat_cap <- nat_cap %>% group_by(STATEFP) %>%
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "rivanna_data/natural/nat_final.rds")
+write_rds(data, "rivanna_data/natural/nat_final.Rds")
