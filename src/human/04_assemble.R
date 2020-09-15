@@ -206,7 +206,7 @@ IRR$group[which(IRR$irr2010>=0.35 & IRR$irr2010<0.45)]="[0.35, 0.45)"
 IRR$group[which(IRR$irr2010>=0.55 & IRR$irr2010<0.65)]="[0.55, 0.65)"
 IRR$group[which(IRR$irr2010>=0.65)]="[0.65, 0.68]"
 IRR$group<-factor(IRR$group,
-                  levels=c("[0.12, 0.15)","[0.15, 0.25)","[0.25, 0.35)","[0.35, 0.45)",
+                  levels = c("[0.12, 0.15)","[0.15, 0.25)","[0.25, 0.35)","[0.35, 0.45)",
                            "[0.45, 0.55)","[0.55, 0.65)","[0.65, 0.68]"))
 names(IRR)<-c("GEOID","county","state","irr2010","irr2010_discretize")
 
