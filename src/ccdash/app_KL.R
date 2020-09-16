@@ -13,14 +13,19 @@ library(DT)
 library(RColorBrewer)
 library(stringr)
 
-datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
-datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
-datasoc <- read_rds("~/capitals/rivanna_data/social/soc_final.Rds")
-datanat <- read_rds("~/capitals/rivanna_data/natural/nat_final.Rds")
+datafin <- read_rds("~/Git/capitals/rivanna_data/financial/fin_final.Rds")
+datahum <- read_rds("~/Git/capitals/rivanna_data/human/hum_final.Rds")
+datasoc <- read_rds("~/Git/capitals/rivanna_data/social/soc_final.Rds")
+datanat <- read_rds("~/Git/capitals/rivanna_data/natural/nat_final.Rds")
+
+measures <- read.csv("~/Git/capitals/rivanna_data/measures.csv")
 
 cbGreens2 <- c("#F9F1CB", "#D9BCA3", "#CCA98B", "#BCBBBC", "#9FBE7A", "#8B8F5C", "#7F842C")
 
-measures <- read.csv("~/capitals/rivanna_data/measures.csv")
+css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
+html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
+
+
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -56,7 +61,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
     )
   ),
   
-  dashboardBody(
+  dashboardBody(HTML(html_fix),
     
     # http://jonkatz2.github.io/2018/06/22/Image-In-Shinydashboard-Header
     tags$style(type="text/css", "
@@ -148,14 +153,14 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
       # SUMMARY CONTENT -------------------------
 
       tabItem(tabName = "capitals",
-              fluidRow(
-                box(title = "Community Capitals",
-                    width = 12,
-                    align = "center",
-                    img(src = "capitals.png", class = "topimage", width = "100%",
-                        style = "display: block; margin-left: auto; margin-right: auto; border: 1px solid #B4B4B4")
-                )
-              ),
+              # fluidRow(
+              #   box(title = "Community Capitals",
+              #       width = 12,
+              #       align = "center",
+              #       img(src = "capitals.png", class = "topimage", width = "100%",
+              #           style = "display: block; margin-left: auto; margin-right: auto; border: 1px solid #B4B4B4")
+              #   )
+              # ),
               
               fluidRow(
                 # tags$div(href="#shiny-tab-financial", "data-toggle" = "tab",
@@ -202,7 +207,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                       inputId = "finidx_choice", #label = "Make a choice :",
                       choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
                                   "FINANCIAL WELL-BEING", "EMPLOYMENT"),
-                      justified = FALSE, status = "primary", individual = TRUE)
+                      justified = FALSE, status = "success", individual = TRUE)
                     )
                     
                 ),
@@ -653,7 +658,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                       inputId = "humidx_choice", #label = "Make a choice :",
                       choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
                                   "DESPAIR"),
-                      justified = FALSE, status = "primary", individual = TRUE)
+                      justified = FALSE, status = "success", individual = TRUE)
                 )
                 
               ),
@@ -1013,7 +1018,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     radioGroupButtons(
                       inputId = "socidx_choice", #label = "Make a choice :",
                       choices = c("SOCIAL ENGAGEMENT", "SOCIAL RELATIONSHIPS", "ISOLATION"),
-                      justified = FALSE, status = "primary", individual = TRUE)
+                      justified = FALSE, status = "success", individual = TRUE)
                 )
                 
               ),
@@ -1365,7 +1370,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     radioGroupButtons(
                       inputId = "natidx_choice", #label = "Make a choice :",
                       choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
-                      justified = FALSE, status = "primary", individual = TRUE)
+                      justified = FALSE, status = "success", individual = TRUE)
                 )
                 
               ),
@@ -1509,9 +1514,8 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
       # DATA AND METHODS CONTENT -------------------------
       tabItem(tabName = "datamethods",
               fluidRow(
-                box(title = "Select Capital:",
-                    width = 12,
-                  selectInput("topic", "", width = "100%", choices = c(
+                box(width = 12,
+                  selectInput("topic", "Select capital:", width = "100%", choices = c(
                     "All",
                     "Financial",
                     "Human",
@@ -1605,10 +1609,12 @@ server <- function(input, output, session) {
                 values =  ~(myvar),
                 title = "Value",  #by<br>Quintile Group",
                 opacity = 0.7,
+                na.label = "Not Available",
                 labFormat = function(type, cuts, p) {
                   n = length(cuts)
                   paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
                 })
+    
   }
   
   # Function for index maps ---------------------------------------
@@ -1641,7 +1647,8 @@ server <- function(input, output, session) {
                 pal = pal,
                 values =  ~(myvar),
                 title = "Index Value",
-                opacity = 0.7)
+                opacity = 0.7,
+                na.label = "Not Available")
   }
   
   # Switches
@@ -2788,6 +2795,7 @@ server <- function(input, output, session) {
   output$measures_table <- renderDataTable({
     if(measures_topic() == "All"){
       table <- as.data.frame(measures)
+      names(table) <- c("Capital", "Index", "Meaasure", "Data Source", "Year", "Geography")
       datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
     }
     else{
@@ -2814,49 +2822,49 @@ server <- function(input, output, session) {
   
   output$fin_ibox <- renderInfoBox({
     infoBox(title = a("Financial Capital", onclick = "openTab('financial')", href="#"),
-            icon = icon("money-check-alt"), color = "yellow",
+            icon = icon("money-check-alt"), color = "olive",
             value = tags$h5("Financial resources available to invest in community projects and economic development.") 
     )
   })
   
   output$hum_ibox <- renderInfoBox({
     infoBox(title = a("Human Capital", onclick = "openTab('human')", href="#"),
-            icon = icon("child"), color = "light-blue",
+            icon = icon("child"), color = "olive",
             value = tags$h5("Community residents' capacities, skills, abilities.")
     )
   })
   
   output$soc_ibox <- renderInfoBox({
     infoBox(title = a("Social Capital", onclick = "openTab('social')", href="#"),
-            icon = icon("handshake"), color = "yellow",
+            icon = icon("handshake"), color = "olive",
             value = tags$h5("Connections, networks, and ties between people and organizations that facilitate action.")
     )
   })
   
   output$built_ibox <- renderInfoBox({
     infoBox(title = a("Built Capital", onclick = "openTab('built')", href="#"),
-            icon = icon("home"), color = "light-blue",
+            icon = icon("home"), color = "olive",
             value = tags$h5("Facilities, services, and other physical community infrastructure.")
     )
   })
 
   output$nat_ibox <- renderInfoBox({
     infoBox(title = a("Natural Capital", onclick = "openTab('natural')", href="#"),
-            icon = icon("tree"), color = "yellow",
+            icon = icon("tree"), color = "olive",
             value = tags$h5("The quality and quantity of natural and environmental community resources.")
     )
   })
   
   output$pol_ibox <- renderInfoBox({
     infoBox(title = a("Political Capital", onclick = "openTab('political')", href="#"),
-            icon = icon("balance-scale-left"), color = "light-blue",
+            icon = icon("balance-scale-left"), color = "olive",
             value = tags$h5("Community ability to develop and enforce rules, regulations, and standards.")
     )
   })
   
   output$cult_ibox <- renderInfoBox({
     infoBox(title = a("Cultural Capital", onclick = "openTab('cultural')", href="#"),
-            icon = icon("landmark"), color = "yellow",
+            icon = icon("landmark"), color = "olive",
             value = tags$h5("Material goods, values and norms, and traditions of historical and cultural importance.")
     )
   })
