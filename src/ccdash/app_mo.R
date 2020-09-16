@@ -2507,9 +2507,6 @@ server <- function(input, output, session) {
             value = tags$h5("Material goods, values and norms, and traditions of historical and cultural importance.")
     )
   })
-  
-  
-}
 
 
 #

@@ -27,7 +27,8 @@ nat_cap <- left_join(nat_cap, rurality, by = c("GEOID" = "fips2010", "NAME.y" = 
 
 
 # Keep columns of interest
-nat_cap %<>% select(STATEFP, State, COUNTYFP, County, GEOID, starts_with("nat_"), irr2010, geometry)
+nat_cap %<>% select(STATEFP, State, COUNTYFP, County, GEOID, NAME.y, starts_with("nat_"), irr2010, geometry)
+nat_cap %<>% rename(state = State, county = County)
 
 #
 # Recode rurality  -----------------------------------------------------------------------
@@ -145,4 +146,4 @@ nat_cap <- nat_cap %>% group_by(STATEFP) %>%
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "rivanna_data/natural/nat_final.rds")
+write_rds(nat_cap, "rivanna_data/natural/nat_final.Rds")
