@@ -14,6 +14,7 @@ create_boxplot <- function(data, myvar, myvarlabel) {
     plot_ly(colors = cbGreens2) %>%   # this is the only change!
     add_trace(x = as.numeric(group),
               y = ~myvar,
+              color = "green", 
               showlegend = F,
               hoverinfo = "y",
               type = "box",
@@ -26,6 +27,7 @@ create_boxplot <- function(data, myvar, myvarlabel) {
                                "<br>County: ",county),
                 showlegend = TRUE) %>%
     layout(title = "",
+           legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
            xaxis = list(title = myvarlabel,
                         zeroline = FALSE,
                         showticklabels = FALSE),
