@@ -37,9 +37,16 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     dashboardHeader(
                       titleWidth='100%',
                       title = span(
-                        tags$img(src = "header3.jpg", width = '100%'), 
+                        tags$img(src = "header.jpg", width = '100%'), 
                         column(12, class = "title-box", 
-                               tags$h1(class = "primary-title", style = "font-size: 2.8em;", 'Economic Mobility Data Infrastructure') 
+                               tags$h1(class = "primary-title", 
+                                       style = "font-size: 2.8em; 
+                                                font-weight: bold; 
+                                                text-shadow: -1px -1px 0 #DCDCDC,
+                                                             1px -1px 0 #DCDCDC,
+                                                             -1px 1px 0 #DCDCDC,
+                                                             1px 1px 0 #DCDCDC;", 
+                                       'Economic Mobility Data Infrastructure') 
                         )
                       )
                     ),
