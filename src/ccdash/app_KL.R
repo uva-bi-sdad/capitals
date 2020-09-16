@@ -10,13 +10,15 @@ library(rintrojs)
 library(shinyBS)
 library(shinyWidgets)
 library(DT)
+library(RColorBrewer)
+library(stringr)
 
 datafin <- read_rds("~/capitals/rivanna_data/financial/fin_final.Rds")
 datahum <- read_rds("~/capitals/rivanna_data/human/hum_final.Rds")
 datasoc <- read_rds("~/capitals/rivanna_data/social/soc_final.Rds")
-datanat <- read_rds("~/capitals/rivanna_data/natural/nat_final_sarah.Rds")
+datanat <- read_rds("~/capitals/rivanna_data/natural/nat_final.Rds")
 
-
+cbGreens2 <- c("#F9F1CB", "#D9BCA3", "#CCA98B", "#BCBBBC", "#9FBE7A", "#8B8F5C", "#7F842C")
 
 measures <- read.csv("~/capitals/rivanna_data/measures.csv")
 
@@ -1545,31 +1547,30 @@ server <- function(input, output, session) {
   create_boxplot <- function(data, myvar, myvarlabel) {
     
     group = as.factor(data$state)
-
+    
     data %>%
-      plot_ly() %>%
-        add_trace(x = as.numeric(group),
-                  y = ~myvar,
-                  showlegend = FALSE,
-                  hoverinfo = "y",
-                  type = "box",
-                  marker = list(symbol = "asterisk-open"),
-                  name = "") %>%
-        add_markers(x = ~jitter(as.numeric(group), amount = 0.1), y = ~myvar, color = ~irr2010,
-                    marker = list(size = 6),
-                    hoverinfo = "text",
-                    text = ~paste0("Rurality Index: ", round(irr2010,2),
+      plot_ly(colors = cbGreens2) %>%   # this is the only change!
+      add_trace(x = as.numeric(group),
+                y = ~myvar,
+                showlegend = F,
+                hoverinfo = "y",
+                type = "box",
+                marker = list(symbol = "asterisk-open"),
+                name = "") %>%
+      add_markers(x = ~jitter(as.numeric(group), amount = 0.1), y = ~myvar, color = ~irr2010_discretize,
+                  marker = list(size = 6),
+                  hoverinfo = "text",
+                  text = ~paste0("Rurality Index: ", round(irr2010,2),
                                  "<br>County: ",county),
-                    showlegend = FALSE) %>%
-        colorbar(title = "Index of <br>Relative Rurality") %>%
-        layout(title = "",
-               xaxis = list(title = myvarlabel,
-                            zeroline = FALSE,
-                            showticklabels = FALSE),
-               yaxis = list(title = "",
-                            zeroline = FALSE,
-                            hoverformat = ".2f"))
-
+                  showlegend = TRUE) %>%
+      layout(title = "",
+             legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
+             xaxis = list(title = myvarlabel,
+                          zeroline = FALSE,
+                          showticklabels = FALSE),
+             yaxis = list(title = "",
+                          zeroline = FALSE,
+                          hoverformat = ".2f"))
   }
   
   # Function for indicator maps ------------------------------------
@@ -1644,7 +1645,7 @@ server <- function(input, output, session) {
   }
   
   # Switches
-  fin_data <- reactive({ datafin %>% filter(state == input$fin_whichstate)})
+  fin_data <- reactive({datafin %>% filter(state == input$fin_whichstate)})
   hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
@@ -2639,12 +2640,27 @@ server <- function(input, output, session) {
    output$plot_nat_quantres_forestsales <- renderLeaflet({
  
      custom <- nat_data()
-     custom$cat <- ifelse(custom$nat_forestryrevper10kacres == 0, "0", 
-                          ifelse(is.na(custom$nat_forestryrevper10kacres) == T, NA, 
-                                 as.character(cut(custom$nat_forestryrevper10kacres, 
-                                                  breaks=c(quantile(custom[custom$nat_forestryrevper10kacres != 0, "nat_forestryrevper10kacres"] %>% st_drop_geometry(), 
-                                                                    probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
-     custom$cat <- factor(custom$cat , levels = c("0", "[35.5,956]", "(956,1.59e+03]", "(1.59e+03,5.24e+03]", "(5.24e+03,2.94e+04]"))
+    
+     y <- ifelse(custom$nat_forestryrevper10kacres == 0, "0", 
+                 ifelse(is.na(custom$nat_forestryrevper10kacres) == T, NA, 
+                        as.character(cut(custom$nat_forestryrevper10kacres, 
+                                         breaks=c(quantile(custom[custom$nat_forestryrevper10kacres != 0, "nat_forestryrevper10kacres"] %>% st_drop_geometry(), 
+                                                           probs = seq(0, 1, by = 0.25), na.rm = T)), dig.lab=10, include.lowest=TRUE))))
+     z <- str_extract_all(string = y, pattern = "(\\[|\\()\\d+.\\.\\d{2}|\\d+.\\.\\d{2}|^0$", simplify = T)
+     z <- as.data.frame(z)
+     z$V3 <- ""
+     
+     for (i in 1:nrow(z)){
+       if(!is.na(z[i, "V1"]) & !(z[i, "V1"] == "0")){
+         z[i, "V3"] <-  paste(z[i, "V1"], ",", z[i, "V2"], "]", sep = "")
+       } else if(!is.na(z[i, "V1"]) & z[i, "V1"] == "0"){
+         z[i, "V3"] <- "0"
+       } else{
+         z[i, "V3"] = NA
+       }
+     }
+     
+     custom$cat <- factor(z$V3 , levels = c("0", "[35.45,955.56]", "(955.56,1587.77]", "(1587.77,5236.00]", "(5236.00,29449.17]"))
      
      pal <- colorFactor(cbGreens[1:5], custom$cat,
                         na.color = cbGreens[6])
@@ -2690,13 +2706,28 @@ server <- function(input, output, session) {
     
    custom <- nat_data()
       
-   custom$cat <- ifelse(custom$nat_agritourrevper10kacres == 0, "0", 
-                                 ifelse(is.na(custom$nat_agritourrevper10kacres) == T, NA, 
-                                        as.character(cut(custom$nat_agritourrevper10kacres, 
-                                                         breaks=c(quantile(custom[custom$nat_agritourrevper10kacres != 0, "nat_agritourrevper10kacres"] %>% st_drop_geometry(), 
-                                                                           probs = seq(0, 1, by = 0.25), na.rm = T)), include.lowest=TRUE))))
+   y <- ifelse(custom$nat_agritourrevper10kacres == 0, "0", 
+               ifelse(is.na(custom$nat_agritourrevper10kacres) == T, NA, 
+                      as.character(cut(custom$nat_agritourrevper10kacres, 
+                                       breaks=c(quantile(custom[custom$nat_agritourrevper10kacres != 0, "nat_agritourrevper10kacres"] %>% st_drop_geometry(), 
+                                                         probs = seq(0, 1, by = 0.25), na.rm = T)), dig.lab=10, include.lowest=TRUE))))
    
-   custom$cat <- factor(custom$cat , levels = c("0", "[26.6,371]", "(371,608]", "(608,1.41e+03]", "(1.41e+03,1.65e+04]"))
+  z <- str_extract_all(string = y, pattern = "(\\[|\\()\\d+.\\.\\d{2}|\\d+.\\.\\d{2}|^0$", simplify = T)
+  z <- as.data.frame(z)
+   
+  z$V3 <- ""
+   
+   for (i in 1:nrow(z)){
+     if(!is.na(z[i, "V1"]) & !(z[i, "V1"] == "0")){
+       z[i, "V3"] <-  paste(z[i, "V1"], ",", z[i, "V2"], "]", sep = "")
+     } else if(!is.na(z[i, "V1"]) & z[i, "V1"] == "0"){
+       z[i, "V3"] <- "0"
+     } else{
+       z[i, "V3"] = NA
+     }
+   }
+ 
+   custom$cat <- factor(z$V3 , levels = c("0", "[26.58,371.27]", "(371.27,608.19]", "(608.19,1414.83]", "(1414.83,16509.72]"))
 
    pal <- colorFactor(cbGreens[1:5], custom$cat,
                       na.color = cbGreens[6])
