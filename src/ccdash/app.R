@@ -1641,19 +1641,23 @@ server <- function(input, output, session) {
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
     
-    group = as.factor(data$state)
+    group <- as.factor(data$state)
     
     data %>%
-      plot_ly(colors = cbGreens2) %>%   # this is the only change!
+      plot_ly(colors = cbGreens2) %>%  
       add_trace(x = as.numeric(group),
+                type = "box",
+                fillcolor = "#BCBBBC",
+                line = list(color = "#787878"),
                 y = ~myvar,
                 showlegend = F,
                 hoverinfo = "y",
-                type = "box",
-                marker = list(symbol = "asterisk-open"),
+                marker = list(symbol = "asterisk-open", color = "#787878"),
                 name = "") %>%
-      add_markers(x = ~jitter(as.numeric(group), amount = 0.1), y = ~myvar, color = ~irr2010_discretize,
-                  marker = list(size = 6),
+      add_markers(x = ~jitter(as.numeric(group), amount = 0.1), 
+                  y = ~myvar, 
+                  color = ~irr2010_discretize,
+                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
                   hoverinfo = "text",
                   text = ~paste0("Rurality Index: ", round(irr2010,2),
                                  "<br>County: ",county),
@@ -1666,6 +1670,7 @@ server <- function(input, output, session) {
              yaxis = list(title = "",
                           zeroline = FALSE,
                           hoverformat = ".2f"))
+    
   }
   
   # Function for indicator maps ------------------------------------
