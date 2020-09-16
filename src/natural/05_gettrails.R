@@ -3,7 +3,7 @@ library(dplyr)
 library(magrittr)
 library(readr)
 library(tidyr)
-library(tidycensus)
+library(tigris)
 library(naniar)
 
 # Documentation for creating shapefile used here is found in data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails_documentation.txt
@@ -23,20 +23,20 @@ trails %<>% st_drop_geometry()
 # Sum trail lengths by county (in meters)
 county_trails = trails %>% group_by(GEOID) %>% summarise(total_trails = sum(length)) %>% ungroup()
 
-# Get counties and geometries from acs
-Sys.getenv("CENSUS_API_KEY")
+# Get counties and geometries using tigris
+counties = counties(state = c("19", "41", "51"), class = "sf")
+counties %<>% select(STATEFP, COUNTYFP, GEOID, NAME, ALAND, AWATER)
 
-acsdata <- get_acs(geography = "county", state = c(19, 41, 51), 
-                   variables = "B01003_001",
-                   year = 2018, survey = "acs5",
-                   cache_table = TRUE, output = "wide", geometry = TRUE,
-                   keep_geo_vars = TRUE)
-acsdata <- acsdata %>% select(-LSAD, -AFFGEOID, NAME.x, ALAND, AWATER, -COUNTYNS, -B01003_001E, -B01003_001M)
+# Get county populations
+counties_pop = read_csv("data/natural/nat_census_2019_pop.csv")
+counties_pop %<>% mutate(GEOID = paste0(STATE, COUNTY))
+counties_pop %<>% filter(STATE %in% c("19", "41", "51")) %>% select(GEOID, POPESTIMATE2019)
 
+# Join county populations with counties geometry
+counties = left_join(counties, counties_pop, by = c("GEOID"))
 
-# Join trails data to acsdata
-county_trails = left_join(acsdata, county_trails, by = c("GEOID"))
-
+# Join trails data to counties data
+county_trails = left_join(counties, county_trails, by = c("GEOID"))
 
 # Missingness analysis (All missing values are zeros)
 pct_complete_case(county_trails) # 80.22
@@ -53,5 +53,7 @@ miss_var_summary(county_trails)
 # Replace NAs with zeros
 county_trails$total_trails %<>% replace_na(0)
 
+# Adjust for population
+county_trails %<>% mutate(nat_trailsper1k = (total_trails/POPESTIMATE2019) * 1000)
 
 write_rds(county_trails, "data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.rds")

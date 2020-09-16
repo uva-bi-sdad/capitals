@@ -19,6 +19,14 @@ ren_power = power %>% filter(NAICS_CODE %in% c("221111", "221114", "221115", "22
 counties = counties(state = c("19", "41", "51"), class = "sf")
 counties %<>% select(STATEFP, COUNTYFP, GEOID, NAME, ALAND, AWATER)
 
+# Get county populations
+counties_pop = read_csv("data/natural/nat_census_2019_pop.csv")
+counties_pop %<>% mutate(GEOID = paste0(STATE, COUNTY))
+counties_pop %<>% filter(STATE %in% c("19", "41", "51")) %>% select(GEOID, POPESTIMATE2019)
+
+# Join county populations with counties geometry
+counties = left_join(counties, counties_pop, by = c("GEOID"))
+
 # Spatial join, adding acs data to each ren_power plant observation
 ren_power = st_join(st_transform(ren_power, crs = st_crs(counties)), counties)
 
@@ -55,5 +63,13 @@ miss_var_summary(counties_ren_power)
 
 # Replace NAs with zeros
 counties_ren_power$ren_power %<>% replace_na(0)
+
+# Added this line back in. Since I'm joining with the counties dataset that has all counties, shouldn't those NAs be changed to zero?
+counties_ren_power$plant_count %<>% replace_na(0)
+
+# Adjust for population
+counties_ren_power %<>% mutate(nat_renpowerper1k = (ren_power/POPESTIMATE2019) * 1000)
+counties_ren_power %<>% mutate(nat_renplantsper1k = (plant_count/POPESTIMATE2019) * 1000)
+
 
 write_rds(counties_ren_power, "data/natural/nat_hifld_2020/nat_hifld_2020_renewables.rds")
