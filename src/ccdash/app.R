@@ -12,6 +12,7 @@ library(shinyWidgets)
 library(DT)
 library(RColorBrewer)
 library(stringr)
+library(apputils)
 
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
@@ -69,7 +70,11 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     ),
                     
                     dashboardBody(
-                      HTML(html_fix),
+                      HTML(html_fix),    
+                      tags$style(
+                        type = 'text/css', 
+                        '.bg-olive {background-color: #FFFFFF!important; }'
+                      ),
                                   
                                   tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
                                   
@@ -141,7 +146,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                .left-side, .main-sidebar {
                padding-top: 175px;
                }"
-                                  ), 
+               ), 
                                   
                                   # https://stackoverflow.com/questions/37169039/direct-link-to-tabitem-with-r-shiny-dashboard/37170333
                                   tags$script(HTML("
@@ -2924,9 +2929,15 @@ server <- function(input, output, session) {
   # Home Page InfoBox outputs -------------------------------------------------
   # 
   
+
+  
   output$fin_ibox <- renderInfoBox({
-    infoBox(title = a("Financial Capital", onclick = "openTab('financial')", href="#"),
-            color = "olive", icon = icon("money-check-alt"), 
+    ic <- apputils::icon(list(src = "icons/Financial.Dollar.Bill.jpg", width = "80px"), lib = "local")
+    
+    apputils::infoBox(title = a("Financial Capital", onclick = "openTab('financial')", href="#"), 
+            color = "olive",
+            validate.color = F,
+            icon = ic, 
             value = tags$h5("Financial capital refers to the economic features of the community such as debt capital, investment capital,
                             savings, tax revenue, tax abatements, and grants, as well as entrepreneurship, persistent poverty, 
                             industry concentration, and philanthropy.") 
@@ -2934,16 +2945,20 @@ server <- function(input, output, session) {
   })
   
   output$hum_ibox <- renderInfoBox({
-    infoBox(title = a("Human Capital", onclick = "openTab('human')", href="#"),
-            color = "olive", icon = icon("child"), 
+    ic <- apputils::icon(list(src = "icons/Human.Person.jpg", width = "60px"), lib = "local")
+    
+    apputils::infoBox(title = a("Human Capital", onclick = "openTab('human')", href="#"),
+            color = "olive", icon = ic, 
             value = tags$h5("Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
                             and other acquired or inherited traits essential for an optimal quality of life.")
     )
   })
   
   output$soc_ibox <- renderInfoBox({
-    infoBox(title = a("Social Capital", onclick = "openTab('social')", href="#"),
-            color = "olive", icon = icon("handshake"), 
+    ic <- apputils::icon(list(src = "icons/Social.Tripod.jpg", width = "80px"), lib = "local")
+    
+    apputils::infoBox(title = a("Social Capital", onclick = "openTab('social')", href="#"),
+            color = "olive", icon = ic, 
             value = tags$h5("Social capital refers to the resources, information, and support that communities can access through 
                             the bonds among members of the community and their families promoting mutual trust, reciprocity, collective 
                             identity, and a sense of a shared future.")
@@ -2951,8 +2966,10 @@ server <- function(input, output, session) {
   })
   
   output$built_ibox <- renderInfoBox({
-    infoBox(title = a("Built Capital", onclick = "openTab('built')", href="#"),
-            color = "olive", icon = icon("home"), 
+    ic <- apputils::icon(list(src = "icons/Built.Bricks.jpg", width = "80px"), lib = "local")
+    
+    apputils::infoBox(title = a("Built Capital", onclick = "openTab('built')", href="#"),
+            color = "olive", icon = ic, 
             value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities such as 
                             broadband and other information technologies, utilities, water/sewer systems, roads and bridges, 
                             business parks, hospitals, main street buildings, playgrounds, and housing stock.")
@@ -2960,8 +2977,10 @@ server <- function(input, output, session) {
   })
   
   output$nat_ibox <- renderInfoBox({
-    infoBox(title = a("Natural Capital", onclick = "openTab('natural')", href="#"),
-            color = "olive", icon = icon("tree"), 
+    ic <- apputils::icon(list(src = "icons/Natural.Tree.jpg", width = "55px"), lib = "local")
+    
+    apputils::infoBox(title = a("Natural Capital", onclick = "openTab('natural')", href="#"),
+            color = "olive", icon = ic, 
             value = tags$h5("Natural capital refers to the stock of natural or environmental ecosystem assets that provides a flow 
                             of useful goods or services to create possibilities (and limits) to community development such as air, 
                             water, soil, biodiversity, and weather.")
@@ -2969,16 +2988,20 @@ server <- function(input, output, session) {
   })
   
   output$pol_ibox <- renderInfoBox({
-    infoBox(title = a("Political Capital", onclick = "openTab('political')", href="#"),
-            color = "olive", icon = icon("balance-scale-left"),
+    ic <- apputils::icon(list(src = "icons/Political.Govt.Bldg.jpg", width = "70px"), lib = "local")
+    
+    apputils::infoBox(title = a("Political Capital", onclick = "openTab('political')", href="#"),
+            color = "olive", icon = ic,
             value = tags$h5("Political capital refers to the ability of a community to influence and enforce rules, regulations, 
                             and standards through their organizations, connections, voice, and power as citizens.")
     )
   })
   
   output$cult_ibox <- renderInfoBox({
-    infoBox(title = a("Cultural Capital", onclick = "openTab('cultural')", href="#"),
-            color = "olive", icon = icon("landmark"), 
+    ic <- apputils::icon(list(src = "icons/Cultural.Drama.Mask.jpg", width = "80px"), lib = "local")
+    
+    apputils::infoBox(title = a("Cultural Capital", onclick = "openTab('cultural')", href="#"),
+            color = "olive", icon = ic, 
             value = tags$h5("Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
                             from membership in a particular cultural group, often developing over generations, and provide a basis 
                             for collective efforts to solve community problems.")
