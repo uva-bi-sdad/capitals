@@ -13,14 +13,14 @@ library(DT)
 library(RColorBrewer)
 library(stringr)
 
-datafin <- read_rds("~/Git/capitals/rivanna_data/financial/fin_final.Rds")
-datahum <- read_rds("~/Git/capitals/rivanna_data/human/hum_final.Rds")
-datasoc <- read_rds("~/Git/capitals/rivanna_data/social/soc_final.Rds")
-datanat <- read_rds("~/Git/capitals/rivanna_data/natural/nat_final.Rds")
+datafin <- read_rds("data/fin_final.Rds")
+datahum <- read_rds("data/hum_final.Rds")
+datasoc <- read_rds("data/soc_final.Rds")
+datanat <- read_rds("data/nat_final.Rds")
 
-measures <- read.csv("~/Git/capitals/rivanna_data/measures.csv")
+measures <- read.csv("data/measures.csv")
 
-cbGreens2 <- c("#B2521A", "#D47417", "#EB8E38", "#C0C0C4", "#C3B144", "#7F842C", "#4E5827")
+cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
 
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
