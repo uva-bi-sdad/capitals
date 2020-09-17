@@ -51,7 +51,9 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     ),
                     
                     dashboardSidebar(
-                      img(src = "logo.png", height = 60, width = 235),
+                      a(href = "https://datascienceforthepublicgood.org/economic-mobility", 
+                        img(src = "logo.png", height = 60, width = 235)
+                      ),
                       sidebarMenu(
                         menuItem(text = "Community Capitals", tabName = "capitals", icon = icon("")),
                         menuItem(text = "Financial Capital", tabName = "financial", icon = icon("money-check-alt")),
@@ -168,13 +170,10 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                               box(width = 4,
                                                   align = "left",
                                                   title = "Economic Mobility Data Infrastructure",
-                                                  "We are leveraging the the Community Capitals framework used throughout the Cooperative Extension System network to better understand rural places. 
-                                                  This framework is a strength-based approach to community change and resilience based on identifying and investing community resources, called assets, 
-                                                  to grow capitals in seven key areas: financial, human, social, political, cultural, built, and natural.",
+                                                  "Economic Mobility Data Infrastructure builds on the community capitals framework by infusing the seven capital areas with a data science core.
+                                                  The resulting quantitative assessments are designed for characterizing economic mobility across multiple locales and promoting positive change.",
                                                   br(""),
-                                                  "Our work extends this Community Capitals Framework by infusing the seven capitals with a data science core. 
-                                                  This approach supports a quantitative assessment of each capital across multiple locales to promote economic mobility 
-                                                  and drive community success.",
+                                                  "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
                                                   br(""),
                                                   img(src = "framework.png", class = "topimage", width = "100%",
                                                       style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
@@ -1592,7 +1591,9 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                                   on the indicator compared to other counties; that is, it indicates an asset. To arrive
                                                   at the final index value, we average county quintile placement across the indicators 
                                                   composing the index. The more times a county places in the highest quintiles on relevant
-                                                  indicators, the higher the index value, and the higher the community capital."),
+                                                  indicators, the higher the index value, and the higher the community capital.",
+                                                  br(),
+                                                  "More information about measurement, indicator choice, and references are coming soon."),
                                               box(width = 12,
                                                   title = "Measures and Data Sources",
                                                   selectInput("topic", "Select capital:", width = "100%", choices = c(

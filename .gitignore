@@ -40,6 +40,3 @@ vignettes/*.pdf
 .Rproj.user
 *.Rproj
 
-# Shiny data directory
-src/ccdash/data/
-/src/ccdash/data/
