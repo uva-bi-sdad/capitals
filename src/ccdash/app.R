@@ -33,7 +33,6 @@ html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
 ui <- dashboardPage(title = "EM Data Infrastructure",
                     
-                    #dashboardHeader(title = "Community Capitals"),
                     dashboardHeader(
                       titleWidth='100%',
                       title = span(
@@ -52,6 +51,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                     ),
                     
                     dashboardSidebar(
+                      img(src = "logo.png", height = 60, width = 235),
                       sidebarMenu(
                         menuItem(text = "Community Capitals", tabName = "capitals", icon = icon("")),
                         menuItem(text = "Financial Capital", tabName = "financial", icon = icon("money-check-alt")),
@@ -66,7 +66,8 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                       )
                     ),
                     
-                    dashboardBody(HTML(html_fix),
+                    dashboardBody(
+                      HTML(html_fix),
                                   
                                   tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
                                   
@@ -165,7 +166,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                     tabItem(tabName = "capitals",
                                             fluidRow(
                                               box(width = 4,
-                                                  align = "center",
+                                                  align = "left",
                                                   title = "Economic Mobility Data Infrastructure",
                                                   "We are leveraging the the Community Capitals framework used throughout the Cooperative Extension System network to better understand rural places. 
                                                   This framework is a strength-based approach to community change and resilience based on identifying and investing community resources, called assets, 
@@ -1642,7 +1643,6 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
 #
 
 server <- function(input, output, session) {
-  
   cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "grey")
   
   # Function for indicator boxplots --------------------------
