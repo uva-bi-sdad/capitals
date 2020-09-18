@@ -36,9 +36,9 @@ acsvars18 <- c(
   # B07003 GEOGRAPHICAL MOBILITY IN THE PAST YEAR BY SEX FOR CURRENT RESIDENCE IN THE UNITED STATES
   "B07003_004", "B07003_001",
   # B11015 HOUSEHOLDS BY PRESENCE OF NONRELATIVES
-  "B28010_002", "B28010_001",
+  "B11015_002", "B11015_001",
   # B28010 COMPUTERS IN HOUSEHOLD
-  "B19056_002", "B19056_001",
+  "B28010_002", "B28010_001",
   # B08134 MEANS OF TRANSPORTATION TO WORK BY TRAVEL TIME TO WORK
   "B08134_030", "B08134_001",
   # C16002 HOUSEHOLD LANGUAGE BY HOUSEHOLD LIMITED ENGLISH SPEAKING STATUS
@@ -108,9 +108,9 @@ acsdata18 <- data18 %>% transmute(
   # Percent population living in the same house that they lived in one year prior
   soc_samehouse = B07003_004E / B07003_001E * 100,
   # Percent households with nonrelatives present
-  soc_nonrelat = B28010_002E / B28010_001E * 100,
+  soc_nonrelat = B11015_002E / B11015_001E * 100,
   # Percent households with a computing device (computer or smartphone)
-  soc_computer = B19056_002E / B19056_001E * 100,
+  soc_computer = B28010_002E / B28010_001E * 100,
   # Percent workers with more than an hour of commute by themselves
   soc_commalone = B08134_030E / B08134_001E * 100,
   # Percent of residents that are not proficient in speaking English

@@ -820,7 +820,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                                                       ),
                                                                       tabPanel(title = "Reading Proficiency",
                                                                                fluidRow(
-                                                                                 h4(strong("Reading Proficiency"), align = "center"),
+                                                                                 h4(strong("Average Grade Level Performance for 3rd Graders on English Language Arts Standardized Tests"), align = "center"),
                                                                                  column(
                                                                                    width = 6,
                                                                                    h5(strong("County-Level Map")),
@@ -835,7 +835,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                                                       ),
                                                                       tabPanel(title = "Math Proficiency",
                                                                                fluidRow(
-                                                                                 h4(strong("Math Proficiency"), align = "center"),
+                                                                                 h4(strong("Average Grade Level Performance for 3rd Graders on Math Standardized Tests"), align = "center"),
                                                                                  column(
                                                                                    width = 6,
                                                                                    h5(strong("County-Level Map")),
@@ -1017,9 +1017,9 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             fluidRow(
                                               box(title = "About Social Capital",
                                                   width = 9,
-                                                  "Social capital refers to the resources, information, and support that communities can access through the bonds 
-                    among members of the community and their families promoting mutual trust, reciprocity, collective 
-                    identity, and a sense of a shared future."
+                                                  "Social capital refers to the resources, information, and support that communities can access through 
+                                                  the bonds among members of the community and their families  that promote mutual trust, reciprocity, 
+                                                  collective identity, and a sense of a shared future."
                                               ),
                                               box(title = "Select Your State",
                                                   width = 3,
@@ -1110,7 +1110,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                                                       ),
                                                                       tabPanel(title = "Non-Profit Organizations",
                                                                                fluidRow(
-                                                                                 h4(strong("Number of Non-Profit Organizations Including those with an International Approach"), align = "center"),
+                                                                                 h4(strong("Number of Non-Profit Organizations per 1,000 Population"), align = "center"),
                                                                                  column(
                                                                                    width = 6,
                                                                                    h5(strong("County-Level Map")),
@@ -1361,9 +1361,9 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             fluidRow(
                                               box(title = "About Built Capital",
                                                   width = 9,
-                                                  "Built capital refers to the physical infrastructure that facilitates community activities such as 
-                                                  broadband and other information technologies, utilities, water/sewer systems, roads and bridges, 
-                                                  business parks, hospitals, main street buildings, playgrounds, and housing stock."
+                                                  "Built capital refers to the physical infrastructure that facilitates community activities, such as 
+                                                  broadband and other information technologies, utilities, water/sewer systems, roads and bridges, business parks, 
+                                                  hospitals, main street buildings, playgrounds, and housing."
                                               ),
                                               box(title = "Select Your State",
                                                   width = 3,
@@ -1387,8 +1387,9 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             fluidRow(
                                               box(title = "About Natural Capital",
                                                   width = 9,
-                                                  "Natural capital refers to the stock of natural or environmental ecosystem assets that provides a flow of useful goods or services to create possibilities 
-                    (and limits) to community development such as air, water, soil, biodiversity, and weather."
+                                                  "Natural capital refers to the stock of natural or environmental ecosystem assets that provide a flow of 
+                                                  useful goods or services to create possibilities and limits to community development, such as air, water, 
+                                                  soil, biodiversity, and weather."
                                               ),
                                               box(title = "Select Your State",
                                                   width = 3,
@@ -2804,6 +2805,7 @@ server <- function(input, output, session) {
                                                 direction = "auto"))) %>%
       addLegend("bottomleft",
                 pal= pal,
+                na.label = "Not Available",
                 values =  ~(cat),
                 title = "Value", 
                 opacity = 0.7)
@@ -2870,7 +2872,8 @@ server <- function(input, output, session) {
                                                 "border-color" = "rgba(0,0,0,0.5)",
                                                 direction = "auto"))) %>%
       addLegend("bottomleft",
-                pal= pal,
+                pal= pal,               
+                na.label = "Not Available",
                 values =  ~(cat),
                 title = "Value", 
                 opacity = 0.7)
@@ -2959,9 +2962,9 @@ server <- function(input, output, session) {
     
     apputils::infoBox(title = a("Social Capital", onclick = "openTab('social')", href="#"),
             color = "olive", icon = ic, 
-            value = tags$h5("Social capital refers to the resources, information, and support that communities can access through 
-                            the bonds among members of the community and their families promoting mutual trust, reciprocity, collective 
-                            identity, and a sense of a shared future.")
+            value = tags$h5("Social capital refers to the resources, information, and support that communities can access 
+                            through the bonds among members of the community and their families  that promote mutual trust, 
+                            reciprocity, collective identity, and a sense of a shared future.")
     )
   })
   
@@ -2970,9 +2973,9 @@ server <- function(input, output, session) {
     
     apputils::infoBox(title = a("Built Capital", onclick = "openTab('built')", href="#"),
             color = "olive", icon = ic, 
-            value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities such as 
-                            broadband and other information technologies, utilities, water/sewer systems, roads and bridges, 
-                            business parks, hospitals, main street buildings, playgrounds, and housing stock.")
+            value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities, 
+                            such as broadband and other information technologies, utilities, water/sewer systems, roads 
+                            and bridges, business parks, hospitals, main street buildings, playgrounds, and housing.")
     )
   })
   
@@ -2981,9 +2984,9 @@ server <- function(input, output, session) {
     
     apputils::infoBox(title = a("Natural Capital", onclick = "openTab('natural')", href="#"),
             color = "olive", icon = ic, 
-            value = tags$h5("Natural capital refers to the stock of natural or environmental ecosystem assets that provides a flow 
-                            of useful goods or services to create possibilities (and limits) to community development such as air, 
-                            water, soil, biodiversity, and weather.")
+            value = tags$h5("Natural capital refers to the stock of natural or environmental ecosystem assets that provide a 
+                            flow of useful goods or services to create possibilities and limits to community development, 
+                            such as air, water, soil, biodiversity, and weather.")
     )
   })
   
