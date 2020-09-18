@@ -21,8 +21,6 @@ datanat <- read_rds("data/nat_final.Rds")
 
 measures <- read.csv("data/measures.csv")
 
-cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
-
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
@@ -32,7 +30,7 @@ html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
 #
 
-ui <- dashboardPage(title = "EM Data Infrastructure",
+ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                     
                     dashboardHeader(
                       titleWidth='100%',
@@ -56,14 +54,14 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                         img(src = "logo.png", height = 60, width = 235)
                       ),
                       sidebarMenu(
-                        menuItem(text = "Community Capitals", tabName = "capitals", icon = icon("")),
-                        menuItem(text = "Financial Capital", tabName = "financial", icon = icon("money-check-alt")),
-                        menuItem(text = "Human Capital", tabName = "human", icon = icon("child")),
-                        menuItem(text = "Social Capital", tabName = "social", icon = icon("handshake")),
-                        menuItem(text = "Natural Capital", tabName = "natural", icon = icon("tree")),
-                        menuItem(text = "Built Capital", tabName = "built", icon = icon("home")),
-                        menuItem(text = "Political Capital", tabName = "political", icon = icon("balance-scale-left")),
-                        menuItem(text = "Cultural Capital", tabName = "cultural", icon = icon("landmark")),
+                        menuItem(text = "Community Capital Areas", tabName = "capitals", icon = icon("")),
+                        menuItem(text = "Financial", tabName = "financial", icon = icon("money-check-alt")),
+                        menuItem(text = "Human", tabName = "human", icon = icon("child")),
+                        menuItem(text = "Social", tabName = "social", icon = icon("handshake")),
+                        menuItem(text = "Natural", tabName = "natural", icon = icon("tree")),
+                        menuItem(text = "Built", tabName = "built", icon = icon("home")),
+                        menuItem(text = "Political", tabName = "political", icon = icon("balance-scale-left")),
+                        menuItem(text = "Cultural", tabName = "cultural", icon = icon("landmark")),
                         menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("")),
                         menuItem(text = "Contact", tabName = "contact", icon = icon(""))
                       )
@@ -185,7 +183,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                               ),
                                               
                                               box(width = 8,
-                                                  title = "Community Capitals",
+                                                  title = "Community Capital Areas",
                                                   infoBoxOutput("fin_ibox", width = NULL), p(),
                                                   infoBoxOutput("hum_ibox", width = NULL), p(),
                                                   infoBoxOutput("soc_ibox", width = NULL), p(),
@@ -221,14 +219,22 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             ),
                                             
                                             fluidRow(
-                                              box(title = "Select Your Index",
+                                              box(title = "Explore Composite Indices",
                                                   width = 12,
-                                                  
-                                                  radioGroupButtons(
-                                                    inputId = "finidx_choice", #label = "Make a choice :",
-                                                    choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
-                                                                "FINANCIAL WELL-BEING", "EMPLOYMENT"),
-                                                    justified = FALSE, status = "success", individual = TRUE)
+                                                  column(width = 3,
+                                                         strong("Select Your Index"),
+                                                         p(),
+                                                         radioGroupButtons(
+                                                           inputId = "finidx_choice", 
+                                                           choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
+                                                                       "FINANCIAL WELL-BEING", "EMPLOYMENT"),
+                                                           checkIcon = list(yes = icon("angle-double-right")),
+                                                           direction = "vertical", width = "100%",
+                                                           justified = TRUE, status = "success")
+                                                  ),
+                                                  column(width = 9,
+                                                         includeHTML("index_interpretation.html")
+                                                  )
                                               )
                                               
                                             ),
@@ -671,14 +677,22 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             ),
                                             
                                             fluidRow(
-                                              box(title = "Select Your Index",
+                                              box(title = "Explore Composite Indices",
                                                   width = 12,
-                                                  
+                                                  column(width = 3,
+                                                         strong("Select Your Index"),
+                                                         p(),
                                                   radioGroupButtons(
                                                     inputId = "humidx_choice", #label = "Make a choice :",
                                                     choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
                                                                 "DESPAIR"),
-                                                    justified = FALSE, status = "success", individual = TRUE)
+                                                    checkIcon = list(yes = icon("angle-double-right")),
+                                                    direction = "vertical", width = "100%",
+                                                    justified = TRUE, status = "success")
+                                                  ),
+                                                  column(width = 9,
+                                                         includeHTML("index_interpretation.html")
+                                                  )
                                               )
                                               
                                             ),
@@ -1032,13 +1046,20 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             ),
                                             
                                             fluidRow(
-                                              box(title = "Select Your Index",
+                                              box(title = "Explore Composite Indices",
                                                   width = 12,
-                                                  
+                                                  column(width = 3,
+                                                         strong("Select Your Index"),
+                                                         p(),
                                                   radioGroupButtons(
                                                     inputId = "socidx_choice", #label = "Make a choice :",
                                                     choices = c("SOCIAL ENGAGEMENT", "SOCIAL RELATIONSHIPS", "ISOLATION"),
-                                                    justified = FALSE, status = "success", individual = TRUE)
+                                                    checkIcon = list(yes = icon("angle-double-right")),
+                                                    justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                                  ),
+                                                  column(width = 9,
+                                                         includeHTML("index_interpretation.html")
+                                                  )
                                               )
                                               
                                             ),
@@ -1402,13 +1423,20 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             ),
                                             
                                             fluidRow(
-                                              box(title = "Select Your Index",
+                                              box(title = "Explore Composite Indices",
                                                   width = 12,
-                                                  
+                                                  column(width = 3,
+                                                         strong("Select Your Index"),
+                                                         p(),
                                                   radioGroupButtons(
                                                     inputId = "natidx_choice", #label = "Make a choice :",
                                                     choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
-                                                    justified = FALSE, status = "success", individual = TRUE)
+                                                    checkIcon = list(yes = icon("angle-double-right")),
+                                                    justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                                  ),
+                                                  column(width = 9,
+                                                         includeHTML("index_interpretation.html")
+                                                  )
                                               )
                                               
                                             ),
@@ -1592,12 +1620,18 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                                   title = "How We Measure Community Capitals",
                                                   "We create composite index measures to capture community capitals. Each composite index 
                                                   is based on multiple indicators as listed in the table below, selected on the basis of 
-                                                  prior research and Extension community input. We compute quintile cut-offs for each 
-                                                  indicator.  County placement in a higher quintile indicates a better relative position 
-                                                  on the indicator compared to other counties; that is, it indicates an asset. To arrive
-                                                  at the final index value, we average county quintile placement across the indicators 
-                                                  composing the index. The more times a county places in the highest quintiles on relevant
-                                                  indicators, the higher the index value, and the higher the community capital.",
+                                                  prior research and Extension community input.",
+                                                  br(),
+                                                  "We compute quintile cut-offs for each indicator after reverse-coding indicators as appropriate to 
+                                                  measure assets or deficits. For composites measuring assets, county placement in a 
+                                                  higher quintile indicates a better relative position on the indicator compared to other counties; 
+                                                  that is, it suggests higher community capital. Conversely, for composites measuring deficits,
+                                                  county placement in a higher quintile indicates a worse relative position compared to the county's 
+                                                  counterparts, and indicates lower community capital. To arrive at the final index value, we average 
+                                                  county quintile placement across the indicators composing the index. The more times a county places 
+                                                  in the highest quintiles on relevant indicators, the higher the index value. For composites measuring 
+                                                  assets (index maps shown in green), this suggests higher the community capital. For composites measuring
+                                                  deficits (index maps shown in brown), this suggests lower community capital.",
                                                   br(),
                                                   "More information about measurement, indicator choice, and references are coming soon."),
                                               box(width = 12,
@@ -1615,7 +1649,7 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
                                             )
                                     ),
                                     
-                                    # CONTACT CAPITAL CONTENT -------------------------
+                                    # CONTACT CONTENT -------------------------
                                     tabItem(tabName = "contact",
                                             fluidRow(
                                               box(width = 4,
@@ -1650,7 +1684,10 @@ ui <- dashboardPage(title = "EM Data Infrastructure",
 #
 
 server <- function(input, output, session) {
+  # Plot colors --------------------------
   cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "grey")
+  cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
+  cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
@@ -1665,8 +1702,8 @@ server <- function(input, output, session) {
                 line = list(color = "#787878"),
                 y = ~myvar,
                 showlegend = F,
+                marker = list(symbol = "asterisk", color = ~irr2010_discretize),
                 hoverinfo = "y",
-                marker = list(symbol = "asterisk-open", color = "#787878"),
                 name = "") %>%
       add_markers(x = ~jitter(as.numeric(group), amount = 0.1), 
                   y = ~myvar, 
@@ -1687,7 +1724,7 @@ server <- function(input, output, session) {
     
   }
   
-  # Function for indicator maps ------------------------------------
+  # Function for indicator maps: POSITIVE ------------------------------------
   create_indicator <- function(data, myvar, myvarlabel) {
     
     pal <- colorQuantile(cbGreens[1:5], domain = myvar, probs = seq(0, 1, length = 6), 
@@ -1717,7 +1754,7 @@ server <- function(input, output, session) {
       addLegend("bottomleft",
                 pal = pal,
                 values =  ~(myvar),
-                title = "Value",  #by<br>Quintile Group",
+                title = "Value",
                 opacity = 0.7,
                 na.label = "Not Available",
                 labFormat = function(type, cuts, p) {
@@ -1727,7 +1764,47 @@ server <- function(input, output, session) {
     
   }
   
-  # Function for index maps ---------------------------------------
+  # Function for indicator maps: NEGATIVE ------------------------------------
+  create_indicator_neg <- function(data, myvar, myvarlabel) {
+    
+    pal <- colorQuantile(cbBrowns[1:5], domain = myvar, probs = seq(0, 1, length = 6), 
+                         na.color = cbBrowns[6], right = TRUE)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Value",
+                opacity = 0.7,
+                na.label = "Not Available",
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                })
+    
+  }
+  
+  # Function for index maps: POSITIVE ---------------------------------------
   create_index <- function(data, myvar, myvarlabel) {
     
     pal <- colorNumeric(cbGreens[1:5], domain = myvar, na.color = cbGreens[6])
@@ -1756,7 +1833,41 @@ server <- function(input, output, session) {
       addLegend("bottomleft",
                 pal = pal,
                 values =  ~(myvar),
-                title = "Index Value",
+                title = "Index Value [1-5]",
+                opacity = 0.7,
+                na.label = "Not Available")
+  }
+  
+  # Function for index maps: NEGATIVE ---------------------------------------
+  create_index_neg <- function(data, myvar, myvarlabel) {
+    
+    pal <- colorNumeric(cbBrowns[1:5], domain = myvar, na.color = cbBrowns[6])
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Index Value [1-5]",
                 opacity = 0.7,
                 na.label = "Not Available")
   }
@@ -1770,9 +1881,11 @@ server <- function(input, output, session) {
   #
   # Capital Index Maps ------------------------------------------------
   #
+  
   #
   # Financial-------------------------------------------------------
   #
+  
   output$plot_fin_index_commerce <- renderLeaflet({
     create_index(fin_data(), fin_data()$fin_index_commerce, "Commerce Index")
   })
@@ -1810,8 +1923,9 @@ server <- function(input, output, session) {
   })
   
   output$plot_hum_index_despair <- renderLeaflet({
-    create_index(hum_data(), hum_data()$hum_index_despair, "Despair Index")
+    create_index_neg(hum_data(), hum_data()$hum_index_despair, "Despair Index")
   })
+  
   #
   # Social Index Maps--------------------------------------------------
   #
@@ -1822,7 +1936,7 @@ server <- function(input, output, session) {
     create_index(soc_data(), soc_data()$soc_index_relat, "Social Relationships Index")
   })
   output$plot_soc_index_isolation <- renderLeaflet({
-    create_index(soc_data(), soc_data()$soc_index_isol, "Social Isolation Index")
+    create_index_neg(soc_data(), soc_data()$soc_index_isol, "Social Isolation Index")
   })
   
   #
@@ -2007,7 +2121,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_gini
     var_label <- "Gini Index of Income Inequality"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })   
   
   output$plotly_fin_finwell_pov <- renderPlotly({
@@ -2024,7 +2138,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctinpov
     var_label <- "Percent with Income Below Poverty Level in Last 12 Months"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })   
   
   output$plotly_fin_finwell_assist <- renderPlotly({
@@ -2041,7 +2155,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctassist
     var_label <- "Percent Households Receiving Public Assistance or SNAP"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })   
   
   output$plotly_fin_finwell_ssi <- renderPlotly({
@@ -2058,7 +2172,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctssi
     var_label <- "Percent Households Receiving Supplemental Security Income"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })   
   
   output$plotly_fin_finwell_medinc <- renderPlotly({
@@ -2092,7 +2206,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctlessba
     var_label <- "Percent of People Older than 25 with Less than a Four Year Degree"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   }) 
   
   output$plotly_fin_finwell_debtcol <- renderPlotly({
@@ -2109,7 +2223,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctdebtcol
     var_label <- "Share of People with a Credit Bureau Record Who Have Any Debt in Collections"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   }) 
   
   #
@@ -2130,7 +2244,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_unempprecovid
     var_label <- "Unemployment Rate Before COVID"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })  
   
   output$plotly_fin_employ_unempcovid <- renderPlotly({
@@ -2147,7 +2261,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_unempcovid
     var_label <- "Unemployment Rate During COVID"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })  
   
   output$plotly_fin_employ_commute <- renderPlotly({
@@ -2164,7 +2278,7 @@ server <- function(input, output, session) {
     data_var <- fin_data()$fin_pctcommute
     var_label <- "Percent Commuting 30min+"
     
-    create_indicator(fin_data(), data_var, var_label)
+    create_indicator_neg(fin_data(), data_var, var_label)
   })  
   
   output$plotly_fin_employ_labforce <- renderPlotly({
@@ -2202,7 +2316,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_numpoorphys
     var_label <- "Average Number of Reported Poor Physical Health Days in a Month"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   })  
   
   output$plotly_hum_health_poorment <- renderPlotly({
@@ -2213,13 +2327,12 @@ server <- function(input, output, session) {
     create_boxplot(hum_data(), data_var, var_label)
   })
   
-  
   output$plot_hum_health_poorment <- renderLeaflet({
     
     data_var <- hum_data()$hum_numpoormental
     var_label <- "Average Number of Reported Poor Physical Mental Days in a Month"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   })  
   
   output$plotly_hum_health_nophys <- renderPlotly({
@@ -2236,7 +2349,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_pctnophys
     var_label <- "Percentage of Adults that Report No Leisure-time Physical Activity"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   })  
   
   output$plotly_hum_health_primcare <- renderPlotly({
@@ -2246,7 +2359,6 @@ server <- function(input, output, session) {
     
     create_boxplot(hum_data(), data_var, var_label)
   })
-  
   
   output$plot_hum_health_primcare <- renderLeaflet({
     
@@ -2263,7 +2375,6 @@ server <- function(input, output, session) {
     
     create_boxplot(hum_data(), data_var, var_label)
   })
-  
   
   output$plot_hum_health_menthealthprov <- renderLeaflet({
     
@@ -2327,9 +2438,11 @@ server <- function(input, output, session) {
     
     create_indicator(hum_data(), data_var, var_label)
   }) 
+  
   # 
   # Human - Child Care Indicators - Boxplot and Map ------------------------------------
   #   
+  
   output$plotly_hum_childcare_payratio <- renderPlotly({
     
     data_var <- hum_data()$hum_ratioFMpay
@@ -2359,7 +2472,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_pctsngparent
     var_label <- "Percent of Children Living in a Single-Parent Household"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   })  
   
   output$plotly_hum_childcare_womenhs <- renderPlotly({
@@ -2375,12 +2488,13 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_pctFnohs
     var_label <- "Percent of Women Who did not Receive HS Diploma or Equivalent"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   })  
   
   #
   # Human - Despair Indicators - Boxplot and Map ------------------------------------
   #   
+  
   output$plotly_hum_despair_divorce <- renderPlotly({
     
     data_var <- hum_data()$hum_pctdivorc
@@ -2394,7 +2508,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_pctdivorc
     var_label <- "Percent Divorced or Separated"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   }) 
   
   output$plotly_hum_despair_unemp <- renderPlotly({
@@ -2410,7 +2524,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_pctunemp
     var_label <- "Percent Population in Labor Force Unemployed"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   }) 
   
   output$plotly_hum_despair_whitemhs <- renderPlotly({
@@ -2426,7 +2540,7 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_whitemhs
     var_label <- "Percent White Men with High School Education or Lower"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   }) 
   
   output$plotly_hum_despair_aggdeaths <- renderPlotly({
@@ -2442,11 +2556,13 @@ server <- function(input, output, session) {
     data_var <- hum_data()$hum_ageratedeaths
     var_label <- "Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"
     
-    create_indicator(hum_data(), data_var, var_label)
+    create_indicator_neg(hum_data(), data_var, var_label)
   }) 
+  
   #
   # Social - Engagement - Boxplot and Map ------------------
   # 
+  
   output$plotly_soc_eng_census <- renderPlotly({
     
     data_var <- soc_data()$soc_overallcensusrate
@@ -2526,7 +2642,7 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_juvarrest
     var_label <- "Number of Juvenile Arrests per 1000 Juveniles"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_rel_violentcrimes <- renderPlotly({
@@ -2542,7 +2658,7 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_violcrime
     var_label <- "Number of Violent Crimes per 100,000 Population"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_rel_grandparent <- renderPlotly({
@@ -2558,7 +2674,7 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_grandp
     var_label <- "Percent Grandparent Householders Responsible for Own Grandchildren"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_rel_homeown <- renderPlotly({
@@ -2606,11 +2722,13 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_nonrelat
     var_label <- "Percent Households with Nonrelatives Present"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
+  
   # 
   # Social - Isolation - Boxplot and Map ------------------
-  #       
+  #    
+  
   output$plotly_soc_iso_comp <- renderPlotly({
     
     data_var <- soc_data()$soc_computer
@@ -2640,7 +2758,7 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_commalone
     var_label <- "Percent Workers with More than an Hour of Commute by Themselves"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_iso_english <- renderPlotly({
@@ -2662,7 +2780,7 @@ server <- function(input, output, session) {
   output$plotly_soc_iso_65alone <- renderPlotly({
     
     data_var <- soc_data()$soc_65alone
-    var_label <- "Percent of All County Residents <br>Who are Both Over 65 and Live Alone"
+    var_label <- "Percent Population <br>Over 65 Living Alone"
     
     create_boxplot(soc_data(), data_var, var_label)
   })
@@ -2670,15 +2788,15 @@ server <- function(input, output, session) {
   output$plot_soc_iso_65alone <- renderLeaflet({
     
     data_var <- soc_data()$soc_65alone
-    var_label <- "Percent of All County Residents Who are Both Over 65 and Live Alone"
+    var_label <- "Percent Population Over 65 Living Alone"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_iso_mentalhealth <- renderPlotly({
     
     data_var <- soc_data()$soc_freqmental
-    var_label <- "Percent of People Who Indicated That They <br>Have More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
+    var_label <- "Percent Population Reporting <br>More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
     
     create_boxplot(soc_data(), data_var, var_label)
   })
@@ -2686,9 +2804,9 @@ server <- function(input, output, session) {
   output$plot_soc_iso_mentalhealth <- renderLeaflet({
     
     data_var <- soc_data()$soc_freqmental
-    var_label <- "Percent of People Who Indicated That They <br>Have More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
+    var_label <- "Percent Population Reporting<br>More Than 14 Poor Mental Health <br>Days per Month (Frequent Mental Distress)"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_iso_suicide <- renderPlotly({
@@ -2704,14 +2822,14 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_suicrate
     var_label <- "Number of Suicides per 1,000 Population"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
-  
   
   # 
   # 
   # Natural - Quantity of Resources - Boxplot and Map ------------------
-  #    
+  #  
+  
   output$plotly_nat_quantres_farmland <- renderPlotly({
     
     data_var <- nat_data()$nat_pctagacres
@@ -2878,9 +2996,11 @@ server <- function(input, output, session) {
                 title = "Value", 
                 opacity = 0.7)
   }) 
+  
   #
   # Natural - Quality of Resources - Boxplot and Map ------------------
-  #      
+  #     
+  
   output$plotly_nat_qualres_part <- renderPlotly({
     
     data_var <- nat_data()$nat_particulatedensity
@@ -2894,7 +3014,7 @@ server <- function(input, output, session) {
     data_var <- nat_data()$nat_particulatedensity
     var_label <- "Average Daily Density of Fine Particulate Matter"
     
-    create_indicator(nat_data(), data_var, var_label)
+    create_indicator_neg(nat_data(), data_var, var_label)
   }) 
   
   
@@ -2927,13 +3047,10 @@ server <- function(input, output, session) {
   })
   
   
-  
-  
+  #
   # Home Page InfoBox outputs -------------------------------------------------
   # 
-  
 
-  
   output$fin_ibox <- renderInfoBox({
     ic <- apputils::icon(list(src = "icons/Financial.Dollar.Bill.jpg", width = "80px"), lib = "local")
     

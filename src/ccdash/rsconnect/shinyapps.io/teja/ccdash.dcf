@@ -5,6 +5,6 @@ account: teja
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2829412
-bundleId: 3643582
+bundleId: 3644394
 url: https://teja.shinyapps.io/ccdash/
-when: 1600433204.69524
+when: 1600448231.1275
