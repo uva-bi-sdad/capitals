@@ -276,7 +276,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                           ),
                                                           tabPanel(title = "Number of New Businesses",
                                                                    fluidRow(
-                                                                     h4(strong("Number of New Businesses per 10,000 People"), align = "center"),
+                                                                     h4(strong("Number of New Businesses 2014-2018 per 10,000 People"), align = "center"),
                                                                      column(
                                                                        width = 6,
                                                                        h5(strong("County-Level Map")),
