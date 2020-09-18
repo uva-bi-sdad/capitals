@@ -126,48 +126,26 @@ data <- data %>% group_by(STATEFP) %>%
   ungroup()
 
 # Social isolation index
+# WARNING -- THIS IS A DEFICIT COMPOSITE, NOT AN ASSET!!!!! WE PRESERVE CODING IN THE NEGATIVE DIRECTION.
 # Percent households with a computing device (computer or smartphone), Percent workers with more than an hour of commute by themselves
 # Percent of residents that are not proficient in speaking English, Percent of all county residents who are both over 65 and live alone
 # Percent of people who indicated that they have more than 14 poor mental health days per month (frequent mental distress), Number of suicides per 1,000 population
 # soc_computer, soc_commalone, soc_limiteng, soc_65alone, soc_freqmental, soc_suicrate
-# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: soc_commalone, soc_limiteng, soc_65alone, soc_freqmental, soc_suicrate
+# WARNING -- THIS IS A DEFICIT COMPOSITE, NOT AN ASSET!!!!! WE PRESERVE CODING IN THE NEGATIVE DIRECTION.
+# So this means we need to reverse code soc_computer.
 data <- data %>% group_by(STATEFP) %>%
   mutate(soc_computer_q = calcquint(soc_computer), 
+         soc_computer_q = case_when(soc_computer_q == 5 ~ 1,
+                                    soc_computer_q == 4 ~ 2,
+                                    soc_computer_q == 3 ~ 3,
+                                    soc_computer_q == 2 ~ 4,
+                                    soc_computer_q == 1 ~ 5,
+                                    is.na(soc_computer_q) ~ NA_real_),
          soc_commalone_q = calcquint(soc_commalone), 
-         soc_commalone_q = case_when(soc_commalone_q == 5 ~ 1,
-                                     soc_commalone_q == 4 ~ 2,
-                                     soc_commalone_q == 3 ~ 3,
-                                     soc_commalone_q == 2 ~ 4,
-                                     soc_commalone_q == 1 ~ 5,
-                                     is.na(soc_commalone_q) ~ NA_real_),
          soc_limiteng_q = calcquint(soc_limiteng),
-         soc_limiteng_q = case_when(soc_limiteng_q == 5 ~ 1,
-                                     soc_limiteng_q == 4 ~ 2,
-                                     soc_limiteng_q == 3 ~ 3,
-                                     soc_limiteng_q == 2 ~ 4,
-                                     soc_limiteng_q == 1 ~ 5,
-                                     is.na(soc_limiteng_q) ~ NA_real_),
          soc_65alone_q = calcquint(soc_65alone),
-         soc_65alone_q = case_when(soc_65alone_q == 5 ~ 1,
-                                  soc_65alone_q == 4 ~ 2,
-                                  soc_65alone_q == 3 ~ 3,
-                                  soc_65alone_q == 2 ~ 4,
-                                  soc_65alone_q == 1 ~ 5,
-                                  is.na(soc_65alone_q) ~ NA_real_),
          soc_freqmental_q = calcquint(soc_freqmental),
-         soc_freqmental_q = case_when(soc_freqmental_q == 5 ~ 1,
-                                    soc_freqmental_q == 4 ~ 2,
-                                    soc_freqmental_q == 3 ~ 3,
-                                    soc_freqmental_q == 2 ~ 4,
-                                    soc_freqmental_q == 1 ~ 5,
-                                    is.na(soc_freqmental_q) ~ NA_real_),
          soc_suicrate_q = calcquint(soc_suicrate),
-         soc_suicrate_q = case_when(soc_suicrate_q == 5 ~ 1,
-                                      soc_suicrate_q == 4 ~ 2,
-                                      soc_suicrate_q == 3 ~ 3,
-                                      soc_suicrate_q == 2 ~ 4,
-                                      soc_suicrate_q == 1 ~ 5,
-                                      is.na(soc_suicrate_q) ~ NA_real_),
          soc_index_isol = (soc_computer_q + soc_commalone_q + soc_limiteng_q + soc_65alone_q + soc_freqmental_q + soc_suicrate_q) / 6) %>%
   ungroup()
 
@@ -181,7 +159,7 @@ data <- data %>% group_by(STATEFP) %>%
 
 
 #
-# Social capital index ------------------------------------------------------
+# Social ENGAGEMENT index ------------------------------------------------------
 #
 
 # First factor: The aggregate for all of above variables (all the org variables) divided by population per 1,000

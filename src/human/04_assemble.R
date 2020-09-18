@@ -165,39 +165,16 @@ data <- data %>% group_by(STATEFP) %>%
   ungroup()
 
 # Despair index
+# WARNING -- THIS IS A DEFICIT COMPOSITE, NOT AN ASSET!!!!! WE PRESERVE CODING IN THE NEGATIVE DIRECTION.
 # Percent divorced or separated, Percent population in labor force unemployed, Percent white men with high school education or lower,
 # Age-adjusted rate of alcohol, overdose, and suicide deaths per 100,000 population between 2010-2018
 # hum_pctdivorc, hum_pctunemp,  hum_whitemhs, hum_ageratedeaths
-# ! NEED TO REVERSE CODE QUINTILE PLACEMENT FOR: hum_pctdivorc, hum_pctunemp,  hum_whitemhs, hum_ageratedeaths
+# WARNING -- THIS IS A DEFICIT COMPOSITE, NOT AN ASSET!!!!! WE PRESERVE CODING IN THE NEGATIVE DIRECTION.
 data <- data %>% group_by(STATEFP) %>%
   mutate(hum_pctdivorc_q = calcquint(hum_pctdivorc),
-         hum_pctdivorc_q = case_when(hum_pctdivorc_q == 5 ~ 1,
-                                     hum_pctdivorc_q == 4 ~ 2,
-                                     hum_pctdivorc_q == 3 ~ 3,
-                                     hum_pctdivorc_q == 2 ~ 4,
-                                     hum_pctdivorc_q == 1 ~ 5,
-                                     is.na(hum_pctdivorc_q) ~ NA_real_),
          hum_pctunemp_q = calcquint(hum_pctunemp),
-         hum_pctunemp_q = case_when(hum_pctunemp_q == 5 ~ 1,
-                                         hum_pctunemp_q == 4 ~ 2,
-                                         hum_pctunemp_q == 3 ~ 3,
-                                         hum_pctunemp_q == 2 ~ 4,
-                                         hum_pctunemp_q == 1 ~ 5,
-                                    is.na(hum_pctunemp_q) ~ NA_real_),
          hum_whitemhs_q = calcquint(hum_whitemhs),
-         hum_whitemhs_q = case_when(hum_whitemhs_q == 5 ~ 1,
-                                         hum_whitemhs_q == 4 ~ 2,
-                                         hum_whitemhs_q == 3 ~ 3,
-                                         hum_whitemhs_q == 2 ~ 4,
-                                         hum_whitemhs_q == 1 ~ 5,
-                                         is.na(hum_whitemhs_q) ~ NA_real_),
          hum_ageratedeaths_q = calcquint(hum_ageratedeaths),
-         hum_ageratedeaths_q = case_when(hum_ageratedeaths_q == 5 ~ 1,
-                                    hum_ageratedeaths_q == 4 ~ 2,
-                                    hum_ageratedeaths_q == 3 ~ 3,
-                                    hum_ageratedeaths_q == 2 ~ 4,
-                                    hum_ageratedeaths_q == 1 ~ 5,
-                                    is.na(hum_ageratedeaths_q) ~ NA_real_),
          hum_index_despair = (hum_pctdivorc_q + hum_pctunemp_q + hum_whitemhs_q + hum_ageratedeaths_q) / 4) %>%
   ungroup()
 

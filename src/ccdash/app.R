@@ -73,11 +73,11 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         type = 'text/css', 
                         '.bg-olive {background-color: #FFFFFF!important; }'
                       ),
-                                  
-                                  tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
-                                  
-                                  # http://jonkatz2.github.io/2018/06/22/Image-In-Shinydashboard-Header
-                                  tags$style(type="text/css", "
+                      
+                      tags$head(tags$style('.selectize-dropdown {z-index: 10000}')),
+                      
+                      # http://jonkatz2.github.io/2018/06/22/Image-In-Shinydashboard-Header
+                      tags$style(type="text/css", "
 /*    Move everything below the header */
                .content-wrapper {
                margin-top: 50px;
@@ -144,10 +144,10 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                .left-side, .main-sidebar {
                padding-top: 175px;
                }"
-               ), 
-                                  
-                                  # https://stackoverflow.com/questions/37169039/direct-link-to-tabitem-with-r-shiny-dashboard/37170333
-                                  tags$script(HTML("
+                      ), 
+                      
+                      # https://stackoverflow.com/questions/37169039/direct-link-to-tabitem-with-r-shiny-dashboard/37170333
+                      tags$script(HTML("
         var openTab = function(tabName){
           $('a', $('.sidebar')).each(function() {
             if(this.getAttribute('data-value') == tabName) {
@@ -156,1525 +156,1528 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
           });
         }
       ")),
-                                  
-                                  shinyDashboardThemes(
-                                    theme = "grey_light"
+                      
+                      shinyDashboardThemes(
+                        theme = "grey_light"
+                      ),
+                      
+                      useShinyjs(),
+                      introjsUI(),
+                      
+                      tabItems(
+                        
+                        # SUMMARY CONTENT -------------------------
+                        
+                        tabItem(tabName = "capitals",
+                                fluidRow(
+                                  box(width = 4,
+                                      align = "left",
+                                      title = "Economic Mobility Data Infrastructure",
+                                      "Economic Mobility Data Infrastructure builds on the community capitals framework by infusing the seven capital areas with a data science core.
+                                                  The resulting quantitative assessments are designed for characterizing economic mobility across multiple locales and promoting positive change.",
+                                      br(""),
+                                      "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
+                                      br(""),
+                                      img(src = "framework.png", class = "topimage", width = "100%",
+                                          style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
                                   ),
                                   
-                                  useShinyjs(),
-                                  introjsUI(),
-                                  
-                                  tabItems(
-                                    
-                                    # SUMMARY CONTENT -------------------------
-                                    
-                                    tabItem(tabName = "capitals",
-                                            fluidRow(
-                                              box(width = 4,
-                                                  align = "left",
-                                                  title = "Economic Mobility Data Infrastructure",
-                                                  "Economic Mobility Data Infrastructure builds on the community capitals framework by infusing the seven capital areas with a data science core.
-                                                  The resulting quantitative assessments are designed for characterizing economic mobility across multiple locales and promoting positive change.",
-                                                  br(""),
-                                                  "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
-                                                  br(""),
-                                                  img(src = "framework.png", class = "topimage", width = "100%",
-                                                      style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
-                                              ),
-                                              
-                                              box(width = 8,
-                                                  title = "Community Capital Areas",
-                                                  infoBoxOutput("fin_ibox", width = NULL), p(),
-                                                  infoBoxOutput("hum_ibox", width = NULL), p(),
-                                                  infoBoxOutput("soc_ibox", width = NULL), p(),
-                                                  infoBoxOutput("nat_ibox", width = NULL), p(),
-                                                  infoBoxOutput("built_ibox", width = NULL), p(),
-                                                  infoBoxOutput("pol_ibox", width = NULL), p(),
-                                                  infoBoxOutput("cult_ibox", width = NULL)
-                                              )
-                                            )
-                                    ),
-                                    
-                                    #
-                                    # FINANCIAL CAPITAL CONTENT -------------------------------------------------
-                                    #
-                                    
-                                    tabItem(tabName = "financial",
-                                            
-                                            fluidRow(
-                                              box(title = "About Financial Capital",
-                                                  width = 9,
-                                                  "Financial capital refers to the economic features of the community such as debt capital, 
+                                  box(width = 8,
+                                      title = "Community Capital Areas",
+                                      infoBoxOutput("fin_ibox", width = NULL), p(),
+                                      infoBoxOutput("hum_ibox", width = NULL), p(),
+                                      infoBoxOutput("soc_ibox", width = NULL), p(),
+                                      infoBoxOutput("nat_ibox", width = NULL), p(),
+                                      infoBoxOutput("built_ibox", width = NULL), p(),
+                                      infoBoxOutput("pol_ibox", width = NULL), p(),
+                                      infoBoxOutput("cult_ibox", width = NULL)
+                                  )
+                                )
+                        ),
+                        
+                        #
+                        # FINANCIAL CAPITAL CONTENT -------------------------------------------------
+                        #
+                        
+                        tabItem(tabName = "financial",
+                                
+                                fluidRow(
+                                  box(title = "About Financial Capital",
+                                      width = 9,
+                                      "Financial capital refers to the economic features of the community such as debt capital, 
                     investment capital, savings, tax revenue, tax abatements, and grants, as well as entrepreneurship,
                     persistent poverty, industry concentration, and philanthropy."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("fin_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            
-                                            fluidRow(
-                                              box(title = "Explore Composite Indices",
-                                                  width = 12,
-                                                  column(width = 3,
-                                                         strong("Select Your Index"),
-                                                         p(),
-                                                         radioGroupButtons(
-                                                           inputId = "finidx_choice", 
-                                                           choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
-                                                                       "FINANCIAL WELL-BEING", "EMPLOYMENT"),
-                                                           checkIcon = list(yes = icon("angle-double-right")),
-                                                           direction = "vertical", width = "100%",
-                                                           justified = TRUE, status = "success")
-                                                  ),
-                                                  column(width = 9,
-                                                         includeHTML("index_interpretation.html")
-                                                  )
-                                              )
-                                              
-                                            ),
-                                            
-                                            #
-                                            # COMMERCE PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.finidx_choice == 'COMMERCE'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Commerce Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_fin_index_commerce")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Commerce Measures",
-                                                                      id = "tab_indexfin_co",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Number of Businesses",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Businesses per 10,000 People"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_co_bus")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_co_bus")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Number of New Businesses",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of New Businesses per 10,000 People"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_co_newbus")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_co_newbus")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            ),
-                                            
-                                            
-                                            #
-                                            # AGRICULTURE PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.finidx_choice == 'AGRICULTURE'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Agriculture Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_fin_index_agri")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Agriculture Measures",
-                                                                      id = "tab_indexfin_ag",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Agriculture Acres",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent County in Agriculture Acres"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_ag_acres")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_ag_acres")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Land Value",
-                                                                               fluidRow(
-                                                                                 h4(strong("Land Value Per Acre"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_ag_landval")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_ag_landval")
-                                                                                 )
-                                                                               )
-                                                                      ), 
-                                                                      tabPanel(title = "Net Income",
-                                                                               fluidRow(
-                                                                                 h4(strong("Net Income Per Farm Operation"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_ag_netin")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_ag_netin")
-                                                                                 )
-                                                                               )
-                                                                      ), 
-                                                                      tabPanel(title = "Percent Employed",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Employed in Agriculture, Forestry, Fishing and Hunting, Mining Industry"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_ag_employ")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_ag_employ")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            ),
-                                            
-                                            
-                                            #
-                                            # ECONOMIC DIVERSIFICATION PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.finidx_choice == 'ECONOMIC DIVERSIFICATION'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Economic Diversificiation Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_fin_index_econdiv")
-                                                               )
-                                                               
-                                                             ),
-                                                             
-                                                             fluidRow(
-                                                               tabBox(title = "Economic Diversification Measures",
-                                                                      id = "tab_indexfin_econdiv",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Herfindahl-Hirschman Index of Employment",
-                                                                               fluidRow(
-                                                                                 h4(strong("Herfindahl-Hirschman Index of Employment by Industry"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_econdiv_emphhi")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_econdiv_emphhi")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Herfindahl-Hirschman Index of Payroll",
-                                                                               fluidRow(
-                                                                                 h4(strong("Herfindahl-Hirschman Index of Payroll by Industry"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_econdiv_payhhi")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_econdiv_payhhi")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                               )
-                                                             )
-                                            ),
-                                            
-                                            #
-                                            # FINANCIAL WELL-BEING PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.finidx_choice == 'FINANCIAL WELL-BEING'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Financial Well-Being Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_fin_index_finwell")
-                                                               )
-                                                               
-                                                             ),
-                                                             
-                                                             fluidRow(
-                                                               tabBox(title = "Financial Well-Being Measures",
-                                                                      id = "tab_indexfin_finwell",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Gini Index",
-                                                                               fluidRow(
-                                                                                 h4(strong("Gini Index of Income Inequality"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_gini")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_gini")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Poverty Level",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent with Income Below Poverty Level in Last 12 Months"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_pov")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_pov")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Public Assistance/SNAP",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Households Receiving Public Assistance or SNAP"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_assist")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_assist")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Supplemental Security Income",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Households Receiving Supplemental Security Income"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_ssi")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_ssi")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Median Household Income",
-                                                                               fluidRow(
-                                                                                 h4(strong("Median Household Income"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_medinc")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_medinc")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Four Year Degree",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of People Older than 25 with Less than a Four Year Degree"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_lessba")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_lessba")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Debt in Collection",
-                                                                               fluidRow(
-                                                                                 h4(strong("Share of People with a Credit Bureau Record Who Have Any Debt in Collections"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_finwell_debtcol")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_finwell_debtcol")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                                      
-                                                               )
-                                                             )
-                                            ),
-                                            #
-                                            # EMPLOYMENT ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.finidx_choice == 'EMPLOYMENT'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Employment Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_fin_index_empl")
-                                                               )
-                                                               
-                                                             ),
-                                                             
-                                                             fluidRow(
-                                                               tabBox(title = "Employment Measures",
-                                                                      id = "tab_indexfin_employ",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Unemployment Rate Before COVID",
-                                                                               fluidRow(
-                                                                                 h4(strong("Unemployment Rate Before COVID"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_employ_unempprecovid")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_employ_unempprecovid")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Unemployment Rate During COVID",
-                                                                               fluidRow(
-                                                                                 h4(strong("Unemployment Rate During COVID"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_employ_unempcovid")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_employ_unempcovid")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Commuting 30min+",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Commuting 30min+"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_employ_commute")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_employ_commute")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Labor Force",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of Working Age Population in Labor Force"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_fin_employ_labforce")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_fin_employ_labforce")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                               )
-                                                             )
-                                            )
-                                            
-                                            
-                                    ),
-                                    
-                                    
-                                    
-                                    # HUMAN CAPITAL CONTENT -------------------------
-                                    tabItem(tabName = "human",
-                                            
-                                            fluidRow(
-                                              box(title = "About Human Capital",
-                                                  width = 9,
-                                                  "Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("fin_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                
+                                fluidRow(
+                                  box(title = "Explore Composite Indices",
+                                      width = 12,
+                                      column(width = 3,
+                                             strong("Select Your Index"),
+                                             p(),
+                                             radioGroupButtons(
+                                               inputId = "finidx_choice", 
+                                               choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
+                                                           "FINANCIAL WELL-BEING", "EMPLOYMENT"),
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               direction = "vertical", width = "100%",
+                                               justified = TRUE, status = "success")
+                                      ),
+                                      column(width = 9,
+                                             includeHTML("index_interpretation.html")
+                                      )
+                                  )
+                                  
+                                ),
+                                
+                                #
+                                # COMMERCE PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.finidx_choice == 'COMMERCE'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Commerce Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_fin_index_commerce")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Commerce Measures",
+                                                          id = "tab_indexfin_co",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Number of Businesses",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Businesses per 10,000 People"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_co_bus")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_co_bus")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Number of New Businesses",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of New Businesses per 10,000 People"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_co_newbus")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_co_newbus")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                
+                                
+                                #
+                                # AGRICULTURE PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.finidx_choice == 'AGRICULTURE'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Agriculture Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_fin_index_agri")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Agriculture Measures",
+                                                          id = "tab_indexfin_ag",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Agriculture Acres",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent County in Agriculture Acres"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_ag_acres")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_ag_acres")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Land Value",
+                                                                   fluidRow(
+                                                                     h4(strong("Land Value Per Acre"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_ag_landval")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_ag_landval")
+                                                                     )
+                                                                   )
+                                                          ), 
+                                                          tabPanel(title = "Net Income",
+                                                                   fluidRow(
+                                                                     h4(strong("Net Income Per Farm Operation"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_ag_netin")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_ag_netin")
+                                                                     )
+                                                                   )
+                                                          ), 
+                                                          tabPanel(title = "Percent Employed",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Employed in Agriculture, Forestry, Fishing and Hunting, Mining Industry"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_ag_employ")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_ag_employ")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                
+                                
+                                #
+                                # ECONOMIC DIVERSIFICATION PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.finidx_choice == 'ECONOMIC DIVERSIFICATION'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Economic Diversificiation Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_fin_index_econdiv")
+                                                   )
+                                                   
+                                                 ),
+                                                 
+                                                 fluidRow(
+                                                   tabBox(title = "Economic Diversification Measures",
+                                                          id = "tab_indexfin_econdiv",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Herfindahl-Hirschman Index of Employment",
+                                                                   fluidRow(
+                                                                     h4(strong("Herfindahl-Hirschman Index of Employment by Industry"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_econdiv_emphhi")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_econdiv_emphhi")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Herfindahl-Hirschman Index of Payroll",
+                                                                   fluidRow(
+                                                                     h4(strong("Herfindahl-Hirschman Index of Payroll by Industry"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_econdiv_payhhi")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_econdiv_payhhi")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                   )
+                                                 )
+                                ),
+                                
+                                #
+                                # FINANCIAL WELL-BEING PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.finidx_choice == 'FINANCIAL WELL-BEING'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Financial Well-Being Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_fin_index_finwell")
+                                                   )
+                                                   
+                                                 ),
+                                                 
+                                                 fluidRow(
+                                                   tabBox(title = "Financial Well-Being Measures",
+                                                          id = "tab_indexfin_finwell",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Gini Index",
+                                                                   fluidRow(
+                                                                     h4(strong("Gini Index of Income Inequality"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_gini")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_gini")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Poverty Level",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent with Income Below Poverty Level in Last 12 Months"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_pov")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_pov")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Public Assistance/SNAP",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Households Receiving Public Assistance or SNAP"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_assist")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_assist")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Supplemental Security Income",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Households Receiving Supplemental Security Income"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_ssi")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_ssi")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Median Household Income",
+                                                                   fluidRow(
+                                                                     h4(strong("Median Household Income"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_medinc")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_medinc")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Four Year Degree",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of People Older than 25 with Less than a Four Year Degree"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_lessba")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_lessba")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Debt in Collection",
+                                                                   fluidRow(
+                                                                     h4(strong("Share of People with a Credit Bureau Record Who Have Any Debt in Collections"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_finwell_debtcol")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_finwell_debtcol")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                          
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # EMPLOYMENT ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.finidx_choice == 'EMPLOYMENT'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Employment Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_fin_index_empl")
+                                                   )
+                                                   
+                                                 ),
+                                                 
+                                                 fluidRow(
+                                                   tabBox(title = "Employment Measures",
+                                                          id = "tab_indexfin_employ",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Unemployment Rate Before COVID",
+                                                                   fluidRow(
+                                                                     h4(strong("Unemployment Rate Before COVID"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_employ_unempprecovid")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_employ_unempprecovid")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Unemployment Rate During COVID",
+                                                                   fluidRow(
+                                                                     h4(strong("Unemployment Rate During COVID"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_employ_unempcovid")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_employ_unempcovid")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Commuting 30min+",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Commuting 30min+"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_employ_commute")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_employ_commute")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Labor Force",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of Working Age Population in Labor Force"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_fin_employ_labforce")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_fin_employ_labforce")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                   )
+                                                 )
+                                )
+                                
+                                
+                        ),
+                        
+                        
+                        
+                        # HUMAN CAPITAL CONTENT -------------------------
+                        tabItem(tabName = "human",
+                                
+                                fluidRow(
+                                  box(title = "About Human Capital",
+                                      width = 9,
+                                      "Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
                     and other acquired or inherited traits essential for an optimal quality of life."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("hum_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            
-                                            fluidRow(
-                                              box(title = "Explore Composite Indices",
-                                                  width = 12,
-                                                  column(width = 3,
-                                                         strong("Select Your Index"),
-                                                         p(),
-                                                  radioGroupButtons(
-                                                    inputId = "humidx_choice", #label = "Make a choice :",
-                                                    choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
-                                                                "DESPAIR"),
-                                                    checkIcon = list(yes = icon("angle-double-right")),
-                                                    direction = "vertical", width = "100%",
-                                                    justified = TRUE, status = "success")
-                                                  ),
-                                                  column(width = 9,
-                                                         includeHTML("index_interpretation.html")
-                                                  )
-                                              )
-                                              
-                                            ),
-                                            #
-                                            # HEALTH PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.humidx_choice == 'HEALTH'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Health Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_hum_index_health")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Health Measures",
-                                                                      id = "tab_indexhum_health",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Physical Health",
-                                                                               fluidRow(
-                                                                                 h4(strong("Average Number of Reported Poor Physical Health Days in a Month"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_health_poorphys")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_health_poorphys")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Mental Health",
-                                                                               fluidRow(
-                                                                                 h4(strong("Average Number of Reported Poor Mental Health Days in a Month"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_health_poorment")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_health_poorment")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Physical Activity",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percentage of Adults that Report No Leisure-time Physical Activity"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_health_nophys")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_health_nophys")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Primary Care Physicians",
-                                                                               fluidRow(
-                                                                                 h4(strong("Primary Care Physicians per 100,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_health_primcare")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_health_primcare")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Mental Health Providers",
-                                                                               fluidRow(
-                                                                                 h4(strong("Mental Health Providers per 100,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_health_menthealthprov")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_health_menthealthprov")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                                      
-                                                                      
-                                                               )
-                                                             )
-                                            ),
-                                            #
-                                            # EDUCATION PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.humidx_choice == 'EDUCATION'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Education Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_hum_index_edu")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Education Measures",
-                                                                      id = "tab_indexhum_edu",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "High School",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of Population with At Least a High School Degree"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_edu_hs")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_edu_hs")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Reading Proficiency",
-                                                                               fluidRow(
-                                                                                 h4(strong("Average Grade Level Performance for 3rd Graders on English Language Arts Standardized Tests"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_edu_read")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_edu_read")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Math Proficiency",
-                                                                               fluidRow(
-                                                                                 h4(strong("Average Grade Level Performance for 3rd Graders on Math Standardized Tests"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_edu_math")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_edu_math")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            ),
-                                            #
-                                            # CHILD CARE PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.humidx_choice == 'CHILD CARE'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Child Care Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_hum_index_childcare")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Child Care Measures",
-                                                                      id = "tab_indexhum_childcare",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Women to Men Pay Ratio",
-                                                                               fluidRow(
-                                                                                 h4(strong("Women to Men Pay Ratio"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_childcare_payratio")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_childcare_payratio")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Single-Parent Households",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of Children Living in a Single-Parent Household"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_childcare_singpar")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_childcare_singpar")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Women Without a HS Diploma or Equivalent",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of Women Who did not Receive HS Diploma or Equivalent"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_childcare_womenhs")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_childcare_womenhs")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            ),
-                                            
-                                            #
-                                            # DESPAIR PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.humidx_choice == 'DESPAIR'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Despair Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_hum_index_despair")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Despair Measures",
-                                                                      id = "tab_indexhum_despair",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Divorce/Separation",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Divorced or Separated"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_despair_divorce")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_despair_divorce")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Unemployed Population in Labor Force",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Population in Labor Force Unemployed"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_despair_unemp")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_despair_unemp")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "White Men with High School Education or Lower",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent White Men with High School Education or Lower"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_despair_whitemhs")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_despair_whitemhs")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Rate of Alcohol, Overdose, and Suicide Deaths",
-                                                                               fluidRow(
-                                                                                 h4(strong("Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_hum_despair_aggdeaths")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_hum_despair_aggdeaths")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            )
-                                            
-                                            
-                                            
-                                            
-                                    ),
-                                    
-                                    # SOCIAL CAPITAL CONTENT -------------------------
-                                    
-                                    
-                                    tabItem(tabName = "social",
-                                            
-                                            fluidRow(
-                                              box(title = "About Social Capital",
-                                                  width = 9,
-                                                  "Social capital refers to the resources, information, and support that communities can access through 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("hum_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                
+                                fluidRow(
+                                  box(title = "Explore Composite Indices",
+                                      width = 12,
+                                      column(width = 3,
+                                             strong("Select Your Index"),
+                                             p(),
+                                             radioGroupButtons(
+                                               inputId = "humidx_choice", #label = "Make a choice :",
+                                               choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
+                                                           "DESPAIR"),
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               direction = "vertical", width = "100%",
+                                               justified = TRUE, status = "success")
+                                      ),
+                                      tags$script("$(\"input:radio[name='humidx_choice'][value='DESPAIR']\").parent().css('background-color', '#A59200');"),
+                                      column(width = 9,
+                                             includeHTML("index_interpretation.html")
+                                      )
+                                  )
+                                  
+                                ),
+                                #
+                                # HEALTH PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.humidx_choice == 'HEALTH'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Health Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_hum_index_health")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Health Measures",
+                                                          id = "tab_indexhum_health",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Physical Health",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Number of Reported Poor Physical Health Days in a Month"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_health_poorphys")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_health_poorphys")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Mental Health",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Number of Reported Poor Mental Health Days in a Month"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_health_poorment")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_health_poorment")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Physical Activity",
+                                                                   fluidRow(
+                                                                     h4(strong("Percentage of Adults that Report No Leisure-time Physical Activity"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_health_nophys")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_health_nophys")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Primary Care Physicians",
+                                                                   fluidRow(
+                                                                     h4(strong("Primary Care Physicians per 100,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_health_primcare")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_health_primcare")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Mental Health Providers",
+                                                                   fluidRow(
+                                                                     h4(strong("Mental Health Providers per 100,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_health_menthealthprov")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_health_menthealthprov")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                          
+                                                          
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # EDUCATION PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.humidx_choice == 'EDUCATION'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Education Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_hum_index_edu")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Education Measures",
+                                                          id = "tab_indexhum_edu",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "High School",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of Population with At Least a High School Degree"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_edu_hs")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_edu_hs")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Reading Proficiency",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Grade Level Performance for 3rd Graders on English Language Arts Standardized Tests"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_edu_read")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_edu_read")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Math Proficiency",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Grade Level Performance for 3rd Graders on Math Standardized Tests"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_edu_math")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_edu_math")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # CHILD CARE PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.humidx_choice == 'CHILD CARE'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Child Care Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_hum_index_childcare")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Child Care Measures",
+                                                          id = "tab_indexhum_childcare",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Women to Men Pay Ratio",
+                                                                   fluidRow(
+                                                                     h4(strong("Women to Men Pay Ratio"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_childcare_payratio")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_childcare_payratio")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Single-Parent Households",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of Children Living in a Single-Parent Household"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_childcare_singpar")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_childcare_singpar")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Women Without a HS Diploma or Equivalent",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of Women Who did not Receive HS Diploma or Equivalent"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_childcare_womenhs")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_childcare_womenhs")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                
+                                #
+                                # DESPAIR PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.humidx_choice == 'DESPAIR'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Despair Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_hum_index_despair")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Despair Measures",
+                                                          id = "tab_indexhum_despair",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Divorce/Separation",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Divorced or Separated"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_despair_divorce")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_despair_divorce")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Unemployed Population in Labor Force",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Population in Labor Force Unemployed"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_despair_unemp")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_despair_unemp")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "White Men with High School Education or Lower",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent White Men with High School Education or Lower"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_despair_whitemhs")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_despair_whitemhs")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Rate of Alcohol, Overdose, and Suicide Deaths",
+                                                                   fluidRow(
+                                                                     h4(strong("Age-adjusted Rate of Alcohol, Overdose, and Suicide Deaths Over 9 Years per 100,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_hum_despair_aggdeaths")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_hum_despair_aggdeaths")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                )
+                                
+                                
+                                
+                                
+                        ),
+                        
+                        # SOCIAL CAPITAL CONTENT -------------------------
+                        
+                        
+                        tabItem(tabName = "social",
+                                
+                                fluidRow(
+                                  box(title = "About Social Capital",
+                                      width = 9,
+                                      "Social capital refers to the resources, information, and support that communities can access through 
                                                   the bonds among members of the community and their families  that promote mutual trust, reciprocity, 
                                                   collective identity, and a sense of a shared future."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("soc_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            
-                                            fluidRow(
-                                              box(title = "Explore Composite Indices",
-                                                  width = 12,
-                                                  column(width = 3,
-                                                         strong("Select Your Index"),
-                                                         p(),
-                                                  radioGroupButtons(
-                                                    inputId = "socidx_choice", #label = "Make a choice :",
-                                                    choices = c("SOCIAL ENGAGEMENT", "SOCIAL RELATIONSHIPS", "ISOLATION"),
-                                                    checkIcon = list(yes = icon("angle-double-right")),
-                                                    justified = TRUE, status = "success", direction = "vertical", width = "100%")
-                                                  ),
-                                                  column(width = 9,
-                                                         includeHTML("index_interpretation.html")
-                                                  )
-                                              )
-                                              
-                                            ),
-                                            
-                                            #
-                                            # SOCIAL ENGAGEMENT PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.socidx_choice == 'SOCIAL ENGAGEMENT'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Social Engagment Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_soc_index_socengage")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Social Engagement Measures",
-                                                                      id = "tab_indexsoc_eng",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Census Response Rate",
-                                                                               fluidRow(
-                                                                                 h4(strong("Census 2020 Mail and Online Self Response Rate"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_eng_census")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_eng_census")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Election Turnout",
-                                                                               fluidRow(
-                                                                                 h4(strong("Presidential Election 2016 Voter Turnout"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_eng_turnout")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_eng_turnout")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Civic Associations and Establishments",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Civic Associations and Establishments per 1,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_eng_civic")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_eng_civic")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Non-Profit Organizations",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Non-Profit Organizations per 1,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_eng_nonprof")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_eng_nonprof")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                               )
-                                                             )
-                                            ),
-                                            #
-                                            # SOCIAL RELATIONSHIPS PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.socidx_choice == 'SOCIAL RELATIONSHIPS'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Social Relationships Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_soc_index_relationships")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Social Relationships Measures",
-                                                                      id = "tab_indexsoc_rel",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Juvenile Arrests",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Juvenile Arrests per 1000 Juveniles"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_juvarrests")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_juvarrests")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Violent Crimes",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Violent Crimes per 100,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_violentcrimes")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_violentcrimes")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Grandparent Householders Responsible for Grandchildren",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Grandparent Householders Responsible for Own Grandchildren"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_grandparent")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_grandparent")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Homeowners",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Homeowners"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_homeown")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_homeown")
-                                                                                 )
-                                                                               )
-                                                                      ), 
-                                                                      tabPanel(title = "Living in the Same House as One Year Prior",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Population Living in the Same House that They Lived in One Year Prior"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_samehouse")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_samehouse")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Households with Nonrelatives Present",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Households with Nonrelatives Present"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_rel_nonrel")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_rel_nonrel")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                               )
-                                                             )
-                                            ),
-                                            # ISOLATION PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.socidx_choice == 'ISOLATION'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Isolation Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_soc_index_isolation")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Social Relationships Measures",
-                                                                      id = "tab_indexsoc_iso",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Computing Devices",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Households with a Computing Device (Computer or Smartphone)"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_comp")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_comp")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Commute",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent Workers with More than an Hour of Commute by Themselves"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_commute")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_commute")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Spoken English Proficiency",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of Residents That Are Not Proficient in Speaking English"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_english")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_english")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Residents Who are 65+ and Live Alone",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of All County Residents Who are Both Over 65 and Live Alone"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_65alone")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_65alone")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Poor Mental Health Days",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of People Who Indicated That They Have More Than 14 Poor Mental Health Days per Month (Frequent Mental Distress)"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_mentalhealth")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_mentalhealth")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Suicide Rate",
-                                                                               fluidRow(
-                                                                                 h4(strong("Number of Suicides per 1,000 Population"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_soc_iso_suicide")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_soc_iso_suicide")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                                      
-                                                               )
-                                                             )
-                                            )
-                                    ),        
-                                    
-                                    # BUILT CAPITAL CONTENT -------------------------
-                                    tabItem(tabName = "built",
-                                            fluidRow(
-                                              box(title = "About Built Capital",
-                                                  width = 9,
-                                                  "Built capital refers to the physical infrastructure that facilitates community activities, such as 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("soc_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                
+                                fluidRow(
+                                  box(title = "Explore Composite Indices",
+                                      width = 12,
+                                      column(width = 3,
+                                             strong("Select Your Index"),
+                                             p(),
+                                             radioGroupButtons(
+                                               inputId = "socidx_choice", #label = "Make a choice :",
+                                               choices = c("SOCIAL ENGAGEMENT", "ISOLATION"), # SOCIAL RELATIONSHIPS
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                      ),
+                                      tags$script("$(\"input:radio[name='socidx_choice'][value='ISOLATION']\").parent().css('background-color', '#A59200');"),
+                                      column(width = 9,
+                                             includeHTML("index_interpretation.html")
+                                      )
+                                  )
+                                  
+                                ),
+                                
+                                #
+                                # SOCIAL ENGAGEMENT PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.socidx_choice == 'SOCIAL ENGAGEMENT'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Social Engagment Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_soc_index_socengage")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Social Engagement Measures",
+                                                          id = "tab_indexsoc_eng",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Census Response Rate",
+                                                                   fluidRow(
+                                                                     h4(strong("Census 2020 Mail and Online Self Response Rate"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_eng_census")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_eng_census")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Election Turnout",
+                                                                   fluidRow(
+                                                                     h4(strong("Presidential Election 2016 Voter Turnout"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_eng_turnout")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_eng_turnout")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Civic Associations and Establishments",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Civic Associations and Establishments per 1,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_eng_civic")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_eng_civic")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Non-Profit Organizations",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Non-Profit Organizations per 1,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_eng_nonprof")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_eng_nonprof")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # SOCIAL RELATIONSHIPS PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.socidx_choice == 'SOCIAL RELATIONSHIPS'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Social Relationships Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_soc_index_relationships")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Social Relationships Measures",
+                                                          id = "tab_indexsoc_rel",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Juvenile Arrests",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Juvenile Arrests per 1000 Juveniles"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_juvarrests")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_juvarrests")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Violent Crimes",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Violent Crimes per 100,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_violentcrimes")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_violentcrimes")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Grandparent Householders Responsible for Grandchildren",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Grandparent Householders Responsible for Own Grandchildren"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_grandparent")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_grandparent")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Homeowners",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Homeowners"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_homeown")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_homeown")
+                                                                     )
+                                                                   )
+                                                          ), 
+                                                          tabPanel(title = "Living in the Same House as One Year Prior",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Population Living in the Same House that They Lived in One Year Prior"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_samehouse")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_samehouse")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Households with Nonrelatives Present",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Households with Nonrelatives Present"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_rel_nonrel")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_rel_nonrel")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                   )
+                                                 )
+                                ),
+                                # ISOLATION PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.socidx_choice == 'ISOLATION'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Isolation Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_soc_index_isolation")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Social Relationships Measures",
+                                                          id = "tab_indexsoc_iso",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Commute",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Workers with More than an Hour of Commute by Themselves"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_commute")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_commute")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Spoken English Proficiency",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of Residents That Are Not Proficient in Speaking English"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_english")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_english")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Residents Who are 65+ and Live Alone",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of All County Residents Who are Both Over 65 and Live Alone"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_65alone")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_65alone")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Poor Mental Health Days",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of People Who Indicated That They Have More Than 14 Poor Mental Health Days per Month (Frequent Mental Distress)"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_mentalhealth")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_mentalhealth")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Suicide Rate",
+                                                                   fluidRow(
+                                                                     h4(strong("Number of Suicides per 1,000 Population"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_suicide")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_suicide")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Computing Devices",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent Households with a Computing Device (Computer or Smartphone)"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_soc_iso_comp")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_soc_iso_comp")
+                                                                     )
+                                                                   )
+                                                          )
+                                                          
+                                                   )
+                                                 )
+                                )
+                        ),        
+                        
+                        # BUILT CAPITAL CONTENT -------------------------
+                        tabItem(tabName = "built",
+                                fluidRow(
+                                  box(title = "About Built Capital",
+                                      width = 9,
+                                      "Built capital refers to the physical infrastructure that facilitates community activities, such as 
                                                   broadband and other information technologies, utilities, water/sewer systems, roads and bridges, business parks, 
                                                   hospitals, main street buildings, playgrounds, and housing."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("nat_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            fluidRow(
-                                              box(
-                                                "COMING SOON."
-                                              )
-                                            )
-                                    ),  
-                                    
-                                    # NATURAL CAPITAL CONTENT -------------------------
-                                    tabItem(tabName = "natural",
-                                            
-                                            fluidRow(
-                                              box(title = "About Natural Capital",
-                                                  width = 9,
-                                                  "Natural capital refers to the stock of natural or environmental ecosystem assets that provide a flow of 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("nat_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                fluidRow(
+                                  box(
+                                    "COMING SOON."
+                                  )
+                                )
+                        ),  
+                        
+                        # NATURAL CAPITAL CONTENT -------------------------
+                        tabItem(tabName = "natural",
+                                
+                                fluidRow(
+                                  box(title = "About Natural Capital",
+                                      width = 9,
+                                      "Natural capital refers to the stock of natural or environmental ecosystem assets that provide a flow of 
                                                   useful goods or services to create possibilities and limits to community development, such as air, water, 
                                                   soil, biodiversity, and weather."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("nat_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            
-                                            fluidRow(
-                                              box(title = "Explore Composite Indices",
-                                                  width = 12,
-                                                  column(width = 3,
-                                                         strong("Select Your Index"),
-                                                         p(),
-                                                  radioGroupButtons(
-                                                    inputId = "natidx_choice", #label = "Make a choice :",
-                                                    choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
-                                                    checkIcon = list(yes = icon("angle-double-right")),
-                                                    justified = TRUE, status = "success", direction = "vertical", width = "100%")
-                                                  ),
-                                                  column(width = 9,
-                                                         includeHTML("index_interpretation.html")
-                                                  )
-                                              )
-                                              
-                                            ),
-                                            #
-                                            # QUANTITY OF RESOURCES PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Quantity of Resources Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_nat_index_quantres")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Quantity of Resources Measures",
-                                                                      id = "tab_indexnat_quantres",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "County Area in Farmland",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of County Area in Farmland"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_nat_quantres_farmland")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_nat_quantres_farmland")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "County Area in Water",
-                                                                               fluidRow(
-                                                                                 h4(strong("Percent of County Area in Water"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_nat_quantres_water")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_nat_quantres_water")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Forestry Sales",
-                                                                               fluidRow(
-                                                                                 h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_nat_quantres_forestsales")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_nat_quantres_forestsales")
-                                                                                 )
-                                                                               )
-                                                                      ),
-                                                                      tabPanel(title = "Agri-Tourism and Recreational Revenue",
-                                                                               fluidRow(
-                                                                                 h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_nat_quantres_rev")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_nat_quantres_rev")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            ),
-                                            #
-                                            # QUALITY OF RESOURCES PANEL ------------------------------------------
-                                            #
-                                            
-                                            conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
-                                                             
-                                                             fluidRow(
-                                                               
-                                                               box(title = "Quality of Resources Index",
-                                                                   width = 12,
-                                                                   h5(strong("County-Level Map")),
-                                                                   leafletOutput("plot_nat_index_qualres")
-                                                               )
-                                                               
-                                                             ),
-                                                             fluidRow(
-                                                               tabBox(title = "Quality of Resources Measures",
-                                                                      id = "tab_indexnat_qualres",
-                                                                      width = 12,
-                                                                      side = "right",
-                                                                      tabPanel(title = "Fine Particulate Matter",
-                                                                               fluidRow(
-                                                                                 h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("County-Level Map")),
-                                                                                   leafletOutput("plot_nat_qualres_part")
-                                                                                 ),
-                                                                                 column(
-                                                                                   width = 6,
-                                                                                   h5(strong("Indicator Box Plot")),
-                                                                                   plotlyOutput("plotly_nat_qualres_part")
-                                                                                 )
-                                                                               )
-                                                                      )
-                                                               )
-                                                             )
-                                            )
-                                    ),  
-                                    
-                                    # POLITICAL CAPITAL CONTENT -------------------------
-                                    tabItem(tabName = "political",
-                                            fluidRow(
-                                              box(title = "About Political Capital",
-                                                  width = 9,
-                                                  "Political capital refers to the ability of a community to influence and enforce rules, regulations, 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("nat_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                
+                                fluidRow(
+                                  box(title = "Explore Composite Indices",
+                                      width = 12,
+                                      column(width = 3,
+                                             strong("Select Your Index"),
+                                             p(),
+                                             radioGroupButtons(
+                                               inputId = "natidx_choice", #label = "Make a choice :",
+                                               choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                      ),
+                                      column(width = 9,
+                                             includeHTML("index_interpretation.html")
+                                      )
+                                  )
+                                  
+                                ),
+                                #
+                                # QUANTITY OF RESOURCES PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Quantity of Resources Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_nat_index_quantres")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Quantity of Resources Measures",
+                                                          id = "tab_indexnat_quantres",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "County Area in Farmland",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_farmland")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_nat_quantres_farmland")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "County Area in Water",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of County Area in Water"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_water")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_nat_quantres_water")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Forestry Sales",
+                                                                   fluidRow(
+                                                                     h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_forestsales")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_nat_quantres_forestsales")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Agri-Tourism and Recreational Revenue",
+                                                                   fluidRow(
+                                                                     h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_rev")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_nat_quantres_rev")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # QUALITY OF RESOURCES PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Quality of Resources Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_nat_index_qualres")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Quality of Resources Measures",
+                                                          id = "tab_indexnat_qualres",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Fine Particulate Matter",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_qualres_part")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Indicator Box Plot")),
+                                                                       plotlyOutput("plotly_nat_qualres_part")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                )
+                        ),  
+                        
+                        # POLITICAL CAPITAL CONTENT -------------------------
+                        tabItem(tabName = "political",
+                                fluidRow(
+                                  box(title = "About Political Capital",
+                                      width = 9,
+                                      "Political capital refers to the ability of a community to influence and enforce rules, regulations, 
                     and standards through their organizations, connections, voice, and power as citizens."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("nat_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            
-                                            fluidRow(
-                                              box(
-                                                "COMING SOON."
-                                              )
-                                            )
-                                    ),  
-                                    
-                                    # CULTURAL CAPITAL CONTENT -------------------------
-                                    tabItem(tabName = "cultural",
-                                            fluidRow(
-                                              box(title = "About Cultural Capital",
-                                                  width = 9,
-                                                  "Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("nat_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                
+                                fluidRow(
+                                  box(
+                                    "COMING SOON."
+                                  )
+                                )
+                        ),  
+                        
+                        # CULTURAL CAPITAL CONTENT -------------------------
+                        tabItem(tabName = "cultural",
+                                fluidRow(
+                                  box(title = "About Cultural Capital",
+                                      width = 9,
+                                      "Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
                     from membership in a particular cultural group, often developing over generations, and provide a basis for 
                     collective efforts to solve community problems."
-                                              ),
-                                              box(title = "Select Your State",
-                                                  width = 3,
-                                                  selectInput("nat_whichstate", label = NULL,
-                                                              choices = list("Iowa",
-                                                                             "Oregon",
-                                                                             "Virginia"), 
-                                                              selected = "Iowa")
-                                              )
-                                            ),
-                                            fluidRow(
-                                              box(
-                                                "COMING SOON."
-                                              )
-                                            )
-                                    ),
-                                    
-                                    # DATA AND METHODS CONTENT -------------------------
-                                    tabItem(tabName = "datamethods",
-                                            fluidRow(
-                                              box(width = 12,
-                                                  title = "How We Measure Community Capitals",
-                                                  "We create composite index measures to capture community capitals. Each composite index 
-                                                  is based on multiple indicators as listed in the table below, selected on the basis of 
-                                                  prior research and Extension community input.",
-                                                  br(),
-                                                  "We compute quintile cut-offs for each indicator after reverse-coding indicators as appropriate to 
-                                                  measure assets or deficits. For composites measuring assets, county placement in a 
-                                                  higher quintile indicates a better relative position on the indicator compared to other counties; 
-                                                  that is, it suggests higher community capital. Conversely, for composites measuring deficits,
-                                                  county placement in a higher quintile indicates a worse relative position compared to the county's 
-                                                  counterparts, and indicates lower community capital. To arrive at the final index value, we average 
-                                                  county quintile placement across the indicators composing the index. The more times a county places 
-                                                  in the highest quintiles on relevant indicators, the higher the index value. For composites measuring 
-                                                  assets (index maps shown in green), this suggests higher the community capital. For composites measuring
-                                                  deficits (index maps shown in brown), this suggests lower community capital.",
-                                                  br(),
-                                                  "More information about measurement, indicator choice, and references are coming soon."),
-                                              box(width = 12,
-                                                  title = "Measures and Data Sources",
-                                                  selectInput("topic", "Select capital:", width = "100%", choices = c(
-                                                    "All",
-                                                    "Financial",
-                                                    "Human",
-                                                    "Social",
-                                                    "Natural", 
-                                                    "Built", 
-                                                    "Political", 
-                                                    "Cultural")),
-                                                  DTOutput("measures_table"))
-                                            )
-                                    ),
-                                    
-                                    # CONTACT CONTENT -------------------------
-                                    tabItem(tabName = "contact",
-                                            fluidRow(
-                                              box(width = 4,
-                                                  title = "About Us",
-                                                  "We are a partnership of five universities—the University of Virginia, Virginia Tech, Virginia State University, 
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("nat_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                ),
+                                fluidRow(
+                                  box(
+                                    "COMING SOON."
+                                  )
+                                )
+                        ),
+                        
+                        # DATA AND METHODS CONTENT -------------------------
+                        tabItem(tabName = "datamethods",
+                                fluidRow(
+                                  box(width = 12,
+                                      title = "How We Measure Community Capitals",
+                                      "Our composite indices measure community capitals. Each composite index is based on multiple measures 
+                                       that were selected on the basis of prior research and Extension community input, and are displayed on the bottom-most maps.",
+                                      br(""),
+                                      "For measures composing each index, we compute quintile cut-offs after reverse-coding as 
+                                      appropriate to capture assets or deficits. For composites capturing assets, county placement in a 
+                                      higher quintile indicates a better relative position on the indicator compared to other counties; 
+                                      that is, it suggests higher community capital. Conversely, for composites capturing deficits,
+                                      county placement in a higher quintile indicates a worse relative position compared to the county's 
+                                      counterparts, and indicates lower community capital. To arrive at the final index value, we average 
+                                      county quintile placement across the measures composing the index.",
+                                      br(""),
+                                      "The more times a county places in the highest quintiles on relevant measures, the higher 
+                                      the index value, with a theoretical range of 1 (always placing in the lowest quintile) through 5 (always placing
+                                      in the highest quintile). For composites capturing assets, with index maps shown in green, this suggests higher 
+                                      community capital. For composites capturing deficits, with index maps shown in brown, this suggests lower community capital.",
+                                      br(""),
+                                      "More information about measurement, indicator choice, and references are coming soon."),
+                                  box(width = 12,
+                                      title = "Measures and Data Sources",
+                                      selectInput("topic", "Select capital:", width = "100%", choices = c(
+                                        "All",
+                                        "Financial",
+                                        "Human",
+                                        "Social",
+                                        "Natural", 
+                                        "Built", 
+                                        "Political", 
+                                        "Cultural")),
+                                      DTOutput("measures_table"))
+                                )
+                        ),
+                        
+                        # CONTACT CONTENT -------------------------
+                        tabItem(tabName = "contact",
+                                fluidRow(
+                                  box(width = 4,
+                                      title = "About Us",
+                                      "We are a partnership of five universities—the University of Virginia, Virginia Tech, Virginia State University, 
                                                   Iowa State University, and Oregon State University—funded by the Bill & Melinda Gates Foundation to pilot 
                                                   an initiative that will use data science to unravel complex, community challenges and advance economic 
                                                   mobility across Virginia, Iowa, and Oregon.", 
-                                                  br(""),
-                                                    a(href = "https://datascienceforthepublicgood.org/economic-mobility/about", "Learn more about us.")
-                                                  ),
-                                              box(width = 4,
-                                                  title = "Advancing Economic Mobility",
-                                                  "This project is part of our Advancing Economic Mobility: Towards A National Community Learning Network initiative,
+                                      br(""),
+                                      a(href = "https://datascienceforthepublicgood.org/economic-mobility/about", "Learn more about us.")
+                                  ),
+                                  box(width = 4,
+                                      title = "Advancing Economic Mobility",
+                                      "This project is part of our Advancing Economic Mobility: Towards A National Community Learning Network initiative,
                                                   which will amplify the viability of Cooperate Extension professionals to discover opportunities and enable the 
                                                   integration of data-driven governance at local and state levels.", 
-                                                  br(""),
-                                                  a(href = "https://datascienceforthepublicgood.org/economic-mobility/", "Learn more about the initiative.")
-                                              ),
-                                              box(width = 4,
-                                                  title = "Contact",
-                                                  "Please direct inquiries to", a(href = "https://biocomplexity.virginia.edu/teja-pristavec", "Teja Pristavec."))
-                                            )
-                                    )      
-                                  )
+                                      br(""),
+                                      a(href = "https://datascienceforthepublicgood.org/economic-mobility/", "Learn more about the initiative.")
+                                  ),
+                                  box(width = 4,
+                                      title = "Contact",
+                                      "Please direct inquiries to", a(href = "https://biocomplexity.virginia.edu/teja-pristavec", "Teja Pristavec."))
+                                )
+                        )      
+                      )
                     )
 )
 
@@ -2774,7 +2777,7 @@ server <- function(input, output, session) {
     data_var <- soc_data()$soc_limiteng
     var_label <- "Percent of Residents that are not Proficient in Speaking English"
     
-    create_indicator(soc_data(), data_var, var_label)
+    create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
   output$plotly_soc_iso_65alone <- renderPlotly({
@@ -3050,15 +3053,15 @@ server <- function(input, output, session) {
   #
   # Home Page InfoBox outputs -------------------------------------------------
   # 
-
+  
   output$fin_ibox <- renderInfoBox({
     ic <- apputils::icon(list(src = "icons/Financial.Dollar.Bill.jpg", width = "80px"), lib = "local")
     
     apputils::infoBox(title = a("Financial Capital", onclick = "openTab('financial')", href="#"), 
-            color = "olive",
-            validate.color = F,
-            icon = ic, 
-            value = tags$h5("Financial capital refers to the economic features of the community such as debt capital, investment capital,
+                      color = "olive",
+                      validate.color = F,
+                      icon = ic, 
+                      value = tags$h5("Financial capital refers to the economic features of the community such as debt capital, investment capital,
                             savings, tax revenue, tax abatements, and grants, as well as entrepreneurship, persistent poverty, 
                             industry concentration, and philanthropy.") 
     )
@@ -3068,8 +3071,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Human.Person.jpg", width = "60px"), lib = "local")
     
     apputils::infoBox(title = a("Human Capital", onclick = "openTab('human')", href="#"),
-            color = "olive", icon = ic, 
-            value = tags$h5("Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
+                      color = "olive", icon = ic, 
+                      value = tags$h5("Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
                             and other acquired or inherited traits essential for an optimal quality of life.")
     )
   })
@@ -3078,8 +3081,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Social.Tripod.jpg", width = "80px"), lib = "local")
     
     apputils::infoBox(title = a("Social Capital", onclick = "openTab('social')", href="#"),
-            color = "olive", icon = ic, 
-            value = tags$h5("Social capital refers to the resources, information, and support that communities can access 
+                      color = "olive", icon = ic, 
+                      value = tags$h5("Social capital refers to the resources, information, and support that communities can access 
                             through the bonds among members of the community and their families  that promote mutual trust, 
                             reciprocity, collective identity, and a sense of a shared future.")
     )
@@ -3089,8 +3092,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Built.Bricks.jpg", width = "80px"), lib = "local")
     
     apputils::infoBox(title = a("Built Capital", onclick = "openTab('built')", href="#"),
-            color = "olive", icon = ic, 
-            value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities, 
+                      color = "olive", icon = ic, 
+                      value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities, 
                             such as broadband and other information technologies, utilities, water/sewer systems, roads 
                             and bridges, business parks, hospitals, main street buildings, playgrounds, and housing.")
     )
@@ -3100,8 +3103,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Natural.Tree.jpg", width = "55px"), lib = "local")
     
     apputils::infoBox(title = a("Natural Capital", onclick = "openTab('natural')", href="#"),
-            color = "olive", icon = ic, 
-            value = tags$h5("Natural capital refers to the stock of natural or environmental ecosystem assets that provide a 
+                      color = "olive", icon = ic, 
+                      value = tags$h5("Natural capital refers to the stock of natural or environmental ecosystem assets that provide a 
                             flow of useful goods or services to create possibilities and limits to community development, 
                             such as air, water, soil, biodiversity, and weather.")
     )
@@ -3111,8 +3114,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Political.Govt.Bldg.jpg", width = "70px"), lib = "local")
     
     apputils::infoBox(title = a("Political Capital", onclick = "openTab('political')", href="#"),
-            color = "olive", icon = ic,
-            value = tags$h5("Political capital refers to the ability of a community to influence and enforce rules, regulations, 
+                      color = "olive", icon = ic,
+                      value = tags$h5("Political capital refers to the ability of a community to influence and enforce rules, regulations, 
                             and standards through their organizations, connections, voice, and power as citizens.")
     )
   })
@@ -3121,8 +3124,8 @@ server <- function(input, output, session) {
     ic <- apputils::icon(list(src = "icons/Cultural.Drama.Mask.jpg", width = "80px"), lib = "local")
     
     apputils::infoBox(title = a("Cultural Capital", onclick = "openTab('cultural')", href="#"),
-            color = "olive", icon = ic, 
-            value = tags$h5("Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
+                      color = "olive", icon = ic, 
+                      value = tags$h5("Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
                             from membership in a particular cultural group, often developing over generations, and provide a basis 
                             for collective efforts to solve community problems.")
     )
