@@ -1,6 +1,6 @@
 ﻿capital,index,measure,data,year,geography
 financial,commerce,"number of businesses per 10,000 people",US Census Bureau County Business Patterns,2018,county
-financial,commerce,"number of new businesses per 10,000 people",US Census Bureau County Business Patterns,2014/18,county
+financial,commerce,"number of new businesses 2014-2018 per 10,000 people",US Census Bureau County Business Patterns,2014/18,county
 financial,agriculture,percent county in agriculture acres,USDA National Agricultural Statistics Service Census of Agriculture,2017,county
 financial,agriculture,land value per acre ,USDA National Agricultural Statistics Service Census of Agriculture,2017,county
 financial,agriculture,net income per farm operation in USD,USDA National Agricultural Statistics Service Census of Agriculture,2017,county
@@ -21,7 +21,7 @@ financial,employment,percent of working age population in labor force,US Census 
 human,health,average number of reported monthly poor physical health days,Robert Wood Johnson County Health Rankings,2020,county
 human,health,average number of reported monthly poor mental health days,Robert Wood Johnson County Health Rankings,2020,county
 human,health,percent of adults reporting no leisure-time physical activity,Robert Wood Johnson County Health Rankings,2020,county
-human,health,"number of rimary care physicians per 100,000 population",Robert Wood Johnson County Health Rankings,2020,county
+human,health,"number of primary care physicians per 100,000 population",Robert Wood Johnson County Health Rankings,2020,county
 human,health,"number of mental health providers per 100,000 population",Robert Wood Johnson County Health Rankings,2020,county
 human,education,percent population with at least a high school degree,US Census Bureau American Community Survey,2014/18,county
 human,education,average 3rd grade reading proficiency,Robert Wood Johnson County Health Rankings,2020,county
