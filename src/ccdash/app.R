@@ -269,7 +269,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_co_bus")
                                                                      )
                                                                    )
@@ -284,7 +284,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_co_newbus")
                                                                      )
                                                                    )
@@ -324,7 +324,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_ag_acres")
                                                                      )
                                                                    )
@@ -339,7 +339,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_ag_landval")
                                                                      )
                                                                    )
@@ -354,7 +354,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_ag_netin")
                                                                      )
                                                                    )
@@ -369,7 +369,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_ag_employ")
                                                                      )
                                                                    )
@@ -410,7 +410,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_econdiv_emphhi")
                                                                      )
                                                                    )
@@ -425,7 +425,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_econdiv_payhhi")
                                                                      )
                                                                    )
@@ -466,7 +466,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_gini")
                                                                      )
                                                                    )
@@ -481,7 +481,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_pov")
                                                                      )
                                                                    )
@@ -496,7 +496,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_assist")
                                                                      )
                                                                    )
@@ -511,7 +511,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_ssi")
                                                                      )
                                                                    )
@@ -526,7 +526,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_medinc")
                                                                      )
                                                                    )
@@ -541,7 +541,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_lessba")
                                                                      )
                                                                    )
@@ -556,7 +556,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_finwell_debtcol")
                                                                      )
                                                                    )
@@ -597,7 +597,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_employ_unempprecovid")
                                                                      )
                                                                    )
@@ -612,7 +612,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_employ_unempcovid")
                                                                      )
                                                                    )
@@ -627,7 +627,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_employ_commute")
                                                                      )
                                                                    )
@@ -642,7 +642,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_fin_employ_labforce")
                                                                      )
                                                                    )
@@ -727,7 +727,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_health_poorphys")
                                                                      )
                                                                    )
@@ -742,7 +742,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_health_poorment")
                                                                      )
                                                                    )
@@ -757,7 +757,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_health_nophys")
                                                                      )
                                                                    )
@@ -772,7 +772,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_health_primcare")
                                                                      )
                                                                    )
@@ -787,7 +787,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_health_menthealthprov")
                                                                      )
                                                                    )
@@ -828,7 +828,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_edu_hs")
                                                                      )
                                                                    )
@@ -843,7 +843,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_edu_read")
                                                                      )
                                                                    )
@@ -858,7 +858,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_edu_math")
                                                                      )
                                                                    )
@@ -896,7 +896,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_childcare_payratio")
                                                                      )
                                                                    )
@@ -911,7 +911,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_childcare_singpar")
                                                                      )
                                                                    )
@@ -926,7 +926,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_childcare_womenhs")
                                                                      )
                                                                    )
@@ -965,7 +965,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_despair_divorce")
                                                                      )
                                                                    )
@@ -980,7 +980,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_despair_unemp")
                                                                      )
                                                                    )
@@ -995,7 +995,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_despair_whitemhs")
                                                                      )
                                                                    )
@@ -1010,7 +1010,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_hum_despair_aggdeaths")
                                                                      )
                                                                    )
@@ -1096,7 +1096,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_eng_census")
                                                                      )
                                                                    )
@@ -1111,7 +1111,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_eng_turnout")
                                                                      )
                                                                    )
@@ -1126,7 +1126,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_eng_civic")
                                                                      )
                                                                    )
@@ -1141,7 +1141,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_eng_nonprof")
                                                                      )
                                                                    )
@@ -1180,7 +1180,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_juvarrests")
                                                                      )
                                                                    )
@@ -1195,7 +1195,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_violentcrimes")
                                                                      )
                                                                    )
@@ -1210,7 +1210,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_grandparent")
                                                                      )
                                                                    )
@@ -1225,7 +1225,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_homeown")
                                                                      )
                                                                    )
@@ -1240,7 +1240,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_samehouse")
                                                                      )
                                                                    )
@@ -1255,7 +1255,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_rel_nonrel")
                                                                      )
                                                                    )
@@ -1293,7 +1293,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_commute")
                                                                      )
                                                                    )
@@ -1308,7 +1308,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_english")
                                                                      )
                                                                    )
@@ -1323,7 +1323,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_65alone")
                                                                      )
                                                                    )
@@ -1338,7 +1338,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_mentalhealth")
                                                                      )
                                                                    )
@@ -1353,7 +1353,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_suicide")
                                                                      )
                                                                    )
@@ -1368,7 +1368,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_soc_iso_comp")
                                                                      )
                                                                    )
@@ -1472,7 +1472,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_nat_quantres_farmland")
                                                                      )
                                                                    )
@@ -1487,7 +1487,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_nat_quantres_water")
                                                                      )
                                                                    )
@@ -1502,7 +1502,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_nat_quantres_forestsales")
                                                                      )
                                                                    )
@@ -1517,7 +1517,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_nat_quantres_rev")
                                                                      )
                                                                    )
@@ -1555,7 +1555,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      ),
                                                                      column(
                                                                        width = 6,
-                                                                       h5(strong("Indicator Box Plot")),
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
                                                                        plotlyOutput("plotly_nat_qualres_part")
                                                                      )
                                                                    )
@@ -1757,7 +1757,7 @@ server <- function(input, output, session) {
       addLegend("bottomleft",
                 pal = pal,
                 values =  ~(myvar),
-                title = "Value",
+                title = "Quintile Range",
                 opacity = 0.7,
                 na.label = "Not Available",
                 labFormat = function(type, cuts, p) {

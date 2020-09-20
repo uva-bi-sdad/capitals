@@ -115,7 +115,7 @@ data <- data %>% mutate(fin_newestper10k = fin_estper10k - (est14/totalpop14 * 1
 # fin_aphhi: Square the share of payroll (ap_share) for each industry within a county, then sum those squared values to receive the HHI for that county. 
 
 # Prepare
-cbpforindex <- read_csv("./data/financial/fin_cbp_2018_orig.txt")
+cbpforindex <- read_csv("./rivanna_data/financial/fin_cbp_2018_orig.txt")
 cbpforindex <- cbpforindex %>% filter(fipstate == 41 | fipstate == 51 | fipstate == 19)
 cbpforindex$GEOID <- paste0(cbpforindex$fipstate, cbpforindex$fipscty)
 
