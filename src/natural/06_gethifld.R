@@ -19,7 +19,7 @@ library(naniar)
 
 
 # Read in power plant shapefile
-power = st_read("data/natural/nat_hifld_2020/Power_Plants.shp")
+power = st_read("rivanna_data/natural/nat_hifld_2020/Power_Plants.shp")
 
 # Get counties and geometries from acs
 Sys.getenv("CENSUS_API_KEY")
@@ -63,7 +63,7 @@ wells = st_read(file.choose())
 
 # RDS file containing only three states of interest will be pushed
 wells_3state = wells %>% filter(STATE %in% c("IA", "OR", "VA"))
-write_rds(wells_3state, "data/natural/nat_hifld_2020/nat_hifld_2020_wells.rds")
+write_rds(wells_3state, "rivanna_data/natural/nat_hifld_2020/nat_hifld_2020_wells.rds")
 
 # Count the number of wells in each county and clean up names and geometry
 county_wells = wells_3state %>% group_by(COUNTYFIPS) %>% count()
@@ -93,4 +93,4 @@ hifld$well_count %<>% replace_na(0)
 hifld$plant_count %<>% replace_na(0)
 hifld$power %<>% replace_na(0)
 
-write_rds(hifld, "data/natural/nat_hifld_2020/nat_hifld_2020.rds")
+write_rds(hifld, "rivanna_data/natural/nat_hifld_2020/nat_hifld_2020.rds")

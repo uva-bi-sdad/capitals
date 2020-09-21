@@ -13,6 +13,7 @@ library(DT)
 library(RColorBrewer)
 library(stringr)
 library(apputils)
+library(shinyalert)
 
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
@@ -163,6 +164,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                       
                       useShinyjs(),
                       introjsUI(),
+                      useShinyalert(),
                       
                       tabItems(
                         
@@ -221,19 +223,17 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
                                       width = 12,
-                                      column(width = 3,
-                                             strong("Select Your Index"),
-                                             p(),
+                                      column(11,
                                              radioGroupButtons(
                                                inputId = "finidx_choice", 
                                                choices = c("COMMERCE", "AGRICULTURE", "ECONOMIC DIVERSIFICATION", 
                                                            "FINANCIAL WELL-BEING", "EMPLOYMENT"),
                                                checkIcon = list(yes = icon("angle-double-right")),
-                                               direction = "vertical", width = "100%",
-                                               justified = TRUE, status = "success")
+                                               direction = "horizontal", width = "100%",
+                                               justified = FALSE, status = "success", individual = TRUE)
                                       ),
-                                      column(width = 9,
-                                             includeHTML("index_interpretation.html")
+                                      column(1,
+                                             circleButton(inputId = "infobutton_fin", icon = icon("info"), status = "info", size = "sm")
                                       )
                                   )
                                   
@@ -679,20 +679,18 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
                                       width = 12,
-                                      column(width = 3,
-                                             strong("Select Your Index"),
-                                             p(),
+                                      column(11,
                                              radioGroupButtons(
                                                inputId = "humidx_choice", #label = "Make a choice :",
                                                choices = c("HEALTH", "EDUCATION", "CHILD CARE", 
                                                            "DESPAIR"),
                                                checkIcon = list(yes = icon("angle-double-right")),
-                                               direction = "vertical", width = "100%",
-                                               justified = TRUE, status = "success")
+                                               direction = "horizontal", width = "100%",
+                                               justified = FALSE, status = "success", individual = TRUE),
+                                             tags$script("$(\"input:radio[name='humidx_choice'][value='DESPAIR']\").parent().css('background-color', '#A59200');")
                                       ),
-                                      tags$script("$(\"input:radio[name='humidx_choice'][value='DESPAIR']\").parent().css('background-color', '#A59200');"),
-                                      column(width = 9,
-                                             includeHTML("index_interpretation.html")
+                                      column(1,
+                                             circleButton(inputId = "infobutton_hum", icon = icon("info"), status = "info", size = "sm")
                                       )
                                   )
                                   
@@ -1049,19 +1047,17 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
                                       width = 12,
-                                      column(width = 3,
-                                             strong("Select Your Index"),
-                                             p(),
+                                      column(11,
                                              radioGroupButtons(
                                                inputId = "socidx_choice", #label = "Make a choice :",
                                                choices = c("SOCIAL ENGAGEMENT", "ISOLATION"), # SOCIAL RELATIONSHIPS
                                                checkIcon = list(yes = icon("angle-double-right")),
-                                               justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                               justified = FALSE, status = "success", 
+                                               direction = "horizontal", width = "100%", individual = TRUE),
+                                             tags$script("$(\"input:radio[name='socidx_choice'][value='ISOLATION']\").parent().css('background-color', '#A59200');")
                                       ),
-                                      tags$script("$(\"input:radio[name='socidx_choice'][value='ISOLATION']\").parent().css('background-color', '#A59200');"),
-                                      column(width = 9,
-                                             includeHTML("index_interpretation.html")
-                                      )
+                                      column(1, 
+                                             circleButton(inputId = "infobutton_soc", icon = icon("info"), status = "info", size = "sm"))
                                   )
                                   
                                 ),
@@ -1427,17 +1423,16 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
                                       width = 12,
-                                      column(width = 3,
-                                             strong("Select Your Index"),
-                                             p(),
+                                      column(11,
                                              radioGroupButtons(
                                                inputId = "natidx_choice", #label = "Make a choice :",
                                                choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
                                                checkIcon = list(yes = icon("angle-double-right")),
-                                               justified = TRUE, status = "success", direction = "vertical", width = "100%")
+                                               justified = FALSE, status = "success", 
+                                               direction = "horizontal", width = "100%", individual = TRUE)
                                       ),
-                                      column(width = 9,
-                                             includeHTML("index_interpretation.html")
+                                      column(1,
+                                             circleButton(inputId = "infobutton_nat", icon = icon("info"), status = "info", size = "sm")
                                       )
                                   )
                                   
@@ -1678,6 +1673,24 @@ server <- function(input, output, session) {
   cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
   cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
+  # Info button content ---------------------
+  observeEvent(input$infobutton_fin, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  observeEvent(input$infobutton_hum, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  observeEvent(input$infobutton_soc, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  observeEvent(input$infobutton_nat, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
     
@@ -1699,7 +1712,7 @@ server <- function(input, output, session) {
                   color = ~irr2010_discretize,
                   marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
                   hoverinfo = "text",
-                  text = ~paste0("Rurality Index: ", round(irr2010,2),
+                  text = ~paste0("Rurality Index: ", round(irr2010, 2),
                                  "<br>County: ",county),
                   showlegend = TRUE) %>%
       layout(title = "",

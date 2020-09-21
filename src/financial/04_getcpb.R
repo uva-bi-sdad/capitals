@@ -132,8 +132,8 @@ cbpforindex_totals <- cbpforindex_totals %>% rename(emp_total = emp, ap_total = 
 
 # Calculate industry shares, then total index
 cbpforindex <- left_join(cbpforindex, cbpforindex_totals, by = "GEOID")
-cbpforindex <- cbpforindex %>% mutate(share_emp = emp/emp_total * 100, 
-                                      share_ap = ap/ap_total * 100,
+cbpforindex <- cbpforindex %>% mutate(share_emp = emp/emp_total, 
+                                      share_ap = ap/ap_total,
                                       share_emp_sq = share_emp^2,
                                       share_ap_sq = share_ap^2)
 cbpforindex <- cbpforindex %>% group_by(GEOID) %>%
