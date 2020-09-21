@@ -1710,10 +1710,10 @@ server <- function(input, output, session) {
       add_markers(x = ~jitter(as.numeric(group), amount = 0.1), 
                   y = ~myvar, 
                   color = ~irr2010_discretize,
-                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
+                  marker = list(size = 8, line = list(width = 1, color = "#3C3C3C")),
                   hoverinfo = "text",
                   text = ~paste0("Rurality Index: ", round(irr2010, 2),
-                                 "<br>County: ",county),
+                                 "<br>County: ", county),
                   showlegend = TRUE) %>%
       layout(title = "",
              legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
