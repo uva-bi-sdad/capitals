@@ -6,10 +6,10 @@ library(tidyr)
 library(tigris)
 library(naniar)
 
-# Documentation for creating shapefile used here is found in data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails_documentation.txt
+# Documentation for creating shapefile used here is found in ./rivanna_data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails_documentation.txt
 
 # Read in segmented trail data (Previously exported from QGIS)
-trails = st_read("data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.shp")
+trails = st_read("./rivanna_data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.shp")
   
 # Find length of each trail segment
 trails$length = st_length(trails)
@@ -56,4 +56,4 @@ county_trails$total_trails %<>% replace_na(0)
 # Adjust for population
 county_trails %<>% mutate(nat_trailsper1k = (total_trails/POPESTIMATE2019) * 1000)
 
-write_rds(county_trails, "data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.rds")
+write_rds(county_trails, "./rivanna_data/natural/nat_usgs_2020_trails/nat_usgs_2020_trails.rds")

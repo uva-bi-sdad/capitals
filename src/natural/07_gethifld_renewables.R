@@ -9,7 +9,7 @@ library(tigris)
 # 43% of counties do not have a power plant fueled by renewables
 
 # Read in power plant shapefile
-power = st_read("data/natural/nat_hifld_2020/Power_Plants.shp")
+power = st_read("./rivanna_data/natural/nat_hifld_2020/Power_Plants.shp")
 
 # Subset to only renewables
 # 221111: Hydroelectric, 221114: Solar, 221115: Wind, 221116: Geothermal, 221117: Biomass
@@ -20,7 +20,7 @@ counties = counties(state = c("19", "41", "51"), class = "sf")
 counties %<>% select(STATEFP, COUNTYFP, GEOID, NAME, ALAND, AWATER)
 
 # Get county populations
-counties_pop = read_csv("data/natural/nat_census_2019_pop.csv")
+counties_pop = read_csv("./rivanna_data/natural/nat_census_2019_pop.csv")
 counties_pop %<>% mutate(GEOID = paste0(STATE, COUNTY))
 counties_pop %<>% filter(STATE %in% c("19", "41", "51")) %>% select(GEOID, POPESTIMATE2019)
 
@@ -72,4 +72,4 @@ counties_ren_power %<>% mutate(nat_renpowerper1k = (ren_power/POPESTIMATE2019) *
 counties_ren_power %<>% mutate(nat_renplantsper1k = (plant_count/POPESTIMATE2019) * 1000)
 
 
-write_rds(counties_ren_power, "data/natural/nat_hifld_2020/nat_hifld_2020_renewables.rds")
+write_rds(counties_ren_power, "./rivanna_data/natural/nat_hifld_2020/nat_hifld_2020_renewables.rds")
