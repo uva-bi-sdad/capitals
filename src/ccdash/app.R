@@ -1675,19 +1675,19 @@ server <- function(input, output, session) {
   
   # Info button content ---------------------
   observeEvent(input$infobutton_fin, {
-    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
   observeEvent(input$infobutton_hum, {
-    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
   observeEvent(input$infobutton_soc, {
-    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
   observeEvent(input$infobutton_nat, {
-    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l",
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
   
