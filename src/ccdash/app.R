@@ -1620,21 +1620,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 fluidRow(
                                   box(width = 12,
                                       title = "How We Measure Community Capitals",
-                                      "Our composite indices measure community capitals. Each composite index is based on multiple measures 
-                                       that were selected on the basis of prior research and Extension community input, and are displayed on the bottom-most maps.",
-                                      br(""),
-                                      "For measures composing each index, we compute quintile cut-offs after reverse-coding as 
-                                      appropriate to capture assets or deficits. For composites capturing assets, county placement in a 
-                                      higher quintile indicates a better relative position on the indicator compared to other counties; 
-                                      that is, it suggests higher community capital. Conversely, for composites capturing deficits,
-                                      county placement in a higher quintile indicates a worse relative position compared to the county's 
-                                      counterparts, and indicates lower community capital. To arrive at the final index value, we average 
-                                      county quintile placement across the measures composing the index.",
-                                      br(""),
-                                      "The more times a county places in the highest quintiles on relevant measures, the higher 
-                                      the index value, with a theoretical range of 1 (always placing in the lowest quintile) through 5 (always placing
-                                      in the highest quintile). For composites capturing assets, with index maps shown in green, this suggests higher 
-                                      community capital. For composites capturing deficits, with index maps shown in brown, this suggests lower community capital.",
+                                      includeHTML("index_interpretation.html"),
                                       br(""),
                                       "More information about measurement, indicator choice, and references are coming soon."),
                                   box(width = 12,
