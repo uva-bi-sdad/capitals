@@ -45,15 +45,15 @@ fire %<>% filter(STATEFP %in% c("19", "41", "51"))
 
 
 # Count the number of each in each county and fix names/geometry
-county_cell <- cell %>% group_by(GEOID) %>% count() %<>% st_drop_geometry()
+county_cell <- cell %>% group_by(GEOID) %>% count() %<>% st_drop_geometry() %>% ungroup()
 names(county_cell) = c("GEOID", "cell_tower_count")
-county_electric <- electric %>% group_by(GEOID) %>% count() %<>% st_drop_geometry()
+county_electric <- electric %>% group_by(GEOID) %>% count() %<>% st_drop_geometry() %>% ungroup()
 names(county_electric) = c("GEOID", "electric_substations_count")
-county_ems <- ems %>% group_by(GEOID) %>% count() %<>% st_drop_geometry()
+county_ems <- ems %>% group_by(GEOID) %>% count() %<>% st_drop_geometry() %>% ungroup()
 names(county_ems) = c("GEOID", "ems_stations_count")
-county_waste_water <- waste_water %>% group_by(GEOID) %>% count() %<>% st_drop_geometry()
+county_waste_water <- waste_water %>% group_by(GEOID) %>% count() %<>% st_drop_geometry() %>% ungroup()
 names(county_waste_water) = c("GEOID", "waste_water_treatment_count")
-county_fire <- fire %>% group_by(GEOID) %>% count() %<>% st_drop_geometry()
+county_fire <- fire %>% group_by(GEOID) %>% count() %<>% st_drop_geometry() %>% ungroup()
 names(county_fire) = c("GEOID", "fire_station_count")
 
 
@@ -78,10 +78,15 @@ miss_var_summary(hifld_built)
 # cell_tower_count                 0    0
 # fire_station_count               0    0
 
+# Create whole DF linked back to ACS with geometry
+data <- left_join(acsdata, hifld_built, by = "GEOID")
 
 # Replace NAs with zeros
-hifld_built$waste_water_treatment_count %<>% replace_na(0)
-hifld_built$electric_substations_count %<>% replace_na(0)
-hifld_built$ems_stations_count %<>% replace_na(0)
+data$cell_tower_count %<>% replace_na(0)
+data$electric_substations_count %<>% replace_na(0)
+data$waste_water_treatment_count %<>% replace_na(0)
+data$fire_station_count %<>% replace_na(0)
+data$ems_stations_count %<>% replace_na(0)
 
-write_rds(hifld_built, "rivanna_data/built/nat_hifldbuilt_2020.rds")
+# Write
+write_rds(data, "rivanna_data/built/nat_hifldbuilt_2020.rds")
