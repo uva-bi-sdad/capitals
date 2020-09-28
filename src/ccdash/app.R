@@ -64,7 +64,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         menuItem(text = "Political", tabName = "political", icon = icon("balance-scale-left")),
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("landmark")),
                         menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("")),
-                        menuItem(text = "Contact", tabName = "contact", icon = icon(""))
+                        menuItem(text = "About Us", tabName = "contact", icon = icon(""))
                       )
                     ),
                     
@@ -1656,7 +1656,94 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   box(width = 4,
                                       title = "Contact",
                                       "Please direct inquiries to", a(href = "https://biocomplexity.virginia.edu/teja-pristavec", "Teja Pristavec."))
+                                ),
+                                
+                                fluidRow(
+                                  box(width = 12,
+                                      title = "Acknowledgements",
+                                      p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
+                                      
+                                      #column(width = 4,
+                                             #h5(strong("Cooperative Extension")),
+                                             tags$a(tags$img(src = "CES_logo.jpg", width = '20%'), href = "https://www.aplu.org/members/commissions/food-environment-and-renewable-resources/board-on-agriculture-assembly/cooperative-extension-section/"),
+                                             br(), br(),
+                                             tags$ul(
+                                               tags$li("Daniel Goerlich"),
+                                               tags$li("Ed Jones"),
+                                               tags$li("Michael Lambur"),
+                                               tags$li("Cathy Sutphin"),
+                                               style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                      br(),
+
+                                             
+                                      #),
+                                      
+                                      #column(width = 4,
+                                             #h5(strong("Iowa State University")),
+                                             tags$a(tags$img(src = "ISU_logo.png", width = '15%'), href = "https://www.iastate.edu/"),
+                                             br(), br(),
+                                             tags$ul(em("Faculty:"),
+                                               tags$li("Todd Abraham, Assistant Director of Data and Analytics for the Iowa Integrated Data System"),
+                                               tags$li("Cass Dorius, Associate Professor of Human Development and Family Studies"), 
+                                               tags$li("Shawn Dorius, Associate Professor of Sociology"),
+                                               style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             tags$ul(em("Graduate Fellows:"),
+                                               tags$li("Atefeh Rajabalizadah"),
+                                               tags$li("Haley Jeppson"),
+                                               tags$li("Kishor Sridhar"), 
+                                               style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             tags$ul(em("Undergraduate Interns:"),
+                                               tags$li("Jessie Bustin"),
+                                               tags$li("Grant Durbahn"), 
+                                               tags$li("Vikram Magal"),
+                                               tags$li("Katie Thompson"), 
+                                               tags$li("Joel Von Behren"),
+                                               tags$li("Matthew Voss"), 
+                                               style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                      br(),
+
+                                      #),
+                                      
+                                      #column(width = 4,
+                                             #h5(strong("University of Virginia")),
+                                             tags$a(tags$img(src = "BII_logo.png", width = '30%'), href = "https://biocomplexity.virginia.edu/"),
+                                             br(), br(),
+                                             tags$ul(em("Social and Decision Analytics Division:"),
+                                                     tags$li("Sallie Keller, Division Director, Distinguished Professor in Biocomplexity, and Professor of Public Health Sciences, School of Medicine"),
+                                                     tags$li("Brandon Kramer, Postdoctoral Research Associate"),
+                                                     tags$li("Vicki Lancaster, Principal Scientist"),
+                                                     tags$li("Kathryn Linehan, Research Scientist"),
+                                                     tags$li("Cesar Montalvo, Postdoctoral Research Associate"),
+                                                     tags$li("Teja Pristavec, Research Assistant Professor"),
+                                                     tags$li("Stephanie Shipp, Deputy Division Director and Research Professor"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             
+                                             tags$ul(em("Graduate Fellows:"),
+                                                     tags$li("Lara Haase"),
+                                                     tags$li("Morgan Stockham"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             tags$ul(em("Undergraduate Interns:"),
+                                                     tags$li("Riya Berry"),
+                                                     tags$li("Tasfia Chowdhury"),
+                                                     tags$li("Martha Czernuszenko"),
+                                                     tags$li("Saimun Habib"),
+                                                     tags$li("Owen Hart"),
+                                                     tags$li("Sarah McDonald"),
+                                                     tags$li("Vatsala Ramanan"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             )
+                                             
+                                      #)
+                                  )
+
                                 )
+     
                         )      
                       )
                     )
