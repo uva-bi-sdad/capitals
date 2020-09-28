@@ -228,7 +228,7 @@ acs_city_18 <- acs_city_18 %>% transmute(
   hisp_empl = ((C23002I_007E + C23002I_012E + C23002I_020E + C23002I_025E)/(C23002I_001E))*100,
   hisp_18 = ((B01001I_007E + B01001I_008E + B01001I_009E + B01001I_010E + B01001I_011E + B01001I_012E + B01001I_013E + B01001I_014E + B01001I_015E + B01001I_016E + 
                 B01001I_018E + B01001I_019E + B01001I_020E + B01001I_021E + B01001I_022E + B01001I_023E + B01001I_024E + B01001I_025E + B01001I_026E + B01001I_027E + B01001I_028E +
-                B01001I_029E + B01001I_030E + B01001I_031E)/(B03003_003E/B01003_001E))*100, 
+                B01001I_029E + B01001I_030E + B01001I_031E)/(B03003_003E))*100, 
   year = 2018
 )
 
@@ -238,7 +238,73 @@ acs_city_18$county <- acs_city_18$NAME.x
 acs_cty_10 <- st_drop_geometry(acs_cty_10)
 acs_cty <- full_join(acs_cty_18,acs_cty_10)
 
+# County Table Creation
 
+acs_cty <- acs_cty %>%
+  select(-NAME.x) %>%
+  rename(NAME = NAME.y)
+
+acs_cty[2,5] <- 1482776065
+acs_cty[2,6] <- 1803080
+acs_cty[2,24] <- acs_cty$geometry[1]
+
+# City Table Creation
+
+marshall_city <- data.frame()
+
+marshall_city[1,1] <- "2014-2018 ACS"
+marshall_city[2,1] <- "2011-2015 ACS"
+marshall_city[3,1] <- "2010 Census"
+marshall_city[4,1] <- "2000 Census"
+
+marshall_city[1,2] <- 27275
+marshall_city[1,3] <- 28.85
+
+marshall_city[2,2] <- 27770
+marshall_city[2,3] <- 27.3
+
+marshall_city[3,2] <- 27552
+marshall_city[3,3] <- 24.1
+
+marshall_city[4,2] <- 26023
+marshall_city[4,3] <- 12.6
+
+marshall_city <- t(marshall_city)
+
+rownames(marshall_city) <- c("Data Source", "Total Population", "Percentage Hispanic")
+table1 <- marshall_city
+
+table2 <- data.frame()
+table2[1,1] <- marshall_city[3,1]
+table2[1,2] <- 78.23
+table2[1,3] <- 70.27
+rownames(table2) <- "2014-2018 ACS"
+colnames(table2) <- c("Percentage Hispanic", "Percentage Hispanic Older than 18", "Percentage Hispanic Employed")
+  
+table3 <- data.frame()
+table3[1,1] <- 2000
+table3[2,1] <- 2000
+table3[3,1] <- 2015
+table3[4,1] <- 2015
+table3[5,1] <- 2018
+table3[6,1] <- 2018
+
+table3[1,2] <- "Female"
+table3[2,2] <- "Male"
+table3[3,2] <- "Female"
+table3[4,2] <- "Male"
+table3[5,2] <- "Female"
+table3[6,2] <- "Male"
+
+# this table has raw values for 2000 and 2015, but percentages for 2018
+
+table3[1,3:7] <- c(260, 412, 356, 382, 25)
+table3[2,3:7] <- c(277, 438, 535, 567, 13)
+table3[3,3:7] <- c(504, 1183, 672, 1267, 17)
+table3[4,3:7] <- c(527, 1206, 777, 1337, 93)
+table3[5,3:7] <- c(49.11, 49.37, 36.82, 26.59, 3.91)
+table3[6,3:7] <- c(51.67, 52.67, 37.78, 23.85, 2.61)
+colnames(table3) <- c("Year", "Gender", "<5", "6-17", "18-29", "30-64", "65+")
 
 #
 # Write ------------------------------------------------------------------------
