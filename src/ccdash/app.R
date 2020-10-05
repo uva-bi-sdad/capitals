@@ -175,10 +175,12 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   box(width = 4,
                                       align = "left",
                                       title = "Economic Mobility Data Infrastructure",
-                                      "Economic Mobility Data Infrastructure builds on the community capitals framework by infusing the seven capital areas with a data science core.
+                                      strong("Economic Mobility Data Infrastructure"), "builds on the community capitals framework by infusing the seven capital areas with a data science core.
                                                   The resulting quantitative assessments are designed for characterizing economic mobility across multiple locales and promoting positive change.",
                                       br(""),
                                       "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
+                                      br(""),
+                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
                                       br(""),
                                       img(src = "framework.png", class = "topimage", width = "100%",
                                           style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
