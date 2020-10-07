@@ -19,6 +19,7 @@ datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
+data_pol <- read_rds("data/pol_final.rds")
 
 measures <- read.csv("data/measures.csv")
 
@@ -1562,13 +1563,15 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 )
                         ),  
                         
-                        # POLITICAL CAPITAL CONTENT -------------------------
+                        # POLITICAL CAPITAL CONTENT -------------------------------------------------
+                        
                         tabItem(tabName = "political",
+                                
                                 fluidRow(
                                   box(title = "About Political Capital",
                                       width = 9,
-                                      "Political capital refers to the ability of a community to influence and enforce rules, regulations, 
-                    and standards through their organizations, connections, voice, and power as citizens."
+                                      "Political capital refers to the ability of a community to influence and enforce rules, 
+                                      regulations, and standards through their organizations, connections, voice, and power as citizens."
                                   ),
                                   box(title = "Select Your State",
                                       width = 3,
@@ -1578,14 +1581,136 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                  "Virginia"), 
                                                   selected = "Iowa")
                                   )
-                                ),
+                                  ),
                                 
                                 fluidRow(
                                   box(
-                                    "COMING SOON."
+                                    width = 12,
+                                    column(11,
+                                           h4(strong("Explore the Political Domains"))
+                                           # radioGroupButtons(
+                                           #   inputId = "finidx_choice", 
+                                           #   choices = c("POLITICAL CAPITAL INDEX", "POLICY ASSETS"
+                                           #               ),
+                                           #   checkIcon = list(yes = icon("angle-double-right")),
+                                           #   direction = "horizontal", width = "100%",
+                                           #   justified = FALSE, status = "success", individual = TRUE)
+                                    ),
+                                    column(1,
+                                           #infobutton_fin
+                                           circleButton(inputId = "pcindex_info", icon = icon("info"), status = "info", size = "sm")
+                                    )
                                   )
+                                  
+                                ),
+                                
+                                # POLITICAL PANEL ------------------------------------------
+                                
+                                tabPanel("input.finidx_choice == 'POLITICAL CAPITAL INDEX'",
+                                         
+                                         fluidRow(
+                                           
+                                           box(title = "Political Capital Index",
+                                               width = 12,
+                                               #h5(strong("County-Level Map")),
+                                               
+                                               #leafletOutput("mainplot2")
+                                               leafletOutput("plot_political_index")
+                                               #leafletOutput("plot_fin_index_commerce")
+                                               
+                                           )
+                                           
+                                         ),
+                                         fluidRow(
+                                           tabBox(title = "Political Capital Measures",
+                                                  id = "tab_indexfin_co",
+                                                  width = 12,
+                                                  side = "right",
+                                                  tabPanel(title = "Contributions",
+                                                           fluidRow(
+                                                             box(
+                                                               width = 12,
+                                                               column(11,
+                                                                      h4(strong("Number of Contributors per 1,000 People"), align = "center")
+                                                               ),
+                                                               column(1,
+                                                                      circleButton(inputId = "contribution_info", icon = icon("info"), status = "info", size = "sm")
+                                                               )
+                                                               #infobutton_fin
+                                                             ),
+                                                             
+                                                             #h4(strong("Number of Contributors per 1,000 People"), align = "center"),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("County-Level Map")),
+                                                               leafletOutput("leaflet_contrib")
+                                                               #leafletOutput("plot_fin_co_bus")
+                                                             ),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("Measure Box Plot and Values by Rurality")),
+                                                               plotlyOutput("plotly_contrib")
+                                                             )
+                                                           )
+                                                  ),
+                                                  tabPanel(title = "Participation",
+                                                           fluidRow(
+                                                             box(
+                                                               width = 12,
+                                                               column(11,
+                                                                      h4(strong("Number of Organizations per 1,000 People"), align = "center")
+                                                               ),
+                                                               column(1,
+                                                                      circleButton(inputId = "participation_info2", icon = icon("info"), status = "info", size = "sm")
+                                                               )
+                                                               #infobutton_fin
+                                                             ),
+                                                             
+                                                             #h4(strong("Number of Organizations per 1,000 People"), align = "center"),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("County-Level Map")),
+                                                               leafletOutput("leaflet_organization")
+                                                             ),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("Measure Box Plot and Values by Rurality")),
+                                                               plotlyOutput("plotly_organization")
+                                                             )
+                                                           )
+                                                  )
+                                                  ,
+                                                  tabPanel(title = "Representation",
+                                                           fluidRow(
+                                                             
+                                                             box(
+                                                               width = 12,
+                                                               column(11,
+                                                                      h4(strong("Voters divided by Voting-age Population"), align = "center")
+                                                               ),
+                                                               column(1,
+                                                                      circleButton(inputId = "representation_info2", icon = icon("info"), status = "info", size = "sm")
+                                                               )
+                                                               #infobutton_fin
+                                                             ),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("County-Level Map")),
+                                                               leafletOutput("leaflet_voters")
+                                                             ),
+                                                             column(
+                                                               width = 6,
+                                                               h5(strong("Measure Box Plot and Values by Rurality")),
+                                                               plotlyOutput("plotly_voters")
+                                                             )
+                                                           )
+                                                  )
+                                                  
+                                           )
+                                         )
                                 )
-                        ),  
+                                
+                      ),
                         
                         # CULTURAL CAPITAL CONTENT -------------------------
                         tabItem(tabName = "cultural",
@@ -2917,7 +3042,6 @@ server <- function(input, output, session) {
   }) 
   
   # 
-  # 
   # Natural - Quantity of Resources - Boxplot and Map ------------------
   #  
   
@@ -3107,6 +3231,974 @@ server <- function(input, output, session) {
     
     create_indicator_neg(nat_data(), data_var, var_label)
   }) 
+  
+  #
+  #------- Political capital----------------------------------
+  #
+  
+  observeEvent(input$pcindex_info, {
+    shinyalert(text = includeHTML("pcindex_info.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  
+  observeEvent(input$representation_info2, {
+    shinyalert(text = includeHTML("info_expl_representation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  
+  
+  observeEvent(input$participation_info2, {
+    shinyalert(text = includeHTML("info_expl_participation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  
+  
+  observeEvent(input$contribution_info, {
+    shinyalert(text = includeHTML("info_expl_contribution.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  
+  
+  
+  
+  ###---------------------------------###
+  
+  
+  
+  
+  #establish the new function with switch 
+  
+  create_index <- function(data, myvar, myvarlabel) {
+    
+    cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837")
+    pal <- colorNumeric(cbGreens, domain = myvar)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$name,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Index Value [1-5]",
+                opacity = 0.4
+                # ,
+                # na.label = "Not Available"
+      )
+  }
+  
+  output$plot_political_index <- renderLeaflet({
+    data <- data_pol
+    data <- switch(input$pol_whichstate,
+                   "Iowa" = data[data$STATEFP == "19", ],
+                   "Oregon" = data[data$STATEFP == "41", ],
+                   "Virginia" = data[data$STATEFP == "51", ])
+    #create_index( pol_data(), na.omit(pol_data()$quant) , "Political Capital Index")
+    #create_index( data_pol %>% filter(state=="OR") , na.omit(data_pol$quant) , "Political index"      )
+    create_index( data , na.omit(data$quant) , "Political index")
+  })
+  
+  
+  
+  output$mainplot2 <- renderLeaflet({
+    
+    data <- data_pol
+    data$quantile <- (data$votepartQuint + data$assn2014Quint  + data$num1000Quint)/3
+    data$quintileQuint <- ntile(data$quantile, 5)
+    
+    data <- switch(input$pol_whichstate,
+                   "Iowa" = data[data$STATEFP == "19", ],
+                   "Oregon" = data[data$STATEFP == "41", ],
+                   "Virginia" = data[data$STATEFP == "51", ])
+    
+    pal <- colorQuantile("Greens", domain = data$quantile, probs = seq(0, 1, length = 6), right = TRUE)
+    
+    labels <- lapply(
+      paste("<strong>County: </strong>",
+            data$name,
+            "<br />",
+            "<strong>% Political capital index:</strong>",
+            round(data$quantile, 3), 
+            "<br />",
+            "<strong>Quintile:</strong>",
+            data$quintileQuint),
+      htmltools::HTML
+    )
+    
+    leaflet(data) %>%
+      addTiles() %>%
+      addPolygons(fillColor = ~pal(data$quantile), 
+                  fillOpacity = 0.8,
+                  stroke = TRUE,
+                  weight = 0.9,
+                  color = "gray",
+                  smoothFactor = 0.7,
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft", pal = pal, values = ~data$quantile,
+                title = "Index<br>(Quintile Group)", opacity = 1,
+                na.label = "Not Available",
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                })
+    
+  })
+  
+  # CONTRIBUTIONS
+  
+  output$plotly_contrib <- renderPlotly({
+    
+    data <- data_pol
+    # Recode rurality  -----------------------------------------------------------------------
+    #
+    data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
+                                                           IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
+                                                           IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
+                                                           IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
+                                                           IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
+                                                           IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
+                                                           IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
+    ))
+    
+    data$irr2010_discretize <- factor(data$irr2010_discretize,
+                                      levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
+                                                 "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
+                                                 "Most Rural [0.65, 0.68]"))
+    
+    #data$irr2010_discretize <- as.factor(data$irr2010_discretize)
+    
+    data <- switch(input$pol_whichstate,
+                   "Iowa" = data[data$STATEFP == "19", ],
+                   "Oregon" = data[data$STATEFP == "41", ],
+                   "Virginia" = data[data$STATEFP == "51", ])
+    
+    cbGreens2 <-c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
+    
+    group <- as.factor(data$state)
+    
+    
+    data %>%
+      plot_ly(colors = cbGreens2) %>%  
+      add_trace(x = as.numeric(group),
+                type = "box",
+                fillcolor = "#BCBBBC",
+                line = list(color = "#787878"),
+                y = ~num1000,
+                showlegend = F,
+                marker = list(symbol = "asterisk", color = ~irr2010_discretize),
+                hoverinfo = "y",
+                name = "") %>%
+      add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
+                  y = ~num1000, 
+                  color = ~irr2010_discretize,
+                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
+                  hoverinfo = "text",
+                  text = ~paste0("Rurality Index: ", round(IRR2010,2),
+                                 "<br>County: ", county),
+                  showlegend = TRUE 
+      ) %>%
+      layout(title = "",
+             legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
+             xaxis = list(title = "Contributors per 1000 people ",
+                          zeroline = FALSE,
+                          showticklabels = FALSE),
+             yaxis = list(title = "",
+                          zeroline = FALSE,
+                          hoverformat = ".2f"))      
+  })
+  
+  output$leaflet_contrib <- renderLeaflet({
+    
+    data <- data_pol
+    data <- switch(input$pol_whichstate,
+                   "Iowa" = data[data$STATEFP == "19", ],
+                   "Oregon" = data[data$STATEFP == "41", ],
+                   "Virginia" = data[data$STATEFP == "51", ])
+    
+    pal <- colorQuantile("Greens", domain = data$num1000, probs = seq(0, 1, length = 6), right = TRUE)
+    
+    labels <- lapply(
+      paste("<strong>County: </strong>",
+            data$name,
+            "<br />",
+            "<strong>% Population enrolled in K-12:</strong>",
+            round(data$num1000, 2), 
+            "<br />",
+            "<strong>Quintile:</strong>",
+            data$num1000Quint),
+      htmltools::HTML
+    )
+    
+    leaflet(data) %>%
+      addTiles() %>%
+      addPolygons(fillColor = ~pal(data$num1000), 
+                  fillOpacity = 0.8,
+                  stroke = TRUE,
+                  weight = 0.9,
+                  color = "gray",
+                  smoothFactor = 0.7,
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft", pal = pal, values = ~data$num1000,
+                title = "Percent<br>(Quintile Group)", opacity = 1,
+                na.label = "Not Available",
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                })
+    
+  })
+  
+  # ORGANIZATIONS
+  
+  output$plotly_organization <- renderPlotly({
+    
+    data <- data_pol
+    # Recode rurality  -----------------------------------------------------------------------
+    #
+    data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
+                                                           IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
+                                                           IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
+                                                           IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
+                                                           IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
+                                                           IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
+                                                           IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
+    ))
+    data$irr2010_discretize <- factor(data$irr2010_discretize,
+                                      levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
+                                                 "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
+                                                 "Most Rural [0.65, 0.68]"))
+    
+    #   ----------------------------------------------------------------------------------------
+    
+    data <- switch(input$pol_whichstate,
+                   "Iowa" = data[data$STATEFP == "19", ],
+                   "Oregon" = data[data$STATEFP == "41", ],
+                   "Virginia" = data[data$STATEFP == "51", ])
+    
+    cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
+    
+    group <- as.factor(data$state)
+    
+    
+    data %>%
+      plot_ly(colors = cbGreens2) %>%  
+      add_trace(x = as.numeric(group),
+                type = "box",
+                fillcolor = "#BCBBBC",
+                line = list(color = "#787878"),
+                y = ~assn2014,
+                showlegend = F,
+                marker = list(symbol = "asterisk", color = ~irr2010_discretize),
+                hoverinfo = "y",
+                name = "") %>%
+      add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
+                  y = ~assn2014, 
+                  color = ~irr2010_discretize,
+                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
+                  hoverinfo = "text",
+                  text = ~paste0("Rurality Index: ", round(IRR2010,2),
+                                 "<br>County: ", county),
+                  showlegend = TRUE 
+      ) %>%
+      layout(title = "",
+             legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
+             xaxis = list(title = "Organizations per 1000 people ",
+                          zeroline = FALSE,
+                          showticklabels = FALSE),
+             yaxis = list(title = "",
+                          zeroline = FALSE,
+                          hoverformat = ".2f"))      
+  })
+    
+    output$leaflet_organization <- renderLeaflet({
+      
+      data <- data_pol
+      data <- switch(input$pol_whichstate,
+                     "Iowa" = data[data$STATEFP == "19", ],
+                     "Oregon" = data[data$STATEFP == "41", ],
+                     "Virginia" = data[data$STATEFP == "51", ])
+      
+      pal <- colorQuantile("Greens", domain = data$assn2014, probs = seq(0, 1, length = 6), right = TRUE)
+      
+      labels <- lapply(
+        paste("<strong>County: </strong>",
+              data$name,
+              "<br />",
+              "<strong>% Organizations per 1000:</strong>",
+              round(data$assn2014, 2), 
+              "<br />",
+              "<strong>Quintile:</strong>",
+              data$assn2014Quint),
+        htmltools::HTML
+      )
+      
+      leaflet(data) %>%
+        addTiles() %>%
+        addPolygons(fillColor = ~pal(data$assn2014), 
+                    fillOpacity = 0.8,
+                    stroke = TRUE,
+                    weight = 0.9,
+                    color = "gray",
+                    smoothFactor = 0.7,
+                    label = labels,
+                    labelOptions = labelOptions(direction = "bottom",
+                                                style = list(
+                                                  "font-size" = "12px",
+                                                  "border-color" = "rgba(0,0,0,0.5)",
+                                                  direction = "auto"
+                                                ))) %>%
+        addLegend("bottomleft", pal = pal, values = ~data$assn2014,
+                  title = "Percent<br>(Quintile Group)", opacity = 1,
+                  na.label = "Not Available",
+                  labFormat = function(type, cuts, p) {
+                    n = length(cuts)
+                    paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                  })
+      
+    })
+    
+    
+    
+    # REPRESENTATION
+    
+    output$plotly_voters <- renderPlotly({
+      
+      data <- data_pol
+      
+      data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
+                                                             IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
+                                                             IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
+                                                             IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
+                                                             IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
+                                                             IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
+                                                             IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
+      ))
+      data$irr2010_discretize <- factor(data$irr2010_discretize,
+                                        levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
+                                                   "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
+                                                   "Most Rural [0.65, 0.68]"))
+      
+      data <- switch(input$pol_whichstate,
+                     "Iowa" = data[data$STATEFP == "19", ],
+                     "Oregon" = data[data$STATEFP == "41", ],
+                     "Virginia" = data[data$STATEFP == "51", ])
+      
+      cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
+      
+      group <- as.factor(data$state)
+      
+      
+      data %>%
+        plot_ly(colors = cbGreens2) %>%  
+        add_trace(x = as.numeric(group),
+                  type = "box",
+                  fillcolor = "#BCBBBC",
+                  line = list(color = "#787878"),
+                  y = ~votepart,
+                  showlegend = F,
+                  marker = list(symbol = "asterisk", color = ~irr2010_discretize),
+                  hoverinfo = "y",
+                  name = "") %>%
+        add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
+                    y = ~votepart, 
+                    color = ~irr2010_discretize,
+                    marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
+                    hoverinfo = "text",
+                    text = ~paste0("Rurality Index: ", round(IRR2010,2),
+                                   "<br>County: ", county),
+                    showlegend = TRUE 
+        ) %>%
+        layout(title = "",
+               legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
+               xaxis = list(title = "Voters/Voting-age Population",
+                            zeroline = FALSE,
+                            showticklabels = FALSE),
+               yaxis = list(title = "",
+                            zeroline = FALSE,
+                            hoverformat = ".2f"))      
+    })
+    
+    output$leaflet_voters <- renderLeaflet({
+      
+      data <- data_pol
+      data <- switch(input$pol_whichstate,
+                     "Iowa" = data[data$STATEFP == "19", ],
+                     "Oregon" = data[data$STATEFP == "41", ],
+                     "Virginia" = data[data$STATEFP == "51", ])
+      
+      pal <- colorQuantile("Greens", domain = data$votepart, probs = seq(0, 1, length = 6), right = TRUE)
+      
+      labels <- lapply(
+        paste("<strong>County: </strong>",
+              data$name,
+              "<br />",
+              "<strong>% Organizations per 1000:</strong>",
+              round(data$votepart, 2), 
+              "<br />",
+              "<strong>Quintile:</strong>",
+              data$votepartQuint),
+        htmltools::HTML
+      )
+      
+      leaflet(data) %>%
+        addTiles() %>%
+        addPolygons(fillColor = ~pal(data$votepart), 
+                    fillOpacity = 0.8,
+                    stroke = TRUE,
+                    weight = 0.9,
+                    color = "gray",
+                    smoothFactor = 0.7,
+                    label = labels,
+                    labelOptions = labelOptions(direction = "bottom",
+                                                style = list(
+                                                  "font-size" = "12px",
+                                                  "border-color" = "rgba(0,0,0,0.5)",
+                                                  direction = "auto"
+                                                ))) %>%
+        addLegend("bottomleft", pal = pal, values = ~data$votepart,
+                  title = "Percent<br>(Quintile Group)", opacity = 1,
+                  na.label = "Not Available",
+                  labFormat = function(type, cuts, p) {
+                    n = length(cuts)
+                    paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                  })
+      
+    }) 
+    
+    # Circular asset maps
+    
+    # LAW ENFORCEMENT
+    output$political_dom_law <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="LawEnforcement")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=800, height = 800) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })
+    
+    
+    
+    # EDUCATION
+    output$political_dom_edu <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="Education")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=800, height = 800) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.15, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })  
+    
+    
+    # TAXATION
+    output$political_dom_tax <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="Taxation")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=200, height = 200) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })  
+    
+    
+    # HOUSING
+    output$political_dom_hou <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="Housing")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=800, height = 800) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })  
+    
+    
+    # EMPLOYMENT
+    output$political_dom_emp <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="Employment")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=800, height = 800) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })  
+    
+    
+    # VOTING
+    output$political_dom_vot <- renderPlot({
+      #data <- read_csv("/home/cpm9w/EM/gates/src/dashboard/polcap4/datan.csv")
+      data <- read_csv("datan.csv") 
+      data <- data %>% filter(dom=="Voting")
+      
+      
+      # Set a number of 'empty bar' to add at the end of each group
+      empty_bar <- 3
+      to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
+      colnames(to_add) <- colnames(data)
+      to_add$group <- rep(levels(data$group), each=empty_bar)
+      data <- rbind(data, to_add)
+      data <- data %>% arrange(group)
+      data$id <- seq(1, nrow(data))
+      
+      # Get the name and the y position of each label
+      label_data <- data
+      number_of_bar <- nrow(label_data)
+      angle <- 90 - 360 * (label_data$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+      label_data$hjust <- ifelse( angle < -90, 1, 0)
+      label_data$angle <- ifelse(angle < -90, angle+180, angle)
+      
+      # prepare a data frame for base lines
+      base_data <- data %>% 
+        group_by(group) %>% 
+        summarize(start=min(id), end=max(id) ) %>% 
+        rowwise() %>% 
+        mutate(title=mean(c(start, end)))
+      
+      # prepare a data frame for grid (scales)
+      grid_data <- base_data
+      grid_data$end <- grid_data$end[ c( nrow(grid_data), 1:nrow(grid_data)-1)] + 1
+      grid_data$start <- grid_data$start - 1
+      grid_data <- grid_data[-1,]
+      
+      ##conditional for format of justification of name
+      if (length(unique(data$group))==4) {
+        arr<- c(1,1,0,0)
+      } else if (length(unique(data$group))==3) {
+        arr<-c(1,0.3,0)
+      } else if (length(unique(data$group))==2) {
+        arr<-c(1,0)
+      }
+      
+      # Make the plot
+      ggplot(data, aes(x=as.factor(id), y=value, fill=group), width=800, height = 800) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
+        
+        #add grid lines
+        geom_hline(yintercept=0, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.20, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.40, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.60, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=0.80, color = "gray", size=0.2, alpha=1)+
+        geom_hline(yintercept=1, color = "gray", size=0.2, alpha=1)+
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        scale_fill_manual(values=c("#9FBE7A","#60999A","#31596E","#F9F1CB")) +
+        
+        # Add text showing the value of each 100/75/50/25 lines
+        annotate("text", x = rep(0, 6), y = c(0.0, 0.20, 0.40, 0.60, 0.80, 1.00), label = c("0.0","0.20", "0.40", "0.60", "0.80", "1.00") , color="black", size=3 , angle=0, fontface="bold", hjust=0) +
+        
+        geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity", alpha=0.5) +
+        ylim(-1.0, 1.2) +
+        theme_minimal() +
+        theme(
+          legend.position = "none",
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          panel.grid = element_blank(),
+          plot.margin = unit(rep(-1,4), "cm") 
+        ) +
+        coord_polar() + 
+        geom_text(data=label_data, aes(x=id, y=value+0.10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=4, angle= label_data$angle, inherit.aes = FALSE ) +
+        
+        
+        # Add base line information
+        geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
+        geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
+      
+      
+    })
   
   
   #--------- Measures table -------------------------
