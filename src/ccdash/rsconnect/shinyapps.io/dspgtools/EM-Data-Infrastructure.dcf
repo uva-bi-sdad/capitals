@@ -1,0 +1,10 @@
+name: EM-Data-Infrastructure
+title:
+username:
+account: dspgtools
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2864408
+bundleId: 3704713
+url: https://dspgtools.shinyapps.io/EM-Data-Infrastructure/
+when: 1601911792.31931

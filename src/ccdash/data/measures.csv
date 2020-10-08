@@ -54,3 +54,6 @@ natural,quantity of resources,percent county area in water,US Census Bureau Amer
 natural,quantity of resources,"forestry sales per 10,000 acres in USD",USDA National Agricultural Statistics Service Census of Agriculture,2017,county
 natural,quantity of resources,"agri-tourism and recreational revenue per 10,000 acres in USD",USDA National Agricultural Statistics Service Census of Agriculture,2017,county
 natural,quality of resources,average daily density of fine particulate matter,Robert Wood Johnson County Health Rankings,2020,county
+political,representation,voter turnout proportion,Atlas of US Presidential Elections,2016,county
+political,participation,number of organizations per 1000 people,US Census Bureau County Business Patterns,2014,county
+political,contribution,number of individuals contributing monetary resources to politcal candidates per 1000 people,Federal Election Commission,2020,county

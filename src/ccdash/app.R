@@ -19,7 +19,7 @@ datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
-data_pol <- read_rds("data/pol_final_1.rds")
+data_pol <- read_rds("data/pol_final_1.Rds")
 
 measures <- read.csv("data/measures.csv")
 
@@ -1589,7 +1589,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   box(
                                     width = 12,
                                     column(11,
-                                           h4(strong("Explore the Political Domains"))
+                                           h4(strong("Explore Composite Indices"))
                                            # radioGroupButtons(
                                            #   inputId = "finidx_choice", 
                                            #   choices = c("POLITICAL CAPITAL INDEX", "POLICY ASSETS"
