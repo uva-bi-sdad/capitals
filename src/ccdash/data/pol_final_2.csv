@@ -1,0 +1,58 @@
+﻿num,dom,individual,group,value
+28,Education,Iowa,Affordability,0.657
+53,Education,Oregon,Affordability,0.89
+3,Education,Virginia,Affordability,0.667
+27,Education,Iowa,Early Childhood,0.575
+52,Education,Oregon,Early Childhood,0.658
+2,Education,Virginia,Early Childhood,0.658
+29,Education,Iowa,School Climate,0.371
+54,Education,Oregon,School Climate,0.84
+4,Education,Virginia,School Climate,0.85
+30,Education,Iowa,Workforce Dev,0.64
+55,Education,Oregon,Workforce Dev,0.473
+5,Education,Virginia,Workforce Dev,0.833
+32,Employment,Iowa,Organizing,0.333
+57,Employment,Oregon,Organizing,1
+7,Employment,Virginia,Organizing,0
+33,Employment,Iowa,Protections,0.333
+58,Employment,Oregon,Protections,0.917
+8,Employment,Virginia,Protections,0.25
+34,Employment,Iowa,Wage,0
+59,Employment,Oregon,Wage,0
+9,Employment,Virginia,Wage,0
+36,Housing,Iowa,Assistance,1
+61,Housing,Oregon,Assistance,0.875
+11,Housing,Virginia,Assistance,0.5
+37,Housing,Iowa,Development,0.556
+62,Housing,Oregon,Development,0.667
+12,Housing,Virginia,Development,0.667
+38,Housing,Iowa,Financial,0.667
+63,Housing,Oregon,Financial,0.556
+13,Housing,Virginia,Financial,0.444
+40,LawEnforcement,Iowa,Arrest Proceedings,0.8
+65,LawEnforcement,Oregon,Arrest Proceedings,1
+15,LawEnforcement,Virginia,Arrest Proceedings,0.6
+42,LawEnforcement,Iowa,Incarceration,0.6
+67,LawEnforcement,Oregon,Incarceration,0.6
+17,LawEnforcement,Virginia,Incarceration,0.6
+41,LawEnforcement,Iowa,Policing,0.6
+66,LawEnforcement,Oregon,Policing,0.4
+16,LawEnforcement,Virginia,Policing,0.4
+47,Taxation,Iowa,Business&Corp.,0.333
+72,Taxation,Oregon,Business&Corp.,1
+22,Taxation,Virginia,Business&Corp.,0.667
+44,Taxation,Iowa,Inequality,0.5
+69,Taxation,Oregon,Inequality,0.5
+19,Taxation,Virginia,Inequality,0.5
+45,Taxation,Iowa,Tax Credits,0.75
+70,Taxation,Oregon,Tax Credits,0.75
+20,Taxation,Virginia,Tax Credits,0.25
+46,Taxation,Iowa,Taxes on Wealth,0.667
+71,Taxation,Oregon,Taxes on Wealth,0.667
+21,Taxation,Virginia,Taxes on Wealth,0.333
+49,Voting,Iowa,Accessibility,0.25
+74,Voting,Oregon,Accessibility,1
+24,Voting,Virginia,Accessibility,0.25
+50,Voting,Iowa,Registration,0.6
+75,Voting,Oregon,Registration,0.6
+25,Voting,Virginia,Registration,0.6
