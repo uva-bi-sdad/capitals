@@ -1630,18 +1630,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                   side = "right",
                                                   tabPanel(title = "Financial Contributions",
                                                            fluidRow(
-                                                             box(
-                                                               width = 12,
-                                                               column(11,
-                                                                      h4(strong("Number of Individuals Contributing Financial Resources to Political Candidates per 1,000 People"), align = "center")
-                                                               ),
-                                                               column(1
-                                                                      
-                                                               )
-                                                               #infobutton_fin
-                                                             ),
-                                                             
-                                                             #h4(strong("Number of Contributors per 1,000 People"), align = "center"),
+                                                            h4(strong("Number of Individuals Contributing Financial Resources to Political Candidates per 1,000 People"), align = "center"),
                                                              column(
                                                                width = 6,
                                                                h5(strong("County-Level Map")),
@@ -1657,16 +1646,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                   ),
                                                   tabPanel(title = "Participation",
                                                            fluidRow(
-                                                             box(
-                                                               width = 12,
-                                                               column(11,
-                                                                      h4(strong("Number of Organizations per 1,000 People"), align = "center")
-                                                               ),
-                                                               column(1
-                                                               )
-                                                             ),
-                                                             
-                                                             #h4(strong("Number of Organizations per 1,000 People"), align = "center"),
+                                                              h4(strong("Number of Organizations per 1,000 People"), align = "center"),
                                                              column(
                                                                width = 6,
                                                                h5(strong("County-Level Map")),
@@ -1682,15 +1662,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                   ,
                                                   tabPanel(title = "Representation",
                                                            fluidRow(
-                                                             
-                                                             box(
-                                                               width = 12,
-                                                               column(11,
-                                                                      h4(strong("Voter Turnout"), align = "center")
-                                                               ),
-                                                               column(1
-                                                               )
-                                                             ),
+                                                             h4(strong("Voter Turnout"), align = "center"),
                                                              column(
                                                                width = 6,
                                                                h5(strong("County-Level Map")),
