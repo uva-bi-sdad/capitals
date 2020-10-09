@@ -12,6 +12,7 @@ library(naniar)
 
 # ** Unable to download Aircraft Landing Facilities right now "An error occurred fetching data." **
 
+#cell_service = st_read("rivanna_data/built/Cellular_Service_Areas-shp/CellularServiceAreas.shp")
 cell = st_read("rivanna_data/built/Cellular_Towers-shp/CellularTowers.shp")
 electric = st_read("rivanna_data/built/Electric_Substations-shp/Substations.shp")
 ems = st_read("rivanna_data/built/ems-shp/ems.shp")
@@ -90,3 +91,5 @@ data$ems_stations_count %<>% replace_na(0)
 
 # Write
 write_rds(data, "rivanna_data/built/nat_hifldbuilt_2020.rds")
+
+check <- read_rds("rivanna_data/built/nat_hifldbuilt_2020.rds")
