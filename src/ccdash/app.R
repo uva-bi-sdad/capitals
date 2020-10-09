@@ -19,7 +19,7 @@ datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
-data_pol <- read_rds("data/pol_final_1.Rds")
+datapol <- read_rds("data/pol_final_1.Rds")
 
 measures <- read.csv("data/measures.csv")
 
@@ -2631,6 +2631,10 @@ server <- function(input, output, session) {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
+  observeEvent(input$pcindex_info, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
   
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
@@ -2819,6 +2823,7 @@ server <- function(input, output, session) {
   fin_data <- reactive({datafin %>% filter(state == input$fin_whichstate)})
   hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
+  pol_data <- reactive({datapol %>% filter(state == input$soc_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
   
   #
@@ -3959,21 +3964,14 @@ server <- function(input, output, session) {
     create_indicator_neg(nat_data(), data_var, var_label)
   }) 
   
+  
+  
   #
   #------- Political capital----------------------------------
   #
   
-  observeEvent(input$pcindex_info, {
-    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
-               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
-  })
-  
-  
-  
-  
-  ###---------------------------------###
-  
 
+  
   
   #establish the new function with switch 
   
@@ -4014,13 +4012,13 @@ server <- function(input, output, session) {
   }
   
   output$plot_political_index <- renderLeaflet({
-    data <- data_pol
+    data <- datapol
     data <- switch(input$pol_whichstate,
                    "Iowa" = data[data$STATEFP == "19", ],
                    "Oregon" = data[data$STATEFP == "41", ],
                    "Virginia" = data[data$STATEFP == "51", ])
     #create_index( pol_data(), na.omit(pol_data()$quant) , "Political Capital Index")
-    #create_index( data_pol %>% filter(state=="OR") , na.omit(data_pol$quant) , "Political index"      )
+    #create_index( datapol %>% filter(state=="OR") , na.omit(datapol$quant) , "Political index"      )
     create_index( data , na.omit(data$quant) , "Political index")
   })
   
@@ -4028,7 +4026,7 @@ server <- function(input, output, session) {
   
   output$mainplot2 <- renderLeaflet({
     
-    data <- data_pol
+    data <- datapol
     data$quantile <- (data$pol_voterturnout_q + data$pol_orgs_q  + data$pol_contrib_q)/3
     data$quintileQuint <- ntile(data$quantile, 5)
     
@@ -4080,7 +4078,7 @@ server <- function(input, output, session) {
   
   output$plotly_contrib <- renderPlotly({
     
-    data <- data_pol
+    data <- datapol
     
     data <- switch(input$pol_whichstate,
                    "Iowa" = data[data$STATEFP == "19", ],
@@ -4124,7 +4122,7 @@ server <- function(input, output, session) {
   
   output$leaflet_contrib <- renderLeaflet({
     
-    data <- data_pol
+    data <- datapol
     data <- switch(input$pol_whichstate,
                    "Iowa" = data[data$STATEFP == "19", ],
                    "Oregon" = data[data$STATEFP == "41", ],
@@ -4173,9 +4171,7 @@ server <- function(input, output, session) {
   
   output$plotly_organization <- renderPlotly({
     
-    data <- data_pol
-    
-    #   ----------------------------------------------------------------------------------------
+    data <- datapol
     
     data <- switch(input$pol_whichstate,
                    "Iowa" = data[data$STATEFP == "19", ],
@@ -4219,7 +4215,7 @@ server <- function(input, output, session) {
     
     output$leaflet_organization <- renderLeaflet({
       
-      data <- data_pol
+      data <- datapol
       data <- switch(input$pol_whichstate,
                      "Iowa" = data[data$STATEFP == "19", ],
                      "Oregon" = data[data$STATEFP == "41", ],
@@ -4270,7 +4266,7 @@ server <- function(input, output, session) {
     
     output$plotly_voters <- renderPlotly({
       
-      data <- data_pol
+      data <- datapol
       
       data <- switch(input$pol_whichstate,
                      "Iowa" = data[data$STATEFP == "19", ],
@@ -4280,7 +4276,6 @@ server <- function(input, output, session) {
       cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
       
       group <- as.factor(data$state)
-      
       
       data %>%
         plot_ly(colors = cbGreens2) %>%  
@@ -4314,7 +4309,7 @@ server <- function(input, output, session) {
     
     output$leaflet_voters <- renderLeaflet({
       
-      data <- data_pol
+      data <- datapol
       data <- switch(input$pol_whichstate,
                      "Iowa" = data[data$STATEFP == "19", ],
                      "Oregon" = data[data$STATEFP == "41", ],

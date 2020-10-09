@@ -10,13 +10,15 @@ data <- read_rds("./rivanna_data/political/pol_final_1_orig.Rds")
 
 # Rename variables
 # participation (votepart), organization (assn2014) and, contribution (num100)
+data$state <- NULL
 data <- data %>% rename(pol_voterturnout = votepart,
                         pol_voterturnout_q = votepartQuint,
                         pol_orgs = assn2014,
                         pol_orgs_q = assn2014Quint,
                         pol_contrib = num1000,
                         pol_contrib_q = num1000Quint,
-                        pol_index = indexQuint)
+                        pol_index = indexQuint,
+                        state = State)
 
 # Add rurality
 rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
@@ -33,6 +35,7 @@ data <- data %>% mutate(irr2010_discretize = case_when(irr2010 < 0.15 ~ "Most Ur
                                                        irr2010 >= 0.55 & irr2010 < 0.65 ~ "More Rural [0.55, 0.65)",
                                                        irr2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
 ))
+
 data$irr2010_discretize <- factor(data$irr2010_discretize,
                                   levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
                                              "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
