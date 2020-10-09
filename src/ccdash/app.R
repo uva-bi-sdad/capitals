@@ -1628,12 +1628,12 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                   id = "tab_indexfin_co",
                                                   width = 12,
                                                   side = "right",
-                                                  tabPanel(title = "Contributions",
+                                                  tabPanel(title = "Financial Contributions",
                                                            fluidRow(
                                                              box(
                                                                width = 12,
                                                                column(11,
-                                                                      h4(strong("Number of Contributors per 1,000 People"), align = "center")
+                                                                      h4(strong("Number of Individuals Contributing Financial Resources to Political Candidates per 1,000 People"), align = "center")
                                                                ),
                                                                column(1
                                                                       
@@ -1664,7 +1664,6 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                ),
                                                                column(1
                                                                )
-                                                               #infobutton_fin
                                                              ),
                                                              
                                                              #h4(strong("Number of Organizations per 1,000 People"), align = "center"),
@@ -1687,11 +1686,10 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                              box(
                                                                width = 12,
                                                                column(11,
-                                                                      h4(strong("Voters divided by Voting-age Population"), align = "center")
+                                                                      h4(strong("Voter Turnout"), align = "center")
                                                                ),
                                                                column(1
                                                                )
-                                                               #infobutton_fin
                                                              ),
                                                              column(
                                                                width = 6,
@@ -3975,8 +3973,7 @@ server <- function(input, output, session) {
   
   ###---------------------------------###
   
-  
-  
+
   
   #establish the new function with switch 
   
@@ -4032,7 +4029,7 @@ server <- function(input, output, session) {
   output$mainplot2 <- renderLeaflet({
     
     data <- data_pol
-    data$quantile <- (data$votepartQuint + data$assn2014Quint  + data$num1000Quint)/3
+    data$quantile <- (data$pol_voterturnout_q + data$pol_orgs_q  + data$pol_contrib_q)/3
     data$quintileQuint <- ntile(data$quantile, 5)
     
     data <- switch(input$pol_whichstate,
@@ -4084,23 +4081,6 @@ server <- function(input, output, session) {
   output$plotly_contrib <- renderPlotly({
     
     data <- data_pol
-    # Recode rurality  -----------------------------------------------------------------------
-    #
-    data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
-                                                           IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
-                                                           IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
-                                                           IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
-                                                           IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
-                                                           IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
-                                                           IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
-    ))
-    
-    data$irr2010_discretize <- factor(data$irr2010_discretize,
-                                      levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
-                                                 "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
-                                                 "Most Rural [0.65, 0.68]"))
-    
-    #data$irr2010_discretize <- as.factor(data$irr2010_discretize)
     
     data <- switch(input$pol_whichstate,
                    "Iowa" = data[data$STATEFP == "19", ],
@@ -4118,13 +4098,13 @@ server <- function(input, output, session) {
                 type = "box",
                 fillcolor = "#BCBBBC",
                 line = list(color = "#787878"),
-                y = ~num1000,
+                y = ~pol_contrib,
                 showlegend = F,
                 marker = list(symbol = "asterisk", color = ~irr2010_discretize),
                 hoverinfo = "y",
                 name = "") %>%
       add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                  y = ~num1000, 
+                  y = ~pol_contrib, 
                   color = ~irr2010_discretize,
                   marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
                   hoverinfo = "text",
@@ -4150,23 +4130,23 @@ server <- function(input, output, session) {
                    "Oregon" = data[data$STATEFP == "41", ],
                    "Virginia" = data[data$STATEFP == "51", ])
     
-    pal <- colorQuantile("Greens", domain = data$num1000, probs = seq(0, 1, length = 6), right = TRUE)
+    pal <- colorQuantile("Greens", domain = data$pol_contrib, probs = seq(0, 1, length = 6), right = TRUE)
     
     labels <- lapply(
       paste("<strong>County: </strong>",
             data$name,
             "<br />",
-            "<strong>% Population enrolled in K-12:</strong>",
-            round(data$num1000, 2), 
+            "<strong>Number of individuals contributing financial resources<br>to political candidates per 1,000 people:</strong>",
+            round(data$pol_contrib, 2), 
             "<br />",
             "<strong>Quintile:</strong>",
-            data$num1000Quint),
+            data$pol_contrib_q),
       htmltools::HTML
     )
     
     leaflet(data) %>%
       addTiles() %>%
-      addPolygons(fillColor = ~pal(data$num1000), 
+      addPolygons(fillColor = ~pal(data$pol_contrib), 
                   fillOpacity = 0.8,
                   stroke = TRUE,
                   weight = 0.9,
@@ -4179,7 +4159,7 @@ server <- function(input, output, session) {
                                                 "border-color" = "rgba(0,0,0,0.5)",
                                                 direction = "auto"
                                               ))) %>%
-      addLegend("bottomleft", pal = pal, values = ~data$num1000,
+      addLegend("bottomleft", pal = pal, values = ~data$pol_contrib,
                 title = "Percent<br>(Quintile Group)", opacity = 1,
                 na.label = "Not Available",
                 labFormat = function(type, cuts, p) {
@@ -4194,20 +4174,6 @@ server <- function(input, output, session) {
   output$plotly_organization <- renderPlotly({
     
     data <- data_pol
-    # Recode rurality  -----------------------------------------------------------------------
-    #
-    data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
-                                                           IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
-                                                           IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
-                                                           IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
-                                                           IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
-                                                           IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
-                                                           IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
-    ))
-    data$irr2010_discretize <- factor(data$irr2010_discretize,
-                                      levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
-                                                 "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
-                                                 "Most Rural [0.65, 0.68]"))
     
     #   ----------------------------------------------------------------------------------------
     
@@ -4227,13 +4193,13 @@ server <- function(input, output, session) {
                 type = "box",
                 fillcolor = "#BCBBBC",
                 line = list(color = "#787878"),
-                y = ~assn2014,
+                y = ~pol_orgs,
                 showlegend = F,
                 marker = list(symbol = "asterisk", color = ~irr2010_discretize),
                 hoverinfo = "y",
                 name = "") %>%
       add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                  y = ~assn2014, 
+                  y = ~pol_orgs, 
                   color = ~irr2010_discretize,
                   marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
                   hoverinfo = "text",
@@ -4259,23 +4225,23 @@ server <- function(input, output, session) {
                      "Oregon" = data[data$STATEFP == "41", ],
                      "Virginia" = data[data$STATEFP == "51", ])
       
-      pal <- colorQuantile("Greens", domain = data$assn2014, probs = seq(0, 1, length = 6), right = TRUE)
+      pal <- colorQuantile("Greens", domain = data$pol_orgs, probs = seq(0, 1, length = 6), right = TRUE)
       
       labels <- lapply(
         paste("<strong>County: </strong>",
               data$name,
               "<br />",
               "<strong>% Organizations per 1000:</strong>",
-              round(data$assn2014, 2), 
+              round(data$pol_orgs, 2), 
               "<br />",
               "<strong>Quintile:</strong>",
-              data$assn2014Quint),
+              data$pol_orgs_q),
         htmltools::HTML
       )
       
       leaflet(data) %>%
         addTiles() %>%
-        addPolygons(fillColor = ~pal(data$assn2014), 
+        addPolygons(fillColor = ~pal(data$pol_orgs), 
                     fillOpacity = 0.8,
                     stroke = TRUE,
                     weight = 0.9,
@@ -4288,7 +4254,7 @@ server <- function(input, output, session) {
                                                   "border-color" = "rgba(0,0,0,0.5)",
                                                   direction = "auto"
                                                 ))) %>%
-        addLegend("bottomleft", pal = pal, values = ~data$assn2014,
+        addLegend("bottomleft", pal = pal, values = ~data$pol_orgs,
                   title = "Percent<br>(Quintile Group)", opacity = 1,
                   na.label = "Not Available",
                   labFormat = function(type, cuts, p) {
@@ -4306,19 +4272,6 @@ server <- function(input, output, session) {
       
       data <- data_pol
       
-      data <- data %>% mutate(irr2010_discretize = case_when(IRR2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
-                                                             IRR2010 >= 0.15 & IRR2010 < 0.25 ~ "More Urban [0.15, 0.25)",
-                                                             IRR2010 >= 0.25 & IRR2010 < 0.35 ~ "Urban [0.25, 0.35)",
-                                                             IRR2010 >= 0.35 & IRR2010 < 0.45 ~ "In-Between [0.35, 0.45)",
-                                                             IRR2010 >= 0.45 & IRR2010 < 0.55 ~ "Rural [0.45, 0.55)",
-                                                             IRR2010 >= 0.55 & IRR2010 < 0.65 ~ "More Rural [0.55, 0.65)",
-                                                             IRR2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
-      ))
-      data$irr2010_discretize <- factor(data$irr2010_discretize,
-                                        levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
-                                                   "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
-                                                   "Most Rural [0.65, 0.68]"))
-      
       data <- switch(input$pol_whichstate,
                      "Iowa" = data[data$STATEFP == "19", ],
                      "Oregon" = data[data$STATEFP == "41", ],
@@ -4335,13 +4288,13 @@ server <- function(input, output, session) {
                   type = "box",
                   fillcolor = "#BCBBBC",
                   line = list(color = "#787878"),
-                  y = ~votepart,
+                  y = ~pol_voterturnout,
                   showlegend = F,
                   marker = list(symbol = "asterisk", color = ~irr2010_discretize),
                   hoverinfo = "y",
                   name = "") %>%
         add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                    y = ~votepart, 
+                    y = ~pol_voterturnout, 
                     color = ~irr2010_discretize,
                     marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
                     hoverinfo = "text",
@@ -4351,7 +4304,7 @@ server <- function(input, output, session) {
         ) %>%
         layout(title = "",
                legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
-               xaxis = list(title = "Voters/Voting-age Population",
+               xaxis = list(title = "Voter Turnout",
                             zeroline = FALSE,
                             showticklabels = FALSE),
                yaxis = list(title = "",
@@ -4367,23 +4320,23 @@ server <- function(input, output, session) {
                      "Oregon" = data[data$STATEFP == "41", ],
                      "Virginia" = data[data$STATEFP == "51", ])
       
-      pal <- colorQuantile("Greens", domain = data$votepart, probs = seq(0, 1, length = 6), right = TRUE)
+      pal <- colorQuantile("Greens", domain = data$pol_voterturnout, probs = seq(0, 1, length = 6), right = TRUE)
       
       labels <- lapply(
         paste("<strong>County: </strong>",
               data$name,
               "<br />",
-              "<strong>% Organizations per 1000:</strong>",
-              round(data$votepart, 2), 
+              "<strong>Voter Turnout:</strong>",
+              round(data$pol_voterturnout, 2), 
               "<br />",
               "<strong>Quintile:</strong>",
-              data$votepartQuint),
+              data$pol_voterturnout_q),
         htmltools::HTML
       )
       
       leaflet(data) %>%
         addTiles() %>%
-        addPolygons(fillColor = ~pal(data$votepart), 
+        addPolygons(fillColor = ~pal(data$pol_voterturnout), 
                     fillOpacity = 0.8,
                     stroke = TRUE,
                     weight = 0.9,
@@ -4396,7 +4349,7 @@ server <- function(input, output, session) {
                                                   "border-color" = "rgba(0,0,0,0.5)",
                                                   direction = "auto"
                                                 ))) %>%
-        addLegend("bottomleft", pal = pal, values = ~data$votepart,
+        addLegend("bottomleft", pal = pal, values = ~data$pol_voterturnout,
                   title = "Percent<br>(Quintile Group)", opacity = 1,
                   na.label = "Not Available",
                   labFormat = function(type, cuts, p) {
