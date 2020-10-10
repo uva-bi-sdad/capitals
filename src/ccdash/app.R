@@ -20,6 +20,7 @@ datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
 datapol <- read_rds("data/pol_final_1.Rds")
+datapol$state <- sub(" ", "", datapol$state)
 
 measures <- read.csv("data/measures.csv")
 
@@ -2795,7 +2796,7 @@ server <- function(input, output, session) {
   fin_data <- reactive({datafin %>% filter(state == input$fin_whichstate)})
   hum_data <- reactive({datahum %>% filter(state == input$hum_whichstate)})
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
-  pol_data <- reactive({datapol %>% filter(state == input$soc_whichstate)})
+  pol_data <- reactive({datapol %>% filter(state == input$pol_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
   
   #
@@ -3939,392 +3940,68 @@ server <- function(input, output, session) {
   
   
   #
-  #------- Political capital----------------------------------
+  #------- Political ----------------------------------
   #
   
-
-  
-  
-  #establish the new function with switch 
-  
-  create_index <- function(data, myvar, myvarlabel) {
-    
-    cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837")
-    pal <- colorNumeric(cbGreens, domain = myvar)
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$name,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = "Index Value [1-5]",
-                opacity = 0.4
-                # ,
-                # na.label = "Not Available"
-      )
-  }
+  # index
   
   output$plot_political_index <- renderLeaflet({
-    data <- datapol
-    data <- switch(input$pol_whichstate,
-                   "Iowa" = data[data$STATEFP == "19", ],
-                   "Oregon" = data[data$STATEFP == "41", ],
-                   "Virginia" = data[data$STATEFP == "51", ])
-    #create_index( pol_data(), na.omit(pol_data()$quant) , "Political Capital Index")
-    #create_index( datapol %>% filter(state=="OR") , na.omit(datapol$quant) , "Political index"      )
-    create_index( data , na.omit(data$quant) , "Political index")
+    create_index(pol_data(), pol_data()$pol_index, "Political index")
   })
   
-  
-  
-  output$mainplot2 <- renderLeaflet({
-    
-    data <- datapol
-    data$quantile <- (data$pol_voterturnout_q + data$pol_orgs_q  + data$pol_contrib_q)/3
-    data$quintileQuint <- ntile(data$quantile, 5)
-    
-    data <- switch(input$pol_whichstate,
-                   "Iowa" = data[data$STATEFP == "19", ],
-                   "Oregon" = data[data$STATEFP == "41", ],
-                   "Virginia" = data[data$STATEFP == "51", ])
-    
-    pal <- colorQuantile("Greens", domain = data$quantile, probs = seq(0, 1, length = 6), right = TRUE)
-    
-    labels <- lapply(
-      paste("<strong>County: </strong>",
-            data$name,
-            "<br />",
-            "<strong>% Political capital index:</strong>",
-            round(data$quantile, 3), 
-            "<br />",
-            "<strong>Quintile:</strong>",
-            data$quintileQuint),
-      htmltools::HTML
-    )
-    
-    leaflet(data) %>%
-      addTiles() %>%
-      addPolygons(fillColor = ~pal(data$quantile), 
-                  fillOpacity = 0.8,
-                  stroke = TRUE,
-                  weight = 0.9,
-                  color = "gray",
-                  smoothFactor = 0.7,
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft", pal = pal, values = ~data$quantile,
-                title = "Index<br>(Quintile Group)", opacity = 1,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
-  })
-  
-  # CONTRIBUTIONS
-  
-  output$plotly_contrib <- renderPlotly({
-    
-    data <- datapol
-    
-    data <- switch(input$pol_whichstate,
-                   "Iowa" = data[data$STATEFP == "19", ],
-                   "Oregon" = data[data$STATEFP == "41", ],
-                   "Virginia" = data[data$STATEFP == "51", ])
-    
-    cbGreens2 <-c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
-    
-    group <- as.factor(data$state)
-    
-    
-    data %>%
-      plot_ly(colors = cbGreens2) %>%  
-      add_trace(x = as.numeric(group),
-                type = "box",
-                fillcolor = "#BCBBBC",
-                line = list(color = "#787878"),
-                y = ~pol_contrib,
-                showlegend = F,
-                marker = list(symbol = "asterisk", color = ~irr2010_discretize),
-                hoverinfo = "y",
-                name = "") %>%
-      add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                  y = ~pol_contrib, 
-                  color = ~irr2010_discretize,
-                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
-                  hoverinfo = "text",
-                  text = ~paste0("Rurality Index: ", round(IRR2010,2),
-                                 "<br>County: ", county),
-                  showlegend = TRUE 
-      ) %>%
-      layout(title = "",
-             legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
-             xaxis = list(title = "Contributors per 1000 people ",
-                          zeroline = FALSE,
-                          showticklabels = FALSE),
-             yaxis = list(title = "",
-                          zeroline = FALSE,
-                          hoverformat = ".2f"))      
-  })
+  # CONTRIBUTIONS - maps and boxplots
   
   output$leaflet_contrib <- renderLeaflet({
     
-    data <- datapol
-    data <- switch(input$pol_whichstate,
-                   "Iowa" = data[data$STATEFP == "19", ],
-                   "Oregon" = data[data$STATEFP == "41", ],
-                   "Virginia" = data[data$STATEFP == "51", ])
+    data_var <- pol_data()$pol_contrib
+    var_label <- "Contributors per 1000 people"
     
-    pal <- colorQuantile("Greens", domain = data$pol_contrib, probs = seq(0, 1, length = 6), right = TRUE)
+    create_indicator(pol_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_contrib <- renderPlotly({
     
-    labels <- lapply(
-      paste("<strong>County: </strong>",
-            data$name,
-            "<br />",
-            "<strong>Number of individuals contributing financial resources<br>to political candidates per 1,000 people:</strong>",
-            round(data$pol_contrib, 2), 
-            "<br />",
-            "<strong>Quintile:</strong>",
-            data$pol_contrib_q),
-      htmltools::HTML
-    )
+    data_var <- pol_data()$pol_contrib
+    var_label <- "Contributors per 1000 people"
     
-    leaflet(data) %>%
-      addTiles() %>%
-      addPolygons(fillColor = ~pal(data$pol_contrib), 
-                  fillOpacity = 0.8,
-                  stroke = TRUE,
-                  weight = 0.9,
-                  color = "gray",
-                  smoothFactor = 0.7,
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft", pal = pal, values = ~data$pol_contrib,
-                title = "Percent<br>(Quintile Group)", opacity = 1,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
+    create_boxplot(pol_data(), data_var, var_label)
   })
   
-  # ORGANIZATIONS
+  # Organizations - maps and boxplots
+  
+  output$leaflet_organization <- renderLeaflet({
+    
+    data_var <- pol_data()$pol_orgs
+    var_label <- "Organizations per 1000 people"
+    
+    create_indicator(pol_data(), data_var, var_label)
+  }) 
   
   output$plotly_organization <- renderPlotly({
     
-    data <- datapol
+    data_var <- pol_data()$pol_orgs
+    var_label <- "Organizations per 1000 people"
     
-    data <- switch(input$pol_whichstate,
-                   "Iowa" = data[data$STATEFP == "19", ],
-                   "Oregon" = data[data$STATEFP == "41", ],
-                   "Virginia" = data[data$STATEFP == "51", ])
-    
-    cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
-    
-    group <- as.factor(data$state)
-    
-    
-    data %>%
-      plot_ly(colors = cbGreens2) %>%  
-      add_trace(x = as.numeric(group),
-                type = "box",
-                fillcolor = "#BCBBBC",
-                line = list(color = "#787878"),
-                y = ~pol_orgs,
-                showlegend = F,
-                marker = list(symbol = "asterisk", color = ~irr2010_discretize),
-                hoverinfo = "y",
-                name = "") %>%
-      add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                  y = ~pol_orgs, 
-                  color = ~irr2010_discretize,
-                  marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
-                  hoverinfo = "text",
-                  text = ~paste0("Rurality Index: ", round(IRR2010,2),
-                                 "<br>County: ", county),
-                  showlegend = TRUE 
-      ) %>%
-      layout(title = "",
-             legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
-             xaxis = list(title = "Organizations per 1000 people ",
-                          zeroline = FALSE,
-                          showticklabels = FALSE),
-             yaxis = list(title = "",
-                          zeroline = FALSE,
-                          hoverformat = ".2f"))      
+    create_boxplot(pol_data(), data_var, var_label)
   })
+  
+  # Participationb - maps and boxplots
+  
+  output$leaflet_voters <- renderLeaflet({
     
-    output$leaflet_organization <- renderLeaflet({
-      
-      data <- datapol
-      data <- switch(input$pol_whichstate,
-                     "Iowa" = data[data$STATEFP == "19", ],
-                     "Oregon" = data[data$STATEFP == "41", ],
-                     "Virginia" = data[data$STATEFP == "51", ])
-      
-      pal <- colorQuantile("Greens", domain = data$pol_orgs, probs = seq(0, 1, length = 6), right = TRUE)
-      
-      labels <- lapply(
-        paste("<strong>County: </strong>",
-              data$name,
-              "<br />",
-              "<strong>% Organizations per 1000:</strong>",
-              round(data$pol_orgs, 2), 
-              "<br />",
-              "<strong>Quintile:</strong>",
-              data$pol_orgs_q),
-        htmltools::HTML
-      )
-      
-      leaflet(data) %>%
-        addTiles() %>%
-        addPolygons(fillColor = ~pal(data$pol_orgs), 
-                    fillOpacity = 0.8,
-                    stroke = TRUE,
-                    weight = 0.9,
-                    color = "gray",
-                    smoothFactor = 0.7,
-                    label = labels,
-                    labelOptions = labelOptions(direction = "bottom",
-                                                style = list(
-                                                  "font-size" = "12px",
-                                                  "border-color" = "rgba(0,0,0,0.5)",
-                                                  direction = "auto"
-                                                ))) %>%
-        addLegend("bottomleft", pal = pal, values = ~data$pol_orgs,
-                  title = "Percent<br>(Quintile Group)", opacity = 1,
-                  na.label = "Not Available",
-                  labFormat = function(type, cuts, p) {
-                    n = length(cuts)
-                    paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                  })
-      
-    })
+    data_var <- pol_data()$pol_voterturnout
+    var_label <- "Voter Turnout"
     
+    create_indicator(pol_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_voters <- renderPlotly({
     
+    data_var <- pol_data()$pol_voterturnout
+    var_label <- "Voter Turnout"
     
-    # REPRESENTATION
-    
-    output$plotly_voters <- renderPlotly({
-      
-      data <- datapol
-      
-      data <- switch(input$pol_whichstate,
-                     "Iowa" = data[data$STATEFP == "19", ],
-                     "Oregon" = data[data$STATEFP == "41", ],
-                     "Virginia" = data[data$STATEFP == "51", ])
-      
-      cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
-      
-      group <- as.factor(data$state)
-      
-      data %>%
-        plot_ly(colors = cbGreens2) %>%  
-        add_trace(x = as.numeric(group),
-                  type = "box",
-                  fillcolor = "#BCBBBC",
-                  line = list(color = "#787878"),
-                  y = ~pol_voterturnout,
-                  showlegend = F,
-                  marker = list(symbol = "asterisk", color = ~irr2010_discretize),
-                  hoverinfo = "y",
-                  name = "") %>%
-        add_markers(x = ~jitter(as.numeric(group) , amount = 0.1), 
-                    y = ~pol_voterturnout, 
-                    color = ~irr2010_discretize,
-                    marker = list(size = 6, line = list(width = 1, color = "#3C3C3C")),
-                    hoverinfo = "text",
-                    text = ~paste0("Rurality Index: ", round(IRR2010,2),
-                                   "<br>County: ", county),
-                    showlegend = TRUE 
-        ) %>%
-        layout(title = "",
-               legend = list(title = list(text = "<b>Index of Relative\nRurality</b>")),
-               xaxis = list(title = "Voter Turnout",
-                            zeroline = FALSE,
-                            showticklabels = FALSE),
-               yaxis = list(title = "",
-                            zeroline = FALSE,
-                            hoverformat = ".2f"))      
-    })
-    
-    output$leaflet_voters <- renderLeaflet({
-      
-      data <- datapol
-      data <- switch(input$pol_whichstate,
-                     "Iowa" = data[data$STATEFP == "19", ],
-                     "Oregon" = data[data$STATEFP == "41", ],
-                     "Virginia" = data[data$STATEFP == "51", ])
-      
-      pal <- colorQuantile("Greens", domain = data$pol_voterturnout, probs = seq(0, 1, length = 6), right = TRUE)
-      
-      labels <- lapply(
-        paste("<strong>County: </strong>",
-              data$name,
-              "<br />",
-              "<strong>Voter Turnout:</strong>",
-              round(data$pol_voterturnout, 2), 
-              "<br />",
-              "<strong>Quintile:</strong>",
-              data$pol_voterturnout_q),
-        htmltools::HTML
-      )
-      
-      leaflet(data) %>%
-        addTiles() %>%
-        addPolygons(fillColor = ~pal(data$pol_voterturnout), 
-                    fillOpacity = 0.8,
-                    stroke = TRUE,
-                    weight = 0.9,
-                    color = "gray",
-                    smoothFactor = 0.7,
-                    label = labels,
-                    labelOptions = labelOptions(direction = "bottom",
-                                                style = list(
-                                                  "font-size" = "12px",
-                                                  "border-color" = "rgba(0,0,0,0.5)",
-                                                  direction = "auto"
-                                                ))) %>%
-        addLegend("bottomleft", pal = pal, values = ~data$pol_voterturnout,
-                  title = "Percent<br>(Quintile Group)", opacity = 1,
-                  na.label = "Not Available",
-                  labFormat = function(type, cuts, p) {
-                    n = length(cuts)
-                    paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                  })
-      
-    }) 
+    create_boxplot(pol_data(), data_var, var_label)
+  })
     
     # Circular asset maps
     
