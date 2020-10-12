@@ -2490,7 +2490,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       title = "Acknowledgements",
                                       p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
                                       
-                                      #column(width = 4,
+                                      column(width = 4,
                                              #h5(strong("Cooperative Extension")),
                                              tags$a(tags$img(src = "VA_CES_logo.png", width = '35%'), href = "https://ext.vt.edu/"),
                                              br(), br(),
@@ -2504,9 +2504,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       br(),
 
                                              
-                                      #),
+                                      ),
                                       
-                                      #column(width = 4,
+                                      column(width = 4,
                                              #h5(strong("Iowa State University")),
                                              tags$a(tags$img(src = "ISU_logo.png", width = '15%'), href = "https://www.iastate.edu/"),
                                              br(), br(),
@@ -2533,9 +2533,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                              ),
                                       br(),
 
-                                      #),
+                                      ),
                                       
-                                      #column(width = 4,
+                                      column(width = 4,
                                              #h5(strong("University of Virginia")),
                                              tags$a(tags$img(src = "BII_logo.png", width = '30%'), href = "https://biocomplexity.virginia.edu/"),
                                              br(), br(),
@@ -2566,7 +2566,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              )
                                              
-                                      #)
+                                      )
                                   )
 
                                 )
