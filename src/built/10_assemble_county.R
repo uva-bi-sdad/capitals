@@ -4,6 +4,7 @@ library(tidyverse)
 library(readr)
 library(readxl)
 library(naniar)
+library(janitor)
 
 # county level data -----------------------------------------------------------------------
 
@@ -12,6 +13,7 @@ hud_data <- read_rds("./rivanna_data/built/built_hud_2019.Rds") %>% st_drop_geom
 fcc_data <- read_rds("./rivanna_data/built/built_fcc_2019.Rds") %>% st_drop_geometry()
 dot_data <- read_rds("./rivanna_data/built/built_dot_2020.Rds") 
 imls_data <- read_rds("./rivanna_data/built/built_imls_2018.rds")
+hifld_data <- read_rds("./rivanna_data/built/built_hifld_2020.rds") %>% st_drop_geometry()
 
 # pull in rurality data -----------------------------------------------------------------------
 
@@ -25,6 +27,7 @@ data <- left_join(acs_data, hud_data, by = c("STATEFP", "COUNTYFP", "GEOID", "NA
 data <- left_join(data, fcc_data, by = c("STATEFP", "COUNTYFP", "COUNTYNS", "GEOID", "NAME.x", "NAME.y"))
 data <- left_join(data, dot_data, by = "GEOID")
 data <- left_join(data, imls_data, by = "GEOID")
+data <- left_join(data, hifld_data, by = c("STATEFP", "COUNTYFP", "GEOID", "NAME.x", "NAME.y"))
 data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "county_name"))
 
 #
@@ -33,7 +36,6 @@ data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "count
 
 data <- data %>%
   select(-AFFGEOID, -COUNTYNS, -LSAD) # others later 
-
 
 #
 # Recode rurality  -----------------------------------------------------------------------
@@ -66,7 +68,15 @@ pct_miss_var(data)
 
 
 #
+# Composite Creation 
+#
+
+data
+
+
+
+#
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "./rivanna_data/human/built_final.Rds")
+write_rds(data, "./rivanna_data/built/built_final.Rds")
