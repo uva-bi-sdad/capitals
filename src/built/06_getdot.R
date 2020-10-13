@@ -37,3 +37,6 @@ pct_miss_var(data) # 29.41176
 
 # write this to the data folder 
 write_rds(data, "./rivanna_data/built/built_dot_2020.Rds")
+
+
+
