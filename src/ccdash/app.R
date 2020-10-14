@@ -20,6 +20,8 @@ datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
 datapol <- read_rds("data/pol_final_1.Rds")
+datacult <- read_rds("data/cult_final.Rds")
+
 
 measures <- read.csv("data/measures.csv")
 
@@ -2186,9 +2188,45 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   )
                                 ),
                                 fluidRow(
-                                  box(
-                                    "COMING SOON."
+                                  box(title = "Explore Diversity Measures",
+                                      width = 12,
+                                      column(11,
+                                             radioGroupButtons(
+                                               inputId = "cultidx_choice", 
+                                               choices = c("RELIGION", "ANCESTRY"),
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               direction = "horizontal", width = "100%",
+                                               justified = FALSE, status = "success", individual = TRUE)
+                                      ),
+                                      column(1,
+                                             circleButton(inputId = "infobutton_cult", icon = icon("info"), status = "info", size = "sm")
+                                      )
                                   )
+                                  
+                                ),
+                                
+                                conditionalPanel("input.cultidx_choice == 'RELIGION'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Number of Religious Groups",
+                                                       width = 6,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_cult_index_rich"), 
+                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                       plotlyOutput("plotly_cult_index_rich")
+                                                   ),
+                                                   
+                                                   box(title = "Gini-Simpson Diversity Index",
+                                                       width = 6,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_cult_index_gsi"),
+                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                       plotlyOutput("plotly_cult_index_gsi")
+                                                  )
+                                                   
+                                                   
+                                                  )
                                 )
                         ),
                         
@@ -2245,20 +2283,20 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       title = "Acknowledgements",
                                       p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
                                       
-                                      column(width = 4,
+                                      column(width = 3,
                                              tags$a(tags$img(src = "VA_CES_logo.png", width = '40%'), href = "https://ext.vt.edu/"),
                                              br(), br(),
                                              tags$ul(
-                                               tags$li("Daniel Goerlich, Ph.D., Associate Director: Economy, Community, and Food; Virginia Cooperative Extension, Virginia Tech"),
-                                               tags$li("Ed Jones, Ph.D., Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences, Virginia Tech"),
-                                               tags$li("Michael Lambur, Ph.D., Associate Director: Program Development, Virginia Cooperative Extension, Virginia Tech"),
-                                               tags$li("Cathy Sutphin, Ph.D., Associate Director: Youth, Families, and Health; Virginia Cooperative Extension, Virginia Tech"),
+                                               tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food"),
+                                               tags$li("Ed Jones, Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences"),
+                                               tags$li("Michael Lambur, Associate Director, Program Development"),
+                                               tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health"),
                                                style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              br()   
                                       ),
                                       
-                                      column(width = 4,
+                                      column(width = 3,
                                              tags$a(tags$img(src = "ISU_logo.png", width = '30%'), href = "https://www.iastate.edu/"),
                                              br(), br(),
                                              tags$ul(em("Faculty:"),
@@ -2267,25 +2305,42 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                      tags$li("Shawn Dorius, Associate Professor of Sociology"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
-                                             tags$ul(em("Graduate Fellows:"),
-                                                     tags$li("Atefeh Rajabalizadah"),
-                                                     tags$li("Haley Jeppson"),
-                                                     tags$li("Kishor Sridhar"), 
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             ),
-                                             tags$ul(em("Undergraduate Interns:"),
+                                             tags$ul(em("Students:"),
+                                                     
+                                                     tags$li("Joel Von Behren"),
                                                      tags$li("Jessie Bustin"),
                                                      tags$li("Grant Durbahn"), 
+                                                     tags$li("Haley Jeppson"),
                                                      tags$li("Vikram Magal"),
+                                                     tags$li("Atefeh Rajabalizadah"),
+                                                     tags$li("Kishor Sridhar"), 
                                                      tags$li("Katie Thompson"), 
-                                                     tags$li("Joel Von Behren"),
                                                      tags$li("Matthew Voss"), 
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
+                                             
                                              br()
                                       ),
                                       
-                                      column(width = 4,
+                                      
+                                      
+                                      
+                                      column(width = 3,
+                                             tags$a(tags$img(src = "OSU_logo.jpg", width = '40%'), href = "https://oregonstate.edu/"),
+                                             br(), br(),
+                                             tags$ul(em("Faculty:"),
+                                                     tags$li("Shawn Irvine, Economic Development Director, City of Independence, Oregon"),
+                                                     tags$li("Deborah John, Professor and Extension Specialist, College of Public Health and Human Sciences"),
+                                                     tags$li("Stuart Reitz, Professor and Director, Malheur Experiment Station"),
+                                                     tags$li("Lindsey Shirley, Associate Provost, University Extension & Engagement"),
+                                                     tags$li("Brett M. Tyler, Director of the Center for Genome Research and Biocomputing and Stewart Professor of Gene Research"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             )
+                                             
+                                             
+                                      ),
+                                      
+                                      column(width = 3,
                                              tags$a(tags$img(src = "BII_logo.png", width = '40%'), href = "https://biocomplexity.virginia.edu/"),
                                              br(), br(),
                                              tags$ul(em("Social and Decision Analytics Division:"),
@@ -2299,23 +2354,25 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              
-                                             tags$ul(em("Graduate Fellows:"),
-                                                     tags$li("Lara Haase"),
-                                                     tags$li("Morgan Stockham"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             ),
-                                             tags$ul(em("Undergraduate Interns:"),
+                                             tags$ul(em("Students:"),
+                                                     
                                                      tags$li("Riya Berry"),
                                                      tags$li("Tasfia Chowdhury"),
                                                      tags$li("Martha Czernuszenko"),
+                                                     tags$li("Lara Haase"),
                                                      tags$li("Saimun Habib"),
                                                      tags$li("Owen Hart"),
                                                      tags$li("Sarah McDonald"),
                                                      tags$li("Vatsala Ramanan"),
+                                                     tags$li("Morgan Stockham"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              )
                                              
                                       )
+                                      
+                                      
+                                      
+                                      
                                   )
                                   
                                 )
@@ -2353,10 +2410,15 @@ server <- function(input, output, session) {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
+  observeEvent(input$infobutton_cult, {
+    shinyalert(text = includeHTML("index_interpretation_cultural.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
   observeEvent(input$pcindex_info, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
+
   
   # Function for indicator boxplots --------------------------
   create_boxplot <- function(data, myvar, myvarlabel) {
@@ -2547,6 +2609,7 @@ server <- function(input, output, session) {
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
   pol_data <- reactive({datapol %>% filter(state == input$pol_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
+  cult_data <- reactive({datacult %>% filter(state == input$cult_whichstate)})
   
   #
   # Capital Index Maps ------------------------------------------------
@@ -4234,6 +4297,86 @@ server <- function(input, output, session) {
       geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
  
   })
+  
+  #
+  # Cultural - Religion - Boxplot and Map------------------
+  # 
+  
+  # continuous indicator function
+  create_continuous_indicator <- function(data, myvar, myvarlabel){
+    pal <- colorNumeric(cbGreens[1:5], domain = myvar)
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = myvarlabel,
+                opacity = 0.7,
+                na.label = "Not Available"#,
+                #labFormat = function(type, cuts, p) {
+                #  n = length(cuts)
+                #  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                #}
+      )
+  }
+  
+  
+  
+  output$plot_cult_index_rich <- renderLeaflet({
+
+    data_var <- cult_data()$cult_rich
+    var_label <- "Number of Religious Groups"
+    
+    create_continuous_indicator(cult_data(), data_var, var_label)
+  })
+  
+  
+  output$plot_cult_index_gsi <- renderLeaflet({
+    
+    data_var <- cult_data()$cult_gsi
+    var_label <- "Gini-Simpson Index of Diversity"
+    
+    create_continuous_indicator(cult_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_cult_index_rich <- renderPlotly({
+    
+    data_var <- cult_data()$cult_rich
+    var_label <- "Number of Religious Groups"
+    
+    create_boxplot(cult_data(), data_var, var_label)
+  })
+  
+  
+  output$plotly_cult_index_gsi <- renderPlotly({
+    
+    data_var <- cult_data()$cult_gsi
+    var_label <- "Gini-Simpson Index of Diversity"
+    
+    create_boxplot(cult_data(), data_var, var_label)
+  })
+  
+  
   
   
   #--------- Measures table -------------------------
