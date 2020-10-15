@@ -57,3 +57,7 @@ natural,quality of resources,average daily density of fine particulate matter,Ro
 political,representation,voter turnout proportion,Atlas of US Presidential Elections,2016,county
 political,participation,number of organizations per 1000 people,US Census Bureau County Business Patterns,2014,county
 political,contribution,number of individuals contributing monetary resources to politcal candidates per 1000 people,Federal Election Commission,2020,county
+cultural,ancestry,number of ancestries,US Census Bureau American Community Survey,2014/18,county
+cultural,ancestry,Gini-Simpson Diversity Index,US Census Bureau American Community Survey,2014/18,county
+cultural,religions,number of religions,The Association of Religon Data Archives,2010,county
+cultural,religions,Gini-Simpson Diversity Index,The Association of Religon Data Archives,2010,county
