@@ -42,18 +42,18 @@ data <- data %>% select(-COUNTYNS, -AFFGEOID, -LSAD, -state)
 #
 
 
-data <- data %>% mutate(irr2010_discretize = case_when(irr2010 < 0.15 ~ "Most Urban [0.12, 0.15)",
-                                                       irr2010 >= 0.15 & irr2010 < 0.25 ~ "More Urban [0.15, 0.25)",
+data <- data %>% mutate(irr2010_discretize = case_when(irr2010 < 0.15 ~ "Urban [0.12, 0.15)",
+                                                       irr2010 >= 0.15 & irr2010 < 0.25 ~ "Urban [0.15, 0.25)",
                                                        irr2010 >= 0.25 & irr2010 < 0.35 ~ "Urban [0.25, 0.35)",
-                                                       irr2010 >= 0.35 & irr2010 < 0.45 ~ "In-Between [0.35, 0.45)",
-                                                       irr2010 >= 0.45 & irr2010 < 0.55 ~ "Rural [0.45, 0.55)",
-                                                       irr2010 >= 0.55 & irr2010 < 0.65 ~ "More Rural [0.55, 0.65)",
-                                                       irr2010 >= 0.65 ~ "Most Rural [0.65, 0.68]"
+                                                       irr2010 >= 0.35 & irr2010 < 0.45 ~ "Urban [0.35, 0.45)",
+                                                       irr2010 >= 0.45 & irr2010 < 0.55 ~ "In-between [0.45, 0.55)",
+                                                       irr2010 >= 0.55 & irr2010 < 0.65 ~ "Rural [0.55, 0.65)",
+                                                       irr2010 >= 0.65 ~ "Rural [0.65, 0.68]"
 ))
 data$irr2010_discretize <- factor(data$irr2010_discretize,
-                                  levels = c("Most Urban [0.12, 0.15)", "More Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
-                                             "In-Between [0.35, 0.45)", "Rural [0.45, 0.55)", "More Rural [0.55, 0.65)",
-                                             "Most Rural [0.65, 0.68]"))
+                                  levels = c("Urban [0.12, 0.15)", "Urban [0.15, 0.25)", "Urban [0.25, 0.35)",
+                                             "Urban [0.35, 0.45)", "In-between [0.45, 0.55)", "Rural [0.55, 0.65)",
+                                             "Rural [0.65, 0.68]"))
 
 
 #

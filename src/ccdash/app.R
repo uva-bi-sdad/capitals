@@ -2391,7 +2391,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
 server <- function(input, output, session) {
   # Plot colors --------------------------
   cbGreens <- c("#F7F7F7", "#D9F0D3", "#ACD39E", "#5AAE61", "#1B7837", "grey")
-  cbGreens2 <- c("#4E5827", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918", "#944D12")
+  cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
   cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
   # Info button content ---------------------
