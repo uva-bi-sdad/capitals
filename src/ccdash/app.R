@@ -58,7 +58,8 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         img(src = "logo.png", height = 60, width = 235)
                       ),
                       sidebarMenu(
-                        menuItem(text = "Community Capital Areas", tabName = "capitals", icon = icon("")),
+                        hr(),
+                        menuItem(text = "Community Capital Areas", tabName = "capitals", icon = icon("list-ol")),
                         menuItem(text = "Financial", tabName = "financial", icon = icon("money-check-alt")),
                         menuItem(text = "Human", tabName = "human", icon = icon("child")),
                         menuItem(text = "Social", tabName = "social", icon = icon("handshake")),
@@ -68,8 +69,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                  menuSubItem("Political Capital", tabName = "political"),
                                  menuSubItem("Policy Assets", tabName = "policyassets")), #icon("balance-scale-left")),
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("theater-masks")), 
-                        menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("")),
-                        menuItem(text = "About Us", tabName = "contact", icon = icon(""))
+                        hr(),
+                        menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("info-circle")),
+                        menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
                     ),
                     
@@ -2234,11 +2236,6 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         tabItem(tabName = "datamethods",
                                 fluidRow(
                                   box(width = 12,
-                                      title = "How We Measure Community Capitals",
-                                      includeHTML("index_interpretation.html"),
-                                      br(""),
-                                      "More information about measurement, indicator choice, and references are coming soon."),
-                                  box(width = 12,
                                       title = "Measures and Data Sources",
                                       selectInput("topic", "Select capital:", width = "100%", choices = c(
                                         "All",
@@ -2284,20 +2281,22 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
                                       
                                       column(width = 3,
-                                             tags$a(tags$img(src = "VA_CES_logo.png", width = '40%'), href = "https://ext.vt.edu/"),
+                                             tags$a(tags$img(src = "logo_vatech.png", width = '40%'), href = "https://ext.vt.edu/"),
                                              br(), br(),
-                                             tags$ul(
-                                               tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food"),
+                                             tags$ul(em("Faculty:"),
+                                               tags$li("Susan Chen, Associate Professor, Department of Agricultural and Applied Economics"),
+                                               tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food, Virginia Cooperative Extension"),
+                                               tags$li("Matthew Holt, Professor and Department Head, Department of Agricultural and Applied Economics"),
                                                tags$li("Ed Jones, Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences"),
-                                               tags$li("Michael Lambur, Associate Director, Program Development"),
-                                               tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health"),
+                                               tags$li("Michael Lambur, Associate Director, Program Development, Virginia Cooperative Extension"),
+                                               tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health, Virginia Cooperative Extension"),
                                                style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              br()   
                                       ),
                                       
                                       column(width = 3,
-                                             tags$a(tags$img(src = "ISU_logo.png", width = '30%'), href = "https://www.iastate.edu/"),
+                                             tags$a(tags$img(src = "logo_isu.png", width = '30%'), href = "https://www.iastate.edu/"),
                                              br(), br(),
                                              tags$ul(em("Faculty:"),
                                                      tags$li("Todd Abraham, Assistant Director of Data and Analytics for the Iowa Integrated Data System"),
@@ -2305,28 +2304,15 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                      tags$li("Shawn Dorius, Associate Professor of Sociology"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
-                                             tags$ul(em("Students:"),
-                                                     
-                                                     tags$li("Joel Von Behren"),
-                                                     tags$li("Jessie Bustin"),
-                                                     tags$li("Grant Durbahn"), 
-                                                     tags$li("Haley Jeppson"),
-                                                     tags$li("Vikram Magal"),
-                                                     tags$li("Atefeh Rajabalizadah"),
-                                                     tags$li("Kishor Sridhar"), 
-                                                     tags$li("Katie Thompson"), 
-                                                     tags$li("Matthew Voss"), 
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             p(em("Students:"), "Joel Von Behren, Jessie Bustin, Grant Durbahn, 
+                                                     Haley Jeppson, Vikram Magal, Atefeh Rajabalizadah, Kishor Sridhar, 
+                                                     Katie Thompson, Matthew Voss" 
                                              ),
-                                             
                                              br()
                                       ),
-                                      
-                                      
-                                      
-                                      
+
                                       column(width = 3,
-                                             tags$a(tags$img(src = "OSU_logo.jpg", width = '40%'), href = "https://oregonstate.edu/"),
+                                             tags$a(tags$img(src = "logo_osu.jpg", width = '40%'), href = "https://oregonstate.edu/"),
                                              br(), br(),
                                              tags$ul(em("Faculty:"),
                                                      tags$li("Shawn Irvine, Economic Development Director, City of Independence, Oregon"),
@@ -2336,42 +2322,28 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                      tags$li("Brett M. Tyler, Director of the Center for Genome Research and Biocomputing and Stewart Professor of Gene Research"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              )
-                                             
-                                             
                                       ),
                                       
                                       column(width = 3,
-                                             tags$a(tags$img(src = "BII_logo.png", width = '40%'), href = "https://biocomplexity.virginia.edu/"),
+                                             tags$a(tags$img(src = "logo_bii.png", width = '40%'), href = "https://biocomplexity.virginia.edu/"),
                                              br(), br(),
-                                             tags$ul(em("Social and Decision Analytics Division:"),
+                                             tags$ul(em("Faculty:"),
                                                      tags$li("Sallie Keller, Division Director, Distinguished Professor in Biocomplexity, and Professor of Public Health Sciences, School of Medicine"),
                                                      tags$li("Brandon Kramer, Postdoctoral Research Associate"),
                                                      tags$li("Vicki Lancaster, Principal Scientist"),
                                                      tags$li("Kathryn Linehan, Research Scientist"),
+                                                     tags$li("Sarah McDonald, Research Assistant"),
                                                      tags$li("Cesar Montalvo, Postdoctoral Research Associate"),
                                                      tags$li("Teja Pristavec, Research Assistant Professor"),
                                                      tags$li("Stephanie Shipp, Deputy Division Director and Research Professor"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              
-                                             tags$ul(em("Students:"),
-                                                     
-                                                     tags$li("Riya Berry"),
-                                                     tags$li("Tasfia Chowdhury"),
-                                                     tags$li("Martha Czernuszenko"),
-                                                     tags$li("Lara Haase"),
-                                                     tags$li("Saimun Habib"),
-                                                     tags$li("Owen Hart"),
-                                                     tags$li("Sarah McDonald"),
-                                                     tags$li("Vatsala Ramanan"),
-                                                     tags$li("Morgan Stockham"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             p(em("Students:"), "Riya Berry, Tasfia Chowdhury, Martha Czernuszenko,
+                                               Lara Haase, Saimun Habib, Owen Hart, Vatsala Ramanan, Morgan Stockham"
                                              )
                                              
                                       )
-                                      
-                                      
-                                      
                                       
                                   )
                                   
