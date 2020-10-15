@@ -1,5 +1,13 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+      .img-container {
+        text-align: center;
+        display: block;
+      }
+    </style>
+
 <p style="text-align:left;">
 <b>Constructing Cultural Diversity Measures</b>
 <p style="text-align:left;">
@@ -9,9 +17,12 @@ The cultural domains, religion and ancestry, are summarized using the following 
 1. <u>Richness</u>: The richness measure is the number of groups within the domain, in this case the number of religious groups or the number of different ancestries. 
 <p style="text-align:left;">
 2. <u>Diversity</u>: Diversity is a function of the number of groups and group members. The index will approach zero when the group members are concentrated in a few groups and will approach one when the group members are evenly distributed. The Gini-Simpson Diversity Index is calculated as:
+<p style="text-align:left;">
 
-\[Gini\; Simpson \;Index = 1 - \sum_{i=1}^R p_i^2\]
 
+<center><img src = "equation.png" width = '20%'></center>
+
+<p style="text-align:left;">
 where R is the richness (number of groups) and p is the relative frequency, the number of group members divided by the total number of members.
 
 <p style="text-align:left;">

@@ -2229,7 +2229,33 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                    
                                                    
                                                   )
+                                ),
+                                
+                                conditionalPanel("input.cultidx_choice == 'ANCESTRY'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Number of Ancestry Groups",
+                                                       width = 6,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_cult_index_ancrich"), 
+                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                       plotlyOutput("plotly_cult_index_ancrich")
+                                                   ),
+                                                   
+                                                   box(title = "Gini-Simpson Diversity Index",
+                                                       width = 6,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_cult_index_ancgsi"),
+                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                       plotlyOutput("plotly_cult_index_ancgsi")
+                                                   )
+                                                   
+                                                   
+                                                 )
                                 )
+                                
+                                
                         ),
                         
                         # DATA AND METHODS CONTENT -------------------------
@@ -4347,6 +4373,43 @@ server <- function(input, output, session) {
     
     create_boxplot(cult_data(), data_var, var_label)
   })
+  
+  ##
+  
+  output$plot_cult_index_ancrich <- renderLeaflet({
+    
+    data_var <- cult_data()$anc_rich
+    var_label <- "Number of Ancestry Groups"
+    
+    create_continuous_indicator(cult_data(), data_var, var_label)
+  })
+  
+  
+  output$plot_cult_index_ancgsi <- renderLeaflet({
+    
+    data_var <- cult_data()$anc_gsi
+    var_label <- "Gini-Simpson Index of Diversity"
+    
+    create_continuous_indicator(cult_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_cult_index_ancrich <- renderPlotly({
+    
+    data_var <- cult_data()$anc_rich
+    var_label <- "Number of Ancestry Groups"
+    
+    create_boxplot(cult_data(), data_var, var_label)
+  })
+  
+  
+  output$plotly_cult_index_ancgsi <- renderPlotly({
+    
+    data_var <- cult_data()$anc_gsi
+    var_label <- "Gini-Simpson Index of Diversity"
+    
+    create_boxplot(cult_data(), data_var, var_label)
+  })
+  
   
   
   
