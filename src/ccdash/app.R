@@ -1,5 +1,6 @@
 library(shinydashboard)
 library(dashboardthemes)
+library(shinydashboardPlus)
 library(dplyr)
 library(readr)
 library(leaflet)
@@ -14,6 +15,9 @@ library(RColorBrewer)
 library(stringr)
 library(apputils)
 library(shinyalert)
+library(dash)
+library(dashCoreComponents)
+library(dashHtmlComponents)
 
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
@@ -28,7 +32,7 @@ measures <- read.csv("data/measures.csv")
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
-
+legend <- png::readPNG("www/legend_irr.png")
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -70,7 +74,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                  menuSubItem("Policy Assets", tabName = "policyassets")), #icon("balance-scale-left")),
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("theater-masks")), 
                         hr(),
-                        menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("info-circle")),
+                        menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
+                                 menuSubItem(text = "Data and Methods Table", tabName = "datamethods"),
+                                 menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
                         menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
                     ),
@@ -2275,6 +2281,43 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       DTOutput("measures_table"))
                                 )
                         ),
+                        # DATA DESCRIPTION CONTENT -------------------------
+                        tabItem(tabName = "datadescription",
+                                fluidRow(
+                                  box(width = 12,
+                                      title = "Data Descriptions")),
+                                  flipBox(
+                                        id = 1,
+                                        main_img = ,
+                                        header_img = ,
+                                        front_title = "American Community Survey",
+                                        back_title = "About ACS",
+                                        "Lorem ipsum",
+                                        verticalProgress(
+                                          value = 10,
+                                          striped = TRUE,
+                                          active = TRUE
+                                        ),
+                                        verticalProgress(
+                                          value = 50,
+                                          active = TRUE,
+                                          status = "warning",
+                                          size = "xs"
+                                        ),
+                                        verticalProgress(
+                                          value = 20,
+                                          status = "danger",
+                                          size = "sm",
+                                          height = "60%"
+                                        ),
+                                        back_content = tagList(
+                                          column(
+                                            width = 12,
+                                            align = "center"
+                                          )
+                                        )
+                                      )
+                                ),
                         
                         # CONTACT CONTENT -------------------------
                         tabItem(tabName = "contact",
@@ -2394,6 +2437,18 @@ server <- function(input, output, session) {
   cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
   cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
+  # legend image -------------------------
+  
+  # output$legend <- renderImage({
+  #   # When input$n is 1, filename is ./images/image1.jpeg
+  #   filename <- normalizePath(file.path('./www',
+  #                                       paste('legend_irr', '.png', sep='')))
+  #   
+  #   # Return a list containing the filename
+  #   list(src = filename)
+  # }, deleteFile = FALSE)
+  
+  
   # Info button content ---------------------
   observeEvent(input$infobutton_fin, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
@@ -2422,6 +2477,7 @@ server <- function(input, output, session) {
 
   
   # Function for indicator boxplots --------------------------
+  
   create_boxplot <- function(data, myvar, myvarlabel) {
     
     group <- as.factor(data$state)
@@ -2452,7 +2508,17 @@ server <- function(input, output, session) {
                           showticklabels = FALSE),
              yaxis = list(title = "",
                           zeroline = FALSE,
-                          hoverformat = ".2f"))
+                          hoverformat = ".2f")) %>%
+      layout(
+        images = list(
+          source = raster2uri(as.raster(legend)),
+          x = 1.6, y = 0, 
+          sizex = 0.7, sizey = 0.7,
+          xref = "paper", yref = "paper", 
+          xanchor = "right", yanchor = "bottom"
+        ),
+        margin = list(t = 50)
+      )
     
   }
   
