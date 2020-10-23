@@ -2292,9 +2292,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          box_width = 8,
                                          main_img = "dataseticons/acs.jpg",
                                          front_title = "American Community Survey",
-                                         back_title = "About the American Community Survey",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The American Community Survey (ACS) is an ongoing yearly survey conducted by the U.S Census Bureau. 
+                                            "The American Community Survey (ACS) is an ongoing yearly survey conducted by the U.S Census Bureau. 
                                             ACS samples households to compile 1-year and 5-year datasets providing 
                                             information on population sociodemographic and socioeconomic characteristics.
                                             ACS is available at census block group geographic level and above."
@@ -2302,30 +2302,15 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                        ),
                                        br(""),
                                        flipBox(
-                                         id = 2,
-                                         box_width = 8,
-                                         main_img = "dataseticons/census.jpg",
-                                         front_title = "U.S. Census Bureau",
-                                         back_title = "About the U.S. Census Bureau",
-                                         back_content = tagList(
-                                             "The US Census Bureau is an agency that is tasked with providing information about 
-                                             Americans in every geography level. Their data collected is decennial and they provide 
-                                             information on participating households and individuals. They provide data at the census block group geographic 
-                                             level and above."
-                                         )
-                                       ),
-                                       br(""),
-                                       flipBox(
                                          id = 3,
                                          box_width = 8,
                                          main_img = "dataseticons/bls.jpg",
-                                         front_title = "Bureau of Labor Statistics",
-                                         back_title = "About the Bureau of Labor Statistics' \nLocal Area Unemployment Statistics",
+                                         front_title = "Local Area Unemployment Statistics",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The local area unemployment statistics dataset is published by the Bureau of Labor 
-                                             Statistics (BLS) which is charged with collecting data on the labor force. The dataset
-                                              includes information at the 1-year level about 
-                                             unemployment. The provide data at the county level and above."
+                                             "The Local Area Unemployment Statistics dataset is published by the Bureau of Labor 
+                                             Statistics (BLS), which is charged with collecting data on the labor force. The dataset
+                                             includes annual information about unemployment. BLS provides data at the county level and above."
                                          )
                                        ),
                                        br(),
@@ -2334,10 +2319,10 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          box_width = 8,
                                          main_img = "dataseticons/arda.jpg",
                                          front_title = "The Association of Religion Data Archives",
-                                         back_title = "About the Association of Religion Data Archives",
+                                         back_title = "About the Data",
                                          back_content = tagList(
                                              "The Association of Religion Data Archives (ARDA) is a collection of surveys, polls,
-                                             and other data submitted by researchers to the ARDA. The ARDA compiles multi-year 
+                                             and other data submitted by researchers to the ARDA. ARDA compiles multi-year 
                                              data on congregations, membership, and religious preferences at the international 
                                              and national levels. ARDA data is available at the county level and above."
                                          )
@@ -2348,12 +2333,12 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 5,
                                          box_width = 8,
                                          main_img = "dataseticons/fec.jpg",
-                                         front_title = "Federal Election Commission",
-                                         back_title = "About the Federal Election Commission",
+                                         front_title = "Federal Election Commission Data",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The Federal Election Commission (FEC) is a regulatory agency of US elections. They 
-                                             produce datasets that encompass information about the money raised and spent by all 
-                                             candidates and elected officials. They provide their data at the 1-year level and is 
+                                             "The Federal Election Commission is a regulatory agency of US elections. It
+                                             produces datasets that encompass information about the funds raised and spent by all 
+                                             candidates and elected officials. They provide their data at the 1-year intervals,
                                              available at the district level and above."
                                          )
                                        ),
@@ -2363,12 +2348,11 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          box_width = 8,
                                          main_img = "dataseticons/mit.jpg",
                                          front_title = "MIT Elections Lab",
-                                         back_title = "About the MIT Election Lab",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The MIT election lab provides data about voting behaviors in elections. Their 
+                                             "The MIT Election Lab provides data about voting behaviors in elections. Their 
                                              datasets include demographic information and voting behaviors, including voter 
-                                             participation. Their data is provided for each election and provides best estimates 
-                                             of each population. The MIT election lab includes data at the local precinct-level 
+                                             participation. Their data is provided for each election, at the local precinct-level 
                                              and above."
                                          )
                                        ),
@@ -2377,13 +2361,13 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 7,
                                          box_width = 8,
                                          main_img = "dataseticons/usda.jpg",
-                                         front_title = "U.S. Department of Agriculture",
-                                         back_title = "About the USDA National Agricultural Statistics Service Census of Agriculture",
+                                         front_title = "National Census of Agriculture",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The United States Department of Agriculture’s (USDA) publishes the National Agricultural 
-                                             Statistics Service Census of Agriculture provides data about demographics, agriculture, 
-                                             the environment, livestock, and research. This data is provided at the 1-year level and 
-                                             at the district-level geography and above."
+                                             "The United States Department of Agriculture publishes the National Agricultural 
+                                             Statistics Service Census of Agriculture with data about demographics, agriculture, 
+                                             environment, livestock, and research. Data are provided annually and are available
+                                             at district-level geography and above."
                                          )
                                        ),
                                        br(),
@@ -2392,12 +2376,12 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          box_width = 8,
                                          main_img = "dataseticons/dave.jpg",
                                          front_title = "Atlas of US Presidential Elections",
-                                         back_title = "About Dave Leip's Atlas of US Presidential Elections",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "Dave Leip’s Atlas of US presidential elections is a public-access dataset that 
-                                             provides information on election results. The website provides data at the 1-year 
-                                             level on polling, predictions, endorsement, voting and electoral college outcomes 
-                                             during each election. The data is available at the state-level."
+                                             "Dave Leip’s Atlas of US Presidential Elections is a public-access dataset that 
+                                             provides information on election results. The website provides data annually
+                                             on polling, predictions, endorsement, voting and electoral college outcomes 
+                                             during each election. Data are available at state-level."
                                          )
                                        )
                                        ),
@@ -2406,13 +2390,13 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 9,
                                          box_width = 8,
                                          main_img = "dataseticons/urban.jpg",
-                                         front_title = "Urban Institute Debt in America",
-                                         back_title = "About the Urban Institute Debt in America",
+                                         front_title = "Debt in America",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The Urban Institute Debt of America is a dataset that includes information of 
-                                             financial behaviors of Americans. They include sampled de-identified data from 
-                                             credit bureaus, as well as 1-year and 5-year ACS estimates. Their data is reported 
-                                             at the 1-year level at the county-level geography and above."
+                                             "The Urban Institute's Debt of America is a dataset that includes information on Americans' 
+                                             financial behaviors. It is based on sampled de-identified data from 
+                                             credit bureaus, as well as on 1-year and 5-year American Community Survey estimates. 
+                                             Data are available at county-level geography and above."
                                          )
                                        ),
                                        br(),
@@ -2420,12 +2404,12 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 10,
                                          box_width = 8,
                                          main_img = "dataseticons/census.jpg",
-                                         front_title = "U.S. Census Bureau County Business Patterns",
-                                         back_title = "About the U.S. Census Bureau's County Business Patterns",
+                                         front_title = "County Business Patterns",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The County Business Patterns (CBP) dataset is provided by the US census bureau and 
-                                             provides information on businesses at the county-level. Their yearly data includes 
-                                             the codes of each type of business, how many businesses are located in a given geography, 
+                                             "The County Business Patterns (CBP) dataset is provided by the US Census Bureau and 
+                                             contains information on businesses at the county level. The annual data includes 
+                                             codes of each type of business, how many businesses are located in a given geography, 
                                              and information about those businesses."
                                          )
                                        ),
@@ -2434,11 +2418,11 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 11,
                                          box_width = 8,
                                          main_img = "dataseticons/cdc.jpg",
-                                         front_title = "DHHS Centers for Disease Control and Prevention",
-                                         back_title = "About the Department of Health and Human Services' \nCenters for Disease Control and Prevention",
+                                         front_title = "Centers for Disease Control and Prevention Data",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "Department of Health and Human Services (DHHS) Center for Disease Control and Prevention 
-                                             (CDC) provide data on health and diseases. They include yearly sample data at the 
+                                             "Department of Health and Human Services Center for Disease Control and Prevention 
+                                             provide data on health and disease prevalence. They include yearly sample data at the 
                                              county-level on common diseases and general health statistics."
                                          )
                                        ),
@@ -2447,14 +2431,14 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                          id = 12,
                                          box_width = 8,
                                          main_img = "dataseticons/robert.jpg",
-                                         front_title = "Robert Wood Johnson County Health Rankings",
-                                         back_title = "About Robert Wood Johnson County Health Rankings",
+                                         front_title = "County Health Rankings",
+                                         back_title = "About the Data",
                                          back_content = tagList(
-                                             "The Robert Wood Johnson County Health Rankings are provided by the Robert Wood Johnson 
-                                             foundation. They provide yearly estimates of health rankings at the county-level. 
-                                             Their rankings take into account health outcomes, health behaviors, sociodemographic 
-                                             characteristics, and the physical environment.  They utilize county-level data from a 
-                                             variety of sources and re-weight their data using scientific methods."
+                                             "The Robert Wood Johnson County Health Rankings data provide yearly estimates of health 
+                                             indicators at the county-level. 
+                                             Rankings take into account health outcomes, health behaviors, sociodemographic 
+                                             characteristics, and the physical environment. The dataset aggregates county-level information from 
+                                             multiple sources."
                                          )
                                          )
                                        )
