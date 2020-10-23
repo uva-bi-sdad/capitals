@@ -32,7 +32,7 @@ measures <- read.csv("data/measures.csv")
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
-legend <- png::readPNG("www/legend_irr.png")
+legend_irr <- png::readPNG("www/legend_irr.png")
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("theater-masks")), 
                         hr(),
                         menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
-                                 menuSubItem(text = "Data and Methods Table", tabName = "datamethods"),
+                                 menuSubItem(text = "Measures Table", tabName = "datamethods"),
                                  menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
                         menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
@@ -2285,7 +2285,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         tabItem(tabName = "datadescription",
                                 fluidRow(
                                   box(width = 12,
-                                      title = "Data Descriptions")),
+                                      title = "Data Descriptions"),
                                 column(6,
                                        flipBox(
                                          id = 1,
@@ -2482,6 +2482,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                              align = "center"
                                            )
                                          )
+                                         )
                                        ))
                                 ),
                         
@@ -2677,9 +2678,9 @@ server <- function(input, output, session) {
                           hoverformat = ".2f")) %>%
       layout(
         images = list(
-          source = raster2uri(as.raster(legend)),
-          x = 1.62, y = 0, 
-          sizex = 0.6, sizey = 0.6,
+          source = raster2uri(as.raster(legend_irr)),
+          x = 1.42, y = 0, 
+          sizex = 0.4, sizey = 0.4,
           xref = "paper", yref = "paper", 
           xanchor = "right", yanchor = "bottom"
         ),
