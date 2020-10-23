@@ -1,5 +1,6 @@
 library(shinydashboard)
 library(dashboardthemes)
+library(shinydashboardPlus)
 library(dplyr)
 library(readr)
 library(leaflet)
@@ -14,6 +15,9 @@ library(RColorBrewer)
 library(stringr)
 library(apputils)
 library(shinyalert)
+library(dash)
+library(dashCoreComponents)
+library(dashHtmlComponents)
 
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
@@ -28,7 +32,7 @@ measures <- read.csv("data/measures.csv")
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
-
+legend <- png::readPNG("www/legend_irr.png")
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -70,7 +74,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                  menuSubItem("Policy Assets", tabName = "policyassets")), #icon("balance-scale-left")),
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("theater-masks")), 
                         hr(),
-                        menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("info-circle")),
+                        menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
+                                 menuSubItem(text = "Data and Methods Table", tabName = "datamethods"),
+                                 menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
                         menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
                     ),
@@ -2275,6 +2281,209 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       DTOutput("measures_table"))
                                 )
                         ),
+                        # DATA DESCRIPTION CONTENT -------------------------
+                        tabItem(tabName = "datadescription",
+                                fluidRow(
+                                  box(width = 12,
+                                      title = "Data Descriptions")),
+                                column(6,
+                                       flipBox(
+                                         id = 1,
+                                         main_img = "dataseticons/acs.jpg",
+                                         front_title = "American Community Survey",
+                                         back_title = "About the American Community Survey",
+                                         back_content = tagList(
+                                           column(
+                                             "The American Community Survey (ACS) is an ongoing yearly survey conducted by the U.S Census Bureau. 
+                                            ACS samples households to compile 1-year and 5-year datasets providing 
+                                            information on population sociodemographic and socioeconomic characteristics 
+                                            including employment, disability, and health insurance coverage. 
+                                            ACS is available at census block group geographic level and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 2,
+                                         main_img = "dataseticons/census.jpg",
+                                         front_title = "U.S. Census Bureau",
+                                         back_title = "About the U.S. Census Bureau",
+                                         back_content = tagList(
+                                           column(
+                                             "The US Census Bureau is an agency that is tasked with providing information about 
+                                             Americans in every geography level. Their data collected is decennial and they provide 
+                                             information on participating households and individuals, including demographics and 
+                                             participation in the census. They provide data at the census block group geographic 
+                                             level and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 3,
+                                         main_img = "dataseticons/bls.jpg",
+                                         front_title = "Bureau of Labor Statistics",
+                                         back_title = "About the Bureau of Labor Statistics' \nLocal Area Unemployment Statistics",
+                                         back_content = tagList(
+                                           column(
+                                             "The local area unemployment statistics dataset is published by the Bureau of Labor 
+                                             Statistics (BLS) which is charged with collecting data on the labor force. The local 
+                                             area unemployment statistics dataset includes information at the 1-year level about 
+                                             unemployment. The provide data the county level and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 4,
+                                         main_img = "dataseticons/arda.jpg",
+                                         front_title = "The Association of Religion Data Archives",
+                                         back_title = "About the Association of Religion Data Archives",
+                                         back_content = tagList(
+                                           column(
+                                             "The Association of Religion Data Archives (ARDA) is a collection of surveys, polls,
+                                             and other data submitted by researchers to the ARDA. The ARDA compiles multi-year 
+                                             data on congregations, membership, and religious preferences at the international 
+                                             and national levels. ARDA data is available at the county level and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 5,
+                                         main_img = "dataseticons/fec.jpg",
+                                         front_title = "Federal Election Commission",
+                                         back_title = "About the Federal Election Commission",
+                                         back_content = tagList(
+                                           column(
+                                             "The Federal Election Commission (FEC) is a regulatory agency of US elections. They 
+                                             produce datasets that encompass information about the money raised and spent by all 
+                                             candidates and elected officials. They provide their data at the 1-year level and is 
+                                             available at the district level and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 6,
+                                         main_img = "dataseticons/mit.jpg",
+                                         front_title = "MIT Elections Lab",
+                                         back_title = "About the MIT Election Lab",
+                                         back_content = tagList(
+                                           column(
+                                             "The MIT election lab provides data about voting behaviors in elections. Their 
+                                             datasets include demographic information and voting behaviors, including voter 
+                                             participation. Their data is provided for each election and provides best estimates 
+                                             of each population. The MIT election lab includes data at the local precinct-level 
+                                             and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       )),
+                                column(6,
+                                       flipBox(
+                                         id = 7,
+                                         main_img = "dataseticons/usda.jpg",
+                                         front_title = "U.S. Department of Agriculture",
+                                         back_title = "About the USDA National Agricultural Statistics Service Census of Agriculture",
+                                         back_content = tagList(
+                                           column(
+                                             "The United States Department of Agriculture’s (USDA) publishes the National Agricultural 
+                                             Statistics Service Census of Agriculture provides data about demographics, agriculture, 
+                                             the environment, livestock, and research. This data is provided at the 1-year level and 
+                                             at the district-level geography and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 8,
+                                         main_img = "dataseticons/dave.jpg",
+                                         front_title = "Atlas of US Presidential Elections",
+                                         back_title = "About Dave Leip's Atlas of US Presidential Elections",
+                                         back_content = tagList(
+                                           column(
+                                             "Dave Leip’s Atlas of US presidential elections is a public-access dataset that 
+                                             provides information on election results. The website provides data at the 1-year 
+                                             level on polling, predictions, endorsement, voting and electoral college outcomes 
+                                             during each election. The data is available at the state-level.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 9,
+                                         main_img = "dataseticons/urban.jpg",
+                                         front_title = "Urban Institute Debt in America",
+                                         back_title = "About the Urban Institute Debt in America",
+                                         back_content = tagList(
+                                           column(
+                                             "The Urban Institute Debt of America is a dataset that includes information of 
+                                             financial behaviors of Americans. They include sampled de-identified data from 
+                                             credit bureaus, as well as 1-year and 5-year ACS estimates. Their data is reported 
+                                             at the 1-year level at the county-level geography and above.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 10,
+                                         main_img = "dataseticons/census.jpg",
+                                         front_title = "U.S. Census Bureau County Business Patterns",
+                                         back_title = "About the U.S. Census Bureau's County Business Patterns",
+                                         back_content = tagList(
+                                           column(
+                                             "The County Business Patterns (CBP) dataset is provided by the US census bureau and 
+                                             provides information on businesses at the county-level. Their yearly data includes 
+                                             the codes of each type of business, how many businesses are located in a given geography, 
+                                             and information about those businesses.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 11,
+                                         main_img = "dataseticons/cdc.jpg",
+                                         front_title = "DHHS Centers for Disease Control and Prevention",
+                                         back_title = "About the Department of Health and Human Services' \nCenters for Disease Control and Prevention",
+                                         back_content = tagList(
+                                           column(
+                                             "Department of Health and Human Services (DHHS) Center for Disease Control and Prevention 
+                                             (CDC) provide data on health and diseases. They include yearly sample data at the 
+                                             county-level on common diseases and general health statistics.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ),
+                                       flipBox(
+                                         id = 12,
+                                         main_img = "dataseticons/robert.jpg",
+                                         front_title = "Robert Wood Johnson County Health Rankings",
+                                         back_title = "About Robert Wood Johnson County Health Rankings",
+                                         back_content = tagList(
+                                           column(
+                                             "The Robert Wood Johnson County Health Rankings are provided by the Robert Wood Johnson 
+                                             foundation. They provide yearly estimates of health rankings at the county-level. 
+                                             Their rankings take into account health outcomes, health behaviors, sociodemographic 
+                                             characteristics, and the physical environment.  They utilize county-level data from a 
+                                             variety of sources and re-weight their data using scientific methods.",
+                                             width = 12,
+                                             align = "center"
+                                           )
+                                         )
+                                       ))
+                                ),
                         
                         # CONTACT CONTENT -------------------------
                         tabItem(tabName = "contact",
@@ -2394,6 +2603,18 @@ server <- function(input, output, session) {
   cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
   cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
+  # legend image -------------------------
+  
+  # output$legend <- renderImage({
+  #   # When input$n is 1, filename is ./images/image1.jpeg
+  #   filename <- normalizePath(file.path('./www',
+  #                                       paste('legend_irr', '.png', sep='')))
+  #   
+  #   # Return a list containing the filename
+  #   list(src = filename)
+  # }, deleteFile = FALSE)
+  
+  
   # Info button content ---------------------
   observeEvent(input$infobutton_fin, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
@@ -2422,6 +2643,7 @@ server <- function(input, output, session) {
 
   
   # Function for indicator boxplots --------------------------
+  
   create_boxplot <- function(data, myvar, myvarlabel) {
     
     group <- as.factor(data$state)
@@ -2452,7 +2674,17 @@ server <- function(input, output, session) {
                           showticklabels = FALSE),
              yaxis = list(title = "",
                           zeroline = FALSE,
-                          hoverformat = ".2f"))
+                          hoverformat = ".2f")) %>%
+      layout(
+        images = list(
+          source = raster2uri(as.raster(legend)),
+          x = 1.62, y = 0, 
+          sizex = 0.6, sizey = 0.6,
+          xref = "paper", yref = "paper", 
+          xanchor = "right", yanchor = "bottom"
+        ),
+        margin = list(t = 50)
+      )
     
   }
   
