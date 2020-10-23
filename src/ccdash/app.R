@@ -2285,8 +2285,8 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         tabItem(tabName = "datadescription",
                                 fluidRow(
                                   box(width = 12,
-                                      title = "Data Descriptions"),
-                                column(6,
+                                      title = "Data Descriptions",
+                                column(4,
                                        flipBox(
                                          id = 1,
                                          main_img = "dataseticons/acs.jpg",
@@ -2304,6 +2304,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(""),
                                        flipBox(
                                          id = 2,
                                          main_img = "dataseticons/census.jpg",
@@ -2321,6 +2322,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(""),
                                        flipBox(
                                          id = 3,
                                          main_img = "dataseticons/bls.jpg",
@@ -2337,6 +2339,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 4,
                                          main_img = "dataseticons/arda.jpg",
@@ -2352,7 +2355,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                              align = "center"
                                            )
                                          )
+                                       )
                                        ),
+                                column(4,
                                        flipBox(
                                          id = 5,
                                          main_img = "dataseticons/fec.jpg",
@@ -2369,6 +2374,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 6,
                                          main_img = "dataseticons/mit.jpg",
@@ -2385,8 +2391,8 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                              align = "center"
                                            )
                                          )
-                                       )),
-                                column(6,
+                                       ),
+                                       br(),
                                        flipBox(
                                          id = 7,
                                          main_img = "dataseticons/usda.jpg",
@@ -2403,6 +2409,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 8,
                                          main_img = "dataseticons/dave.jpg",
@@ -2418,7 +2425,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                              align = "center"
                                            )
                                          )
+                                       )
                                        ),
+                                column(4,
                                        flipBox(
                                          id = 9,
                                          main_img = "dataseticons/urban.jpg",
@@ -2435,6 +2444,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 10,
                                          main_img = "dataseticons/census.jpg",
@@ -2451,6 +2461,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 11,
                                          main_img = "dataseticons/cdc.jpg",
@@ -2466,6 +2477,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                        ),
+                                       br(),
                                        flipBox(
                                          id = 12,
                                          main_img = "dataseticons/robert.jpg",
@@ -2483,7 +2495,9 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            )
                                          )
                                          )
-                                       ))
+                                       )
+                                  )
+                                )
                                 ),
                         
                         # CONTACT CONTENT -------------------------
