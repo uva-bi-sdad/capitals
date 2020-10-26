@@ -28,6 +28,7 @@ datacult <- read_rds("data/cult_final.Rds")
 
 
 measures <- read.csv("data/measures.csv")
+biblio <- read.csv("data/bibliography.csv")
 
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
@@ -77,6 +78,8 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
                                  menuSubItem(text = "Measures Table", tabName = "datamethods"),
                                  menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
+                        menuItem(text = "Resources", tabName = "resources",
+                                 menuSubItem(text = "Bibliography", tabName = "biblio")),
                         menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
                     ),
@@ -2446,6 +2449,24 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 )
                                 ),
                         
+                        # BIBLIOGRAPHY CONTENT -------------------------
+                        tabItem(tabName = "biblio",
+                                fluidRow(
+                                  box(width = 12,
+                                      title = "Bibliography",
+                                      selectInput("topic_biblio", "Select capital:", width = "100%", choices = c(
+                                        "All",
+                                        "Financial",
+                                        "Human",
+                                        "Social",
+                                        "Natural", 
+                                        "Built", 
+                                        "Political", 
+                                        "Cultural")),
+                                      DTOutput("biblio_table"))
+                                )
+                        ),
+                        
                         # CONTACT CONTENT -------------------------
                         tabItem(tabName = "contact",
                                 fluidRow(
@@ -4633,6 +4654,34 @@ server <- function(input, output, session) {
                      "Cultural" = "cultural")
       
       table <- measures[measures$capital == data, ]
+      table <- as.data.frame(table)
+      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
+    }
+  })
+  
+  #--------- Bibliography table -------------------------
+  #
+  biblio_topic <- reactive({
+    input$topic_biblio
+  })
+  
+  output$biblio_table <- renderDataTable({
+    if(biblio_topic() == "All"){
+      table <- as.data.frame(biblio)
+      names(table) <- c("Author","Title","Journal","Volume","Number","Pages","Year","Index","Indicator")
+      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
+    }
+    else{
+      data <- switch(input$topic_biblio,
+                     "Financial" = "Financial",
+                     "Human" = "Human",
+                     "Social" = "Social",
+                     "Natural" = "Natural", 
+                     "Built" = "Built",
+                     "Political" = "Political", 
+                     "Cultural" = "Cultural")
+      
+      table <- biblio[biblio$Index == data, ]
       table <- as.data.frame(table)
       datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
     }
