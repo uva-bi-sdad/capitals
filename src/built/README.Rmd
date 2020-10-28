@@ -1,0 +1,55 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{md}
+
+├── built_capital
+    ├── telecommunications
+        ├── perc_pop_w_n_bband_providers 
+            ├── perc_pop_w_0providers
+            ├── perc_pop_w_1provider
+            ├── perc_pop_w_2providers
+            ├── perc_pop_w_3providers
+        ├── perc_hhold_w_bband
+        ├── number_of_cell_towers #
+        ├── number_of_libraries #
+        ├── av_computers_w_internet #
+        ├── number_of_public_computer_use #
+    ├── transportation 
+        ├── number_of_bridges #
+        ├── perc_low_quality_bridges
+        ├── number_of_roads #
+        ├── miles_of_roads #
+    ├── recreation_facilities
+        ├── major_sporting_venues
+        ├── convention_centers_fairgrounds #
+        ├── places_of_worship #
+        ├── tax_exempt_locations #
+    ├── educational_facilities 
+        ├── universities #
+        ├── community_colleges #
+        ├── public_schools #
+        ├── private_schools # 
+    ├── water_sanitation_services
+        ├── prc_houses_w_complete_plumbing
+        ├── 
+        ├── 
+        ├── 
+    ├── emergency_services
+        ├── hospitals 
+        ├── ems_services 
+        ├── 
+        ├── 
+        ├── 
+    ├── energy_services
+        ├── 
+    ├── commerce_jobs
+    ├── contaminants
+
+```
+
+
+# = per_capita or by_land_area? 
+## = do we want to include all three? 
