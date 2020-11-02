@@ -30,7 +30,11 @@ acsvars <- c(
   "B25024_001", #total
   #Percent households with "Broadband such as cable, fiber optic, or DSL" subscription
   "B28011_004",
-  "B28011_001"
+  "B28011_001",
+  #Percent with complete plumbing 
+  "B25047_001",
+  "B25047_002",
+  "B25047_003"
 )
 
 
@@ -66,7 +70,9 @@ acsdata <- data %>% transmute(
   built_medpropval = B25077_001E,
   built_medyrbuilt = B25035_001E,
   built_pctsinghaus = (B25024_002E / B25024_001E) * 100,
-  built_pctbband = (B28011_004E / B28011_001E) *100
+  built_pctbband = (B28011_004E / B28011_001E) *100,
+  prc_complete_plumbing = (B25047_002E / B25047_001E) *100,
+  prc_lacking_plumbing = (B25047_003E / B25047_001E) *100
 )
 
 #view(acsdata)

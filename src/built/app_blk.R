@@ -1,6 +1,5 @@
 library(shinydashboard)
 library(dashboardthemes)
-library(shinydashboardPlus)
 library(dplyr)
 library(readr)
 library(leaflet)
@@ -15,25 +14,19 @@ library(RColorBrewer)
 library(stringr)
 library(apputils)
 library(shinyalert)
-library(dash)
-library(dashCoreComponents)
-library(dashHtmlComponents)
 
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
 datapol <- read_rds("data/pol_final_1.Rds")
-datacult <- read_rds("data/cult_final.Rds")
-
 
 measures <- read.csv("data/measures.csv")
-biblio <- read.csv("data/bibliography.csv")
 
 css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
-legend_irr <- png::readPNG("www/legend_irr.png")
+
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -63,8 +56,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         img(src = "logo.png", height = 60, width = 235)
                       ),
                       sidebarMenu(
-                        hr(),
-                        menuItem(text = "Community Capital Areas", tabName = "capitals", icon = icon("list-ol")),
+                        menuItem(text = "Community Capital Areas", tabName = "capitals", icon = icon("")),
                         menuItem(text = "Financial", tabName = "financial", icon = icon("money-check-alt")),
                         menuItem(text = "Human", tabName = "human", icon = icon("child")),
                         menuItem(text = "Social", tabName = "social", icon = icon("handshake")),
@@ -74,13 +66,8 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                  menuSubItem("Political Capital", tabName = "political"),
                                  menuSubItem("Policy Assets", tabName = "policyassets")), #icon("balance-scale-left")),
                         menuItem(text = "Cultural", tabName = "cultural", icon = icon("theater-masks")), 
-                        hr(),
-                        menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
-                                 menuSubItem(text = "Measures Table", tabName = "datamethods"),
-                                 menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
-                        menuItem(text = "Resources", tabName = "resources", icon = icon("book-open"),
-                                 menuSubItem(text = "Bibliography", tabName = "biblio")),
-                        menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
+                        menuItem(text = "Data and Methods", tabName = "datamethods", icon = icon("")),
+                        menuItem(text = "About Us", tabName = "contact", icon = icon(""))
                       )
                     ),
                     
@@ -182,23 +169,6 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                       introjsUI(),
                       useShinyalert(),
                       
-                      # code to make video pop-up
-                      tags$script('
-                      $( document ).ready(function() {
-
-                        var x = $("#vid").attr("src");
-
-                        $("#video_popup").on("hidden.bs.modal", function (event) {
-                          $("#vid").attr("src", "");
-                        });
-
-                        $("#video_popup").on("show.bs.modal", function(){
-                          $("#vid").attr("src", x);
-                        });
-
-                      })
-                      '),
-                      
                       tabItems(
                         
                         # SUMMARY CONTENT -------------------------
@@ -213,13 +183,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       br(""),
                                       "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
                                       br(""),
-                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", actionLink("video_button", "here."),    #a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
-                                      
-                                      # code to make video pop-up
-                                      bsModal(id = "video_popup", title = "How to Use the Dashboard",
-                                              trigger = "video_button", size = "large",
-                                              HTML('<iframe id="vid" width="560" height="315" src="https://www.youtube-nocookie.com/embed/uo25P_valhw?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')),
-                                      
+                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
                                       br(""),
                                       img(src = "framework.png", class = "topimage", width = "100%",
                                           style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
@@ -1441,6 +1405,166 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 )
                         ),  
                         
+                        ### BUILT NEW 
+                        
+                        tabItem(tabName = "built",
+                                fluidRow(
+                                  box(title = "About Built Capital",
+                                      width = 9,
+                                      "Built capital refers to the physical infrastructure that facilitates community activities, such as 
+                                    broadband and other information technologies, utilities, water/sewer systems, roads and bridges, business parks, 
+                                    hospitals, main street buildings, playgrounds, and housing."
+                                  ),
+                                  box(title = "Select Your State",
+                                      width = 3,
+                                      selectInput("built_whichstate", label = NULL,
+                                                  choices = list("Iowa",
+                                                                 "Oregon",
+                                                                 "Virginia"), 
+                                                  selected = "Iowa")
+                                  )
+                                  ),
+                                
+                              fluidRow(
+                                  box(title = "Explore Composite Indices",
+                                      width = 12,
+                                      column(11,
+                                             radioGroupButtons(
+                                               inputId = "builtidx_choice", #label = "Make a choice :",        # update this
+                                               choices = c("TELECOMMUNICATIONS", "TRANSPORTATION"),   # update this
+                                               checkIcon = list(yes = icon("angle-double-right")),
+                                               justified = FALSE, status = "success", 
+                                               direction = "horizontal", width = "100%", individual = TRUE)
+                                      ),
+                                      column(1,
+                                             circleButton(inputId = "infobutton_built", icon = icon("info"), status = "info", size = "sm")  # maybe update this
+                                      )
+                                  )
+                                  
+                                ),
+                                #
+                                # QUANTITY OF RESOURCES PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.builtidx_choice == 'TELECOMMUNICATIONS'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Telecommunications Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_built_index_telecomm")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Telecommunications Measures", # left off here
+                                                          id = "tab_indexnat_quantres",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "County Area in Farmland",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_farmland") #built_pctbband
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                       plotlyOutput("plotly_nat_quantres_farmland")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "County Area in Water",
+                                                                   fluidRow(
+                                                                     h4(strong("Percent of County Area in Water"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_water")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                       plotlyOutput("plotly_nat_quantres_water")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Forestry Sales",
+                                                                   fluidRow(
+                                                                     h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_forestsales")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                       plotlyOutput("plotly_nat_quantres_forestsales")
+                                                                     )
+                                                                   )
+                                                          ),
+                                                          tabPanel(title = "Agri-Tourism and Recreational Revenue",
+                                                                   fluidRow(
+                                                                     h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_quantres_rev")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                       plotlyOutput("plotly_nat_quantres_rev")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                ),
+                                #
+                                # QUALITY OF RESOURCES PANEL ------------------------------------------
+                                #
+                                
+                                conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   box(title = "Quality of Resources Index",
+                                                       width = 12,
+                                                       h5(strong("County-Level Map")),
+                                                       leafletOutput("plot_nat_index_qualres")
+                                                   )
+                                                   
+                                                 ),
+                                                 fluidRow(
+                                                   tabBox(title = "Quality of Resources Measures",
+                                                          id = "tab_indexnat_qualres",
+                                                          width = 12,
+                                                          side = "right",
+                                                          tabPanel(title = "Fine Particulate Matter",
+                                                                   fluidRow(
+                                                                     h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("County-Level Map")),
+                                                                       leafletOutput("plot_nat_qualres_part")
+                                                                     ),
+                                                                     column(
+                                                                       width = 6,
+                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                       plotlyOutput("plotly_nat_qualres_part")
+                                                                     )
+                                                                   )
+                                                          )
+                                                   )
+                                                 )
+                                )
+                        ),  
+                        
                         # NATURAL CAPITAL CONTENT -------------------------
                         tabItem(tabName = "natural",
                                 
@@ -2222,77 +2346,20 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   )
                                 ),
                                 fluidRow(
-                                  box(title = "Explore Diversity Measures",
-                                      width = 12,
-                                      column(11,
-                                             radioGroupButtons(
-                                               inputId = "cultidx_choice", 
-                                               choices = c("RELIGION", "ANCESTRY"),
-                                               checkIcon = list(yes = icon("angle-double-right")),
-                                               direction = "horizontal", width = "100%",
-                                               justified = FALSE, status = "success", individual = TRUE)
-                                      ),
-                                      column(1,
-                                             circleButton(inputId = "infobutton_cult", icon = icon("info"), status = "info", size = "sm")
-                                      )
+                                  box(
+                                    "COMING SOON."
                                   )
-                                  
-                                ),
-                                
-                                conditionalPanel("input.cultidx_choice == 'RELIGION'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Number of Religious Groups",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_rich"), 
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_rich")
-                                                   ),
-                                                   
-                                                   box(title = "Gini-Simpson Diversity Index",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_gsi"),
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_gsi")
-                                                  )
-                                                   
-                                                   
-                                                  )
-                                ),
-                                
-                                conditionalPanel("input.cultidx_choice == 'ANCESTRY'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Number of Ancestry Groups",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_ancrich"), 
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_ancrich")
-                                                   ),
-                                                   
-                                                   box(title = "Gini-Simpson Diversity Index",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_ancgsi"),
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_ancgsi")
-                                                   )
-                                                   
-                                                   
-                                                 )
                                 )
-                                
-                                
                         ),
                         
                         # DATA AND METHODS CONTENT -------------------------
                         tabItem(tabName = "datamethods",
                                 fluidRow(
+                                  box(width = 12,
+                                      title = "How We Measure Community Capitals",
+                                      includeHTML("index_interpretation.html"),
+                                      br(""),
+                                      "More information about measurement, indicator choice, and references are coming soon."),
                                   box(width = 12,
                                       title = "Measures and Data Sources",
                                       selectInput("topic", "Select capital:", width = "100%", choices = c(
@@ -2305,188 +2372,6 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                         "Political", 
                                         "Cultural")),
                                       DTOutput("measures_table"))
-                                )
-                        ),
-                        # DATA DESCRIPTION CONTENT -------------------------
-                        tabItem(tabName = "datadescription",
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Data Descriptions",
-                                column(4,
-                                       flipBox(
-                                         id = 1,
-                                         box_width = 8,
-                                         main_img = "dataseticons/acs.jpg",
-                                         front_title = "American Community Survey",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                            "The American Community Survey (ACS) is an ongoing yearly survey conducted by the U.S Census Bureau. 
-                                            ACS samples households to compile 1-year and 5-year datasets providing 
-                                            information on population sociodemographic and socioeconomic characteristics.
-                                            ACS is available at census block group geographic level and above."
-                                         )
-                                       ),
-                                       br(""),
-                                       flipBox(
-                                         id = 3,
-                                         box_width = 8,
-                                         main_img = "dataseticons/bls.jpg",
-                                         front_title = "Local Area Unemployment Statistics",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The Local Area Unemployment Statistics dataset is published by the Bureau of Labor 
-                                             Statistics (BLS), which is charged with collecting data on the labor force. The dataset
-                                             includes annual information about unemployment. BLS provides data at the county level and above."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 4,
-                                         box_width = 8,
-                                         main_img = "dataseticons/arda.jpg",
-                                         front_title = "The Association of Religion Data Archives",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The Association of Religion Data Archives (ARDA) is a collection of surveys, polls,
-                                             and other data submitted by researchers to the ARDA. ARDA compiles multi-year 
-                                             data on congregations, membership, and religious preferences at the international 
-                                             and national levels. ARDA data is available at the county level and above."
-                                         )
-                                       )
-                                       ),
-                                column(4,
-                                       flipBox(
-                                         id = 5,
-                                         box_width = 8,
-                                         main_img = "dataseticons/fec.jpg",
-                                         front_title = "Federal Election Commission Data",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The Federal Election Commission is a regulatory agency of US elections. It
-                                             produces datasets that encompass information about the funds raised and spent by all 
-                                             candidates and elected officials. They provide their data at the 1-year intervals,
-                                             available at the district level and above."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 6,
-                                         box_width = 8,
-                                         main_img = "dataseticons/mit.jpg",
-                                         front_title = "MIT Elections Lab",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The MIT Election Lab provides data about voting behaviors in elections. Their 
-                                             datasets include demographic information and voting behaviors, including voter 
-                                             participation. Their data is provided for each election, at the local precinct-level 
-                                             and above."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 7,
-                                         box_width = 8,
-                                         main_img = "dataseticons/usda.jpg",
-                                         front_title = "National Census of Agriculture",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The United States Department of Agriculture publishes the National Agricultural 
-                                             Statistics Service Census of Agriculture with data about demographics, agriculture, 
-                                             environment, livestock, and research. Data are provided annually and are available
-                                             at district-level geography and above."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 8,
-                                         box_width = 8,
-                                         main_img = "dataseticons/dave.jpg",
-                                         front_title = "Atlas of US Presidential Elections",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "Dave Leip’s Atlas of US Presidential Elections is a public-access dataset that 
-                                             provides information on election results. The website provides data annually
-                                             on polling, predictions, endorsement, voting and electoral college outcomes 
-                                             during each election. Data are available at state-level."
-                                         )
-                                       )
-                                       ),
-                                column(4,
-                                       flipBox(
-                                         id = 9,
-                                         box_width = 8,
-                                         main_img = "dataseticons/urban.jpg",
-                                         front_title = "Debt in America",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The Urban Institute's Debt of America is a dataset that includes information on Americans' 
-                                             financial behaviors. It is based on sampled de-identified data from 
-                                             credit bureaus, as well as on 1-year and 5-year American Community Survey estimates. 
-                                             Data are available at county-level geography and above."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 10,
-                                         box_width = 8,
-                                         main_img = "dataseticons/census.jpg",
-                                         front_title = "County Business Patterns",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The County Business Patterns (CBP) dataset is provided by the US Census Bureau and 
-                                             contains information on businesses at the county level. The annual data includes 
-                                             codes of each type of business, how many businesses are located in a given geography, 
-                                             and information about those businesses."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 11,
-                                         box_width = 8,
-                                         main_img = "dataseticons/cdc.jpg",
-                                         front_title = "Centers for Disease Control and Prevention Data",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "Department of Health and Human Services Center for Disease Control and Prevention 
-                                             provide data on health and disease prevalence. They include yearly sample data at the 
-                                             county-level on common diseases and general health statistics."
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 12,
-                                         box_width = 8,
-                                         main_img = "dataseticons/robert.jpg",
-                                         front_title = "County Health Rankings",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                             "The Robert Wood Johnson County Health Rankings data provide yearly estimates of health 
-                                             indicators at the county-level. 
-                                             Rankings take into account health outcomes, health behaviors, sociodemographic 
-                                             characteristics, and the physical environment. The dataset aggregates county-level information from 
-                                             multiple sources."
-                                         )
-                                         )
-                                       )
-                                  )
-                                )
-                                ),
-                        
-                        # BIBLIOGRAPHY CONTENT -------------------------
-                        tabItem(tabName = "biblio",
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Bibliography",
-                                      selectInput("topic_biblio", "Select capital:", width = "100%", choices = c(
-                                        "All",
-                                        "Financial",
-                                        "Human",
-                                        "Social",
-                                        "Natural", 
-                                        "Built", 
-                                        "Political", 
-                                        "Cultural")),
-                                      DTOutput("biblio_table"))
                                 )
                         ),
                         
@@ -2520,74 +2405,77 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       title = "Acknowledgements",
                                       p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
                                       
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_vatech.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
-                                                    href = "https://ext.vt.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                               tags$li("Susan Chen, Associate Professor, Department of Agricultural and Applied Economics"),
-                                               tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food, Virginia Cooperative Extension"),
-                                               tags$li("Matthew Holt, Professor and Department Head, Department of Agricultural and Applied Economics"),
-                                               tags$li("Ed Jones, Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences"),
-                                               tags$li("Michael Lambur, Associate Director, Program Development, Virginia Cooperative Extension"),
-                                               tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health, Virginia Cooperative Extension"),
+                                      column(width = 4,
+                                             tags$a(tags$img(src = "VA_CES_logo.png", width = '40%'), href = "https://ext.vt.edu/"),
+                                             br(), br(),
+                                             tags$ul(
+                                               tags$li("Daniel Goerlich, Ph.D., Associate Director: Economy, Community, and Food; Virginia Cooperative Extension, Virginia Tech"),
+                                               tags$li("Ed Jones, Ph.D., Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences, Virginia Tech"),
+                                               tags$li("Michael Lambur, Ph.D., Associate Director: Program Development, Virginia Cooperative Extension, Virginia Tech"),
+                                               tags$li("Cathy Sutphin, Ph.D., Associate Director: Youth, Families, and Health; Virginia Cooperative Extension, Virginia Tech"),
                                                style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              br()   
                                       ),
                                       
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_isu.png", width = '40%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
-                                                    href = "https://www.iastate.edu/"),
-                                             br(),
+                                      column(width = 4,
+                                             tags$a(tags$img(src = "ISU_logo.png", width = '30%'), href = "https://www.iastate.edu/"),
+                                             br(), br(),
                                              tags$ul(em("Faculty:"),
                                                      tags$li("Todd Abraham, Assistant Director of Data and Analytics for the Iowa Integrated Data System"),
                                                      tags$li("Cass Dorius, Associate Professor of Human Development and Family Studies"), 
                                                      tags$li("Shawn Dorius, Associate Professor of Sociology"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
-                                             p(em("Students:"), "Joel Von Behren, Jessie Bustin, Grant Durbahn, 
-                                                     Haley Jeppson, Vikram Magal, Atefeh Rajabalizadah, Kishor Sridhar, 
-                                                     Katie Thompson, Matthew Voss" 
+                                             tags$ul(em("Graduate Fellows:"),
+                                                     tags$li("Atefeh Rajabalizadah"),
+                                                     tags$li("Haley Jeppson"),
+                                                     tags$li("Kishor Sridhar"), 
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             tags$ul(em("Undergraduate Interns:"),
+                                                     tags$li("Jessie Bustin"),
+                                                     tags$li("Grant Durbahn"), 
+                                                     tags$li("Vikram Magal"),
+                                                     tags$li("Katie Thompson"), 
+                                                     tags$li("Joel Von Behren"),
+                                                     tags$li("Matthew Voss"), 
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
                                              br()
                                       ),
-
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_osu.jpg", width = '50%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
-                                                    href = "https://oregonstate.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                                     tags$li("Shawn Irvine, Economic Development Director, City of Independence, Oregon"),
-                                                     tags$li("Deborah John, Professor and Extension Specialist, College of Public Health and Human Sciences"),
-                                                     tags$li("Stuart Reitz, Professor and Director, Malheur Experiment Station"),
-                                                     tags$li("Lindsey Shirley, Associate Provost, University Extension & Engagement"),
-                                                     tags$li("Brett M. Tyler, Director of the Center for Genome Research and Biocomputing and Stewart Professor of Gene Research"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             )
-                                      ),
                                       
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_bii.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
-                                                    href = "https://biocomplexity.virginia.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
+                                      column(width = 4,
+                                             tags$a(tags$img(src = "BII_logo.png", width = '40%'), href = "https://biocomplexity.virginia.edu/"),
+                                             br(), br(),
+                                             tags$ul(em("Social and Decision Analytics Division:"),
                                                      tags$li("Sallie Keller, Division Director, Distinguished Professor in Biocomplexity, and Professor of Public Health Sciences, School of Medicine"),
                                                      tags$li("Brandon Kramer, Postdoctoral Research Associate"),
                                                      tags$li("Vicki Lancaster, Principal Scientist"),
                                                      tags$li("Kathryn Linehan, Research Scientist"),
-                                                     tags$li("Sarah McDonald, Research Assistant"),
                                                      tags$li("Cesar Montalvo, Postdoctoral Research Associate"),
                                                      tags$li("Teja Pristavec, Research Assistant Professor"),
                                                      tags$li("Stephanie Shipp, Deputy Division Director and Research Professor"),
                                                      style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              ),
-                                             p(em("Students:"), "Riya Berry, Tasfia Chowdhury, Martha Czernuszenko,
-                                               Lara Haase, Saimun Habib, Owen Hart, Vatsala Ramanan, Morgan Stockham"
+                                             
+                                             tags$ul(em("Graduate Fellows:"),
+                                                     tags$li("Lara Haase"),
+                                                     tags$li("Morgan Stockham"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                             ),
+                                             tags$ul(em("Undergraduate Interns:"),
+                                                     tags$li("Riya Berry"),
+                                                     tags$li("Tasfia Chowdhury"),
+                                                     tags$li("Martha Czernuszenko"),
+                                                     tags$li("Saimun Habib"),
+                                                     tags$li("Owen Hart"),
+                                                     tags$li("Sarah McDonald"),
+                                                     tags$li("Vatsala Ramanan"),
+                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
                                              )
                                              
                                       )
-                                      
                                   )
                                   
                                 )
@@ -2608,18 +2496,6 @@ server <- function(input, output, session) {
   cbGreens2 <- c("#4E5827", "#6E752A", "#959334", "#C3B144", "#F9F1CB", "#EB8E38", "#C96918")
   cbBrowns <- c("#FFF4A2", "#E9DC7A", "#D2C351", "#BCAB29", "#A59200", "grey")
   
-  # legend image -------------------------
-  
-  # output$legend <- renderImage({
-  #   # When input$n is 1, filename is ./images/image1.jpeg
-  #   filename <- normalizePath(file.path('./www',
-  #                                       paste('legend_irr', '.png', sep='')))
-  #   
-  #   # Return a list containing the filename
-  #   list(src = filename)
-  # }, deleteFile = FALSE)
-  
-  
   # Info button content ---------------------
   observeEvent(input$infobutton_fin, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
@@ -2637,18 +2513,12 @@ server <- function(input, output, session) {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
-  observeEvent(input$infobutton_cult, {
-    shinyalert(text = includeHTML("index_interpretation_cultural.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
-               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
-  })
   observeEvent(input$pcindex_info, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
-
   
   # Function for indicator boxplots --------------------------
-  
   create_boxplot <- function(data, myvar, myvarlabel) {
     
     group <- as.factor(data$state)
@@ -2679,17 +2549,7 @@ server <- function(input, output, session) {
                           showticklabels = FALSE),
              yaxis = list(title = "",
                           zeroline = FALSE,
-                          hoverformat = ".2f")) %>%
-      layout(
-        images = list(
-          source = raster2uri(as.raster(legend_irr)),
-          x = 1.42, y = 0, 
-          sizex = 0.4, sizey = 0.4,
-          xref = "paper", yref = "paper", 
-          xanchor = "right", yanchor = "bottom"
-        ),
-        margin = list(t = 50)
-      )
+                          hoverformat = ".2f"))
     
   }
   
@@ -2847,7 +2707,6 @@ server <- function(input, output, session) {
   soc_data <- reactive({datasoc %>% filter(state == input$soc_whichstate)})
   pol_data <- reactive({datapol %>% filter(state == input$pol_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
-  cult_data <- reactive({datacult %>% filter(state == input$cult_whichstate)})
   
   #
   # Capital Index Maps ------------------------------------------------
@@ -4536,123 +4395,6 @@ server <- function(input, output, session) {
  
   })
   
-  #
-  # Cultural - Religion - Boxplot and Map------------------
-  # 
-  
-  # continuous indicator function
-  create_continuous_indicator <- function(data, myvar, myvarlabel){
-    pal <- colorNumeric(cbGreens[1:5], domain = myvar)
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = myvarlabel,
-                opacity = 0.7,
-                na.label = "Not Available"#,
-                #labFormat = function(type, cuts, p) {
-                #  n = length(cuts)
-                #  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                #}
-      )
-  }
-  
-  
-  
-  output$plot_cult_index_rich <- renderLeaflet({
-
-    data_var <- cult_data()$cult_rich
-    var_label <- "Number of Religious Groups"
-    
-    create_continuous_indicator(cult_data(), data_var, var_label)
-  })
-  
-  
-  output$plot_cult_index_gsi <- renderLeaflet({
-    
-    data_var <- cult_data()$cult_gsi
-    var_label <- "Gini-Simpson Index of Diversity"
-    
-    create_continuous_indicator(cult_data(), data_var, var_label)
-  }) 
-  
-  output$plotly_cult_index_rich <- renderPlotly({
-    
-    data_var <- cult_data()$cult_rich
-    var_label <- "Number of Religious Groups"
-    
-    create_boxplot(cult_data(), data_var, var_label)
-  })
-  
-  
-  output$plotly_cult_index_gsi <- renderPlotly({
-    
-    data_var <- cult_data()$cult_gsi
-    var_label <- "Gini-Simpson Index of Diversity"
-    
-    create_boxplot(cult_data(), data_var, var_label)
-  })
-  
-  ##
-  
-  output$plot_cult_index_ancrich <- renderLeaflet({
-    
-    data_var <- cult_data()$anc_rich
-    var_label <- "Number of Ancestry Groups"
-    
-    create_continuous_indicator(cult_data(), data_var, var_label)
-  })
-  
-  
-  output$plot_cult_index_ancgsi <- renderLeaflet({
-    
-    data_var <- cult_data()$anc_gsi
-    var_label <- "Gini-Simpson Index of Diversity"
-    
-    create_continuous_indicator(cult_data(), data_var, var_label)
-  }) 
-  
-  output$plotly_cult_index_ancrich <- renderPlotly({
-    
-    data_var <- cult_data()$anc_rich
-    var_label <- "Number of Ancestry Groups"
-    
-    create_boxplot(cult_data(), data_var, var_label)
-  })
-  
-  
-  output$plotly_cult_index_ancgsi <- renderPlotly({
-    
-    data_var <- cult_data()$anc_gsi
-    var_label <- "Gini-Simpson Index of Diversity"
-    
-    create_boxplot(cult_data(), data_var, var_label)
-  })
-  
-  
-  
-  
   
   #--------- Measures table -------------------------
   #
@@ -4677,34 +4419,6 @@ server <- function(input, output, session) {
                      "Cultural" = "cultural")
       
       table <- measures[measures$capital == data, ]
-      table <- as.data.frame(table)
-      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
-    }
-  })
-  
-  #--------- Bibliography table -------------------------
-  #
-  biblio_topic <- reactive({
-    input$topic_biblio
-  })
-  
-  output$biblio_table <- renderDataTable({
-    if(biblio_topic() == "All"){
-      table <- as.data.frame(biblio)
-      names(table) <- c("Author","Title","Journal","Volume","Number","Pages","Year","Index","Indicator")
-      datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
-    }
-    else{
-      data <- switch(input$topic_biblio,
-                     "Financial" = "Financial",
-                     "Human" = "Human",
-                     "Social" = "Social",
-                     "Natural" = "Natural", 
-                     "Built" = "Built",
-                     "Political" = "Political", 
-                     "Cultural" = "Cultural")
-      
-      table <- biblio[biblio$Index == data, ]
       table <- as.data.frame(table)
       datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
     }

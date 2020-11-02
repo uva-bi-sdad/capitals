@@ -1,3 +1,4 @@
+rm(list = ls())
 
 library(tidyverse)
 library(janitor)
@@ -5,7 +6,6 @@ library(naniar)
 
 data <- read_csv("./rivanna_data/built/County_Transportation_Profiles.csv") %>% 
   clean_names()
-
 
 data <- data %>% 
   filter(state_name %in% c("Iowa", "Oregon", "Virginia")) %>% 
