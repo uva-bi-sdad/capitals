@@ -182,6 +182,23 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                       introjsUI(),
                       useShinyalert(),
                       
+                      # code to make video pop-up
+                      tags$script('
+                      $( document ).ready(function() {
+
+                        var x = $("#vid").attr("src");
+
+                        $("#video_popup").on("hidden.bs.modal", function (event) {
+                          $("#vid").attr("src", "");
+                        });
+
+                        $("#video_popup").on("show.bs.modal", function(){
+                          $("#vid").attr("src", x);
+                        });
+
+                      })
+                      '),
+                      
                       tabItems(
                         
                         # SUMMARY CONTENT -------------------------
@@ -196,7 +213,13 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       br(""),
                                       "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
                                       br(""),
-                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
+                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", actionLink("video_button", "here."),    #a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
+                                      
+                                      # code to make video pop-up
+                                      bsModal(id = "video_popup", title = "How to Use the Dashboard",
+                                              trigger = "video_button", size = "large",
+                                              HTML('<iframe id="vid" width="560" height="315" src="https://www.youtube-nocookie.com/embed/uo25P_valhw?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')),
+                                      
                                       br(""),
                                       img(src = "framework.png", class = "topimage", width = "100%",
                                           style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
