@@ -78,7 +78,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                         menuItem(text = "Data and Methods", tabName = "data", icon = icon("info-circle"),
                                  menuSubItem(text = "Measures Table", tabName = "datamethods"),
                                  menuSubItem(text = "Data Descriptions", tabName = "datadescription")),
-                        menuItem(text = "Resources", tabName = "resources",
+                        menuItem(text = "Resources", tabName = "resources", icon = icon("book-open"),
                                  menuSubItem(text = "Bibliography", tabName = "biblio")),
                         menuItem(text = "About Us", tabName = "contact", icon = icon("address-card"))
                       )
