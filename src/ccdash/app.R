@@ -26,7 +26,6 @@ datanat <- read_rds("data/nat_final.Rds")
 datapol <- read_rds("data/pol_final_1.Rds")
 datacult <- read_rds("data/cult_final.Rds")
 
-
 measures <- read.csv("data/measures.csv")
 biblio <- read.csv("data/bibliography.csv")
 
@@ -34,6 +33,7 @@ css_fix <- "div.info.legend.leaflet-control br {clear: both;}"
 html_fix <- as.character(htmltools::tags$style(type = "text/css", css_fix))
 
 legend_irr <- png::readPNG("www/legend_irr.png")
+
 
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
@@ -4693,7 +4693,7 @@ server <- function(input, output, session) {
   output$biblio_table <- renderDataTable({
     if(biblio_topic() == "All"){
       table <- as.data.frame(biblio)
-      names(table) <- c("Author","Title","Journal","Volume","Number","Pages","Year","Index","Indicator")
+      names(table) <- c("Author", "Title", "Journal", "Volume", "Number", "Pages", "Year", "Capital", "Index")
       datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
     }
     else{
@@ -4706,7 +4706,7 @@ server <- function(input, output, session) {
                      "Political" = "Political", 
                      "Cultural" = "Cultural")
       
-      table <- biblio[biblio$Index == data, ]
+      table <- biblio[biblio$Capital == data, ]
       table <- as.data.frame(table)
       datatable(table, rownames = FALSE, options = list(pageLength = 15)) 
     }
