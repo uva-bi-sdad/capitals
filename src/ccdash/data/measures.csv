@@ -49,11 +49,6 @@ social,social isolation,percent population not proficient in English,US Census B
 social,social isolation,percent residents over 65 living alone,US Census Bureau American Community Survey,2012/16,county
 social,social isolation,percent population with more than 14 poor mental health days per month (frequent mental distress),Robert Wood Johnson County Health Rankings,2020,county
 social,social isolation,"number of suicides per 1,000 population",Robert Wood Johnson County Health Rankings,2020,county
-natural,quantity of resources,percent county area in farmland,USDA National Agricultural Statistics Service Census of Agriculture,2017,county
-natural,quantity of resources,percent county area in water,US Census Bureau American Community Survey,2014/18,county
-natural,quantity of resources,"forestry sales per 10,000 acres in USD",USDA National Agricultural Statistics Service Census of Agriculture,2017,county
-natural,quantity of resources,"agri-tourism and recreational revenue per 10,000 acres in USD",USDA National Agricultural Statistics Service Census of Agriculture,2017,county
-natural,quality of resources,average daily density of fine particulate matter,Robert Wood Johnson County Health Rankings,2020,county
 political,representation,voter turnout proportion,Atlas of US Presidential Elections,2016,county
 political,participation,number of organizations per 1000 people,US Census Bureau County Business Patterns,2014,county
 political,contribution,number of individuals contributing monetary resources to politcal candidates per 1000 people,Federal Election Commission,2020,county
@@ -61,3 +56,22 @@ cultural,ancestry,number of ancestries,US Census Bureau American Community Surve
 cultural,ancestry,Gini-Simpson Diversity Index,US Census Bureau American Community Survey,2014/18,county
 cultural,religions,number of religions,The Association of Religon Data Archives,2010,county
 cultural,religions,Gini-Simpson Diversity Index,The Association of Religon Data Archives,2010,county
+natural,land resouces,Percent of agricultural land within county area ,USDA National Agricultural Statistics Service Information,2017,county
+natural,land resouces,Percent of forest land within county area ,USDA Forest Service,2020,county
+natural,land resouces,Area of timber resources in squared miles,USDA Forest Service,2020,county
+natural,water resources,Total groundwater withdrawals in million of gallons per day,US Geological Survey,2015,county
+natural,water resources,Total surface-water withdrawals  in million of gallons per day,US Geological Survey,2015,county
+natural,water resources,Total withdrawals in million of gallons per day,US Geological Survey,2015,county
+natural,water resources,"Irrigation, total withdrawals, fresh, in million of gallons per day",US Geological Survey,2015,county
+natural,water resources,"Industrial self-supplied total withdrawals, in million of gallons per day",US Geological Survey,2015,county
+natural,water resources,"Domestic publicly supplied per capita use, in gallons per day ",US Geological Survey,2015,county
+natural,air resources,Average daily density of fine particulate matter,Robert Wood Johnson County Health Rankings,2020,county
+natural,air resources,Annual average air concentration estimates in microgram per cubic meter ,DHHS Centers for Disease Control and Prevention,2011,county
+natural,air resources,Annual average cancer risk estimates per million (pollutant: benzene),DHHS Centers for Disease Control and Prevention,2011,county
+natural,dependence ,"Agricultural GDP (includes agriculture, forestry, fishing and hunting) as share of total county GDP",US Bureau of Economic Analysis,2018,county
+natural,dependence ,"Mining GDP (includes mining, quarrying, and oil and gas extraction) as share of total county GDP ",US Bureau of Economic Analysis,2018,county
+natural,dependence ,Agricultural and mining GDP as share of total county GDP,US Bureau of Economic Analysis,2019,county
+natural,climate vulnerability,Percent area (square miles) within FEMA designated flood hazard area,DHHS Centers for Disease Control and Prevention,2011,county
+natural,climate vulnerability,Total population vulnerable to predicted surface smoke from wildland fires,DHHS Centers for Disease Control and Prevention,2018,county
+natural,climate vulnerability,Projected number of future extreme heat days (2020 estimates),DHHS Centers for Disease Control and Prevention,2020,county
+natural,climate vulnerability,Number of extreme heat days in 2016,DHHS Centers for Disease Control and Prevention,2016,county
