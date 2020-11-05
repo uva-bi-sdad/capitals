@@ -18,6 +18,8 @@ Sys.getenv("CENSUS_API_KEY")
 
 # Select variables
 acsvars <- c(
+  #Total population in county
+  "B01003_001",
   #Percent vacant properties
   "B25002_003", #vacant properties
   "B25002_001", #total properties
@@ -61,6 +63,9 @@ acsdata <- data %>% transmute(
   COUNTYFP = COUNTYFP,
   COUNTYNS = COUNTYNS,
   AFFGEOID = AFFGEOID,
+  ALAND = ALAND,
+  AWATER = AWATER, 
+  COUNTYPOP = B01003_001E,
   GEOID = GEOID,
   LSAD = LSAD,
   NAME.x = NAME.x,

@@ -5,48 +5,44 @@ output: html_document
 
 ```{md}
 
-├── built_capital
+├── built capital
+    ├── housing
+        ├── median property value 
+        ├── built structure median age
+        ├── percentage of single family housing 
+        ├── percentage of vacant properties 
+        ├── number of subsidized units (adj by population)
+        ├── number of people in subsidized units (adj by population)
     ├── telecommunications
-        ├── perc_pop_w_n_bband_providers 
-            ├── perc_pop_w_0providers
-            ├── perc_pop_w_1provider
-            ├── perc_pop_w_2providers
-            ├── perc_pop_w_3providers
-        ├── perc_hhold_w_bband
-        ├── number_of_cell_towers #
-        ├── number_of_libraries #
-        ├── av_computers_w_internet #
-        ├── number_of_public_computer_use #
+        ├── percentage of population with two broadband providers
+        ├── percentage of households with broadband subscription 
+        ├── number of cell towers (adjusted by land area)
+        ├── number of libraries (adjusted by land area)
+        ├── number of available computers with internet access in libraries (adj by population)
+        ├── number of public computers used in libraries (adj by population)
     ├── transportation 
-        ├── number_of_bridges #
-        ├── perc_low_quality_bridges
-        ├── number_of_roads #
-        ├── miles_of_roads #
-    ├── recreation_facilities
-        ├── major_sporting_venues
-        ├── convention_centers_fairgrounds #
-        ├── places_of_worship #
-        ├── tax_exempt_locations #
+        ├── number of bridges (adjusted by land area)
+        ├── percentage of low quality bridges 
+        ├── number of roads (adjusted by land area)
+        ├── total miles of roads (adjusted by land area)
     ├── educational_facilities 
-        ├── universities #
-        ├── community_colleges #
-        ├── public_schools #
-        ├── private_schools # 
-    ├── water_sanitation_services
-        ├── prc_houses_w_complete_plumbing
-        ├── 
-        ├── 
-        ├── 
+        ├── number of universities (adj by population)
+        ├── number of supplemental colleges (adj by population)
+        ├── number of public schools (adj by population)
+        ├── number of private schools (adj by population)
+        ├── composite number of educational facilities (adj by population)
     ├── emergency_services
-        ├── hospitals 
-        ├── ems_services 
-        ├── 
-        ├── 
-        ├── 
-    ├── energy_services
-        ├── 
-    ├── commerce_jobs
-    ├── contaminants
+        ├── number of hospitals (adj by population)
+        ├── number of urgent care facilties (adj by population)
+        ├── number of mental healthcare facilties (adj by population)
+        ├── number of fire stations (adj by population)
+        ├── number of police stations (adj by population)
+        ├── composite number of emergency service facilities (adj by population)
+    ├── convention_facilities
+        ├── number of major sporting venues (adjusted by land area)
+        ├── number of convention centers & fairgrounds (adjusted by land area)
+        ├── number of places of worship (adjusted by land area)
+        ├── composite number of convention facilities (adjusted by land area)
 
 ```
 

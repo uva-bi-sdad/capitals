@@ -40,8 +40,8 @@ data <- left_join(data, rurality, by = c("GEOID" = "fips2010", "NAME.y" = "count
 # De-select columns -----------------------------------------------------------------------
 #
 
-data <- data %>%
-  select(-AFFGEOID, -COUNTYNS, -LSAD) # others later 
+#data <- data %>%
+#  select(-AFFGEOID, -COUNTYNS, -LSAD) # others later 
 
 #
 # Recode rurality  -----------------------------------------------------------------------
@@ -77,13 +77,23 @@ pct_miss_var(data)
 # Composite Creation 
 #
 
+data %>%
+  mutate(cell_tower_adj = (cell_tower_count / ALAND),
+         publibs_adj = (built_publibs / ALAND),
+         lib_avcomputers_adj = (built_lib_avcomputers / COUNTYPOP) * 100,
+         lib_computeruse_adj = (built_lib_computeruse / COUNTYPOP) * 100
+         ) %>% 
+  select(COUNTYFP, cell_tower_adj, publibs_adj, lib_avcomputers_adj, lib_computeruse_adj)
+
+
+
 data <- data %>% 
   mutate(built_emergency_facs = hospital_count + psap_count + urgentcare_count + vahealth_count + ems_stations_count +
-           nhsc_facs + mentalhealth_facs + dental_facs + pcp_facs +  fire_station_count + localpolice_count) %>% 
-  mutate(built_convention_facs = placesofworship_count + fairgrounds_count + sportvenues_count) %>% 
-  mutate(built_educ_facs = publicschool_count + privateschool_count + university_count + suppcollege_count) %>% 
-  mutate(built_energy_facs = electric_substations_count + power_plant_count +  ethanol_plant_count + ethanol_loading_count +
-           petro_plant_count + petro_terminal_count + biodiesel_plant_count) 
+                                nhsc_facs + mentalhealth_facs + dental_facs + pcp_facs +  fire_station_count + localpolice_count, 
+         built_convention_facs = placesofworship_count + fairgrounds_count + sportvenues_count, 
+         built_educ_facs = publicschool_count + privateschool_count + university_count + suppcollege_count, 
+         built_energy_facs = electric_substations_count + power_plant_count +  ethanol_plant_count + ethanol_loading_count +
+                             petro_plant_count + petro_terminal_count + biodiesel_plant_count) 
 
 
 
@@ -92,3 +102,6 @@ data <- data %>%
 #
 
 write_rds(data, "./rivanna_data/built/built_final.Rds")
+check <- read_rds("./rivanna_data/built/built_final.Rds")
+write_rds(check, "./src/ccdash/data/built_final.Rds")
+

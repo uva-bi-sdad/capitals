@@ -184,20 +184,16 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                       
                       # code to make video pop-up
                       tags$script('
-                      $( document ).ready(function() {
-
-                        var x = $("#vid").attr("src");
-
-                        $("#video_popup").on("hidden.bs.modal", function (event) {
-                          $("#vid").attr("src", "");
-                        });
-
-                        $("#video_popup").on("show.bs.modal", function(){
-                          $("#vid").attr("src", x);
-                        });
-
-                      })
-                      '),
+                                  $( document ).ready(function() {
+                                  var x = $("#vid").attr("src");
+                                  $("#video_popup").on("hidden.bs.modal", function (event) {
+                                  $("#vid").attr("src", "");
+                                  });
+                                  $("#video_popup").on("show.bs.modal", function(){
+                                  $("#vid").attr("src", x);
+                                  });
+                                  })
+                                  '),
                       
                       tabItems(
                         
@@ -259,7 +255,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                  "Virginia"), 
                                                   selected = "Iowa")
                                   )
-                                ),
+                                  ),
                                 
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
@@ -715,7 +711,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                  "Virginia"), 
                                                   selected = "Iowa")
                                   )
-                                ),
+                                  ),
                                 
                                 fluidRow(
                                   box(title = "Explore Composite Indices",
@@ -1061,1065 +1057,1065 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 
                                 
                                 
-                        ),
-                        
-                        # SOCIAL CAPITAL CONTENT -------------------------
-                        
-                        
-                        tabItem(tabName = "social",
-                                
-                                fluidRow(
-                                  box(title = "About Social Capital",
-                                      width = 9,
-                                      "Social capital refers to the resources, information, and support that communities can access through 
+                      ),
+                      
+                      # SOCIAL CAPITAL CONTENT -------------------------
+                      
+                      
+                      tabItem(tabName = "social",
+                              
+                              fluidRow(
+                                box(title = "About Social Capital",
+                                    width = 9,
+                                    "Social capital refers to the resources, information, and support that communities can access through 
                                     the bonds among members of the community and their families  that promote mutual trust, reciprocity, 
                                     collective identity, and a sense of a shared future."
-                                  ),
-                                  box(title = "Select Your State",
-                                      width = 3,
-                                      selectInput("soc_whichstate", label = NULL,
-                                                  choices = list("Iowa",
-                                                                 "Oregon",
-                                                                 "Virginia"), 
-                                                  selected = "Iowa")
-                                  )
                                 ),
-                                
-                                fluidRow(
-                                  box(title = "Explore Composite Indices",
-                                      width = 12,
-                                      column(11,
-                                             radioGroupButtons(
-                                               inputId = "socidx_choice", #label = "Make a choice :",
-                                               choices = c("SOCIAL ENGAGEMENT", "ISOLATION"), # SOCIAL RELATIONSHIPS
-                                               checkIcon = list(yes = icon("angle-double-right")),
-                                               justified = FALSE, status = "success", 
-                                               direction = "horizontal", width = "100%", individual = TRUE),
-                                             tags$script("$(\"input:radio[name='socidx_choice'][value='ISOLATION']\").parent().css('background-color', '#A59200');")
-                                      ),
-                                      column(1, 
-                                             circleButton(inputId = "infobutton_soc", icon = icon("info"), status = "info", size = "sm"))
-                                  )
-                                  
-                                ),
-                                
-                                #
-                                # SOCIAL ENGAGEMENT PANEL ------------------------------------------
-                                #
-                                
-                                conditionalPanel("input.socidx_choice == 'SOCIAL ENGAGEMENT'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Social Engagment Index",
-                                                       width = 12,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_soc_index_socengage")
-                                                   )
-                                                   
-                                                 ),
-                                                 fluidRow(
-                                                   tabBox(title = "Social Engagement Measures",
-                                                          id = "tab_indexsoc_eng",
-                                                          width = 12,
-                                                          side = "right",
-                                                          tabPanel(title = "Census Response Rate",
-                                                                   fluidRow(
-                                                                     h4(strong("Census 2020 Mail and Online Self Response Rate"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_eng_census")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_eng_census")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Election Turnout",
-                                                                   fluidRow(
-                                                                     h4(strong("Presidential Election 2016 Voter Turnout"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_eng_turnout")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_eng_turnout")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Civic Associations and Establishments",
-                                                                   fluidRow(
-                                                                     h4(strong("Number of Civic Associations and Establishments per 1,000 Population"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_eng_civic")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_eng_civic")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Non-Profit Organizations",
-                                                                   fluidRow(
-                                                                     h4(strong("Number of Non-Profit Organizations per 1,000 Population"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_eng_nonprof")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_eng_nonprof")
-                                                                     )
-                                                                   )
-                                                          )
-                                                          
-                                                   )
-                                                 )
-                                ),
-                                #
-                                # SOCIAL RELATIONSHIPS PANEL ------------------------------------------
-                                #
-                                
-                                conditionalPanel("input.socidx_choice == 'SOCIAL RELATIONSHIPS'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Social Relationships Index",
-                                                       width = 12,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_soc_index_relationships")
-                                                   )
-                                                   
-                                                 ),
-                                                 fluidRow(
-                                                   tabBox(title = "Social Relationships Measures",
-                                                          id = "tab_indexsoc_rel",
-                                                          width = 12,
-                                                          side = "right",
-                                                          tabPanel(title = "Juvenile Arrests",
-                                                                   fluidRow(
-                                                                     h4(strong("Number of Juvenile Arrests per 1000 Juveniles"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_juvarrests")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_juvarrests")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Violent Crimes",
-                                                                   fluidRow(
-                                                                     h4(strong("Number of Violent Crimes per 100,000 Population"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_violentcrimes")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_violentcrimes")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Grandparent Householders Responsible for Grandchildren",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Grandparent Householders Responsible for Own Grandchildren"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_grandparent")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_grandparent")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Homeowners",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Homeowners"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_homeown")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_homeown")
-                                                                     )
-                                                                   )
-                                                          ), 
-                                                          tabPanel(title = "Living in the Same House as One Year Prior",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Population Living in the Same House that They Lived in One Year Prior"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_samehouse")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_samehouse")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Households with Nonrelatives Present",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Households with Nonrelatives Present"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_rel_nonrel")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_rel_nonrel")
-                                                                     )
-                                                                   )
-                                                          )
-                                                          
-                                                   )
-                                                 )
-                                ),
-                                # ISOLATION PANEL ------------------------------------------
-                                #
-                                
-                                conditionalPanel("input.socidx_choice == 'ISOLATION'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Isolation Index",
-                                                       width = 12,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_soc_index_isolation")
-                                                   )
-                                                   
-                                                 ),
-                                                 fluidRow(
-                                                   tabBox(title = "Social Relationships Measures",
-                                                          id = "tab_indexsoc_iso",
-                                                          width = 12,
-                                                          side = "right",
-                                                          tabPanel(title = "Commute",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Workers with More than an Hour of Commute by Themselves"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_commute")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_commute")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Spoken English Proficiency",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent of Residents That Are Not Proficient in Speaking English"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_english")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_english")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Residents Who are 65+ and Live Alone",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent of All County Residents Who are Both Over 65 and Live Alone"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_65alone")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_65alone")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Poor Mental Health Days",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent of People Who Indicated That They Have More Than 14 Poor Mental Health Days per Month (Frequent Mental Distress)"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_mentalhealth")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_mentalhealth")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Suicide Rate",
-                                                                   fluidRow(
-                                                                     h4(strong("Number of Suicides per 1,000 Population"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_suicide")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_suicide")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Computing Devices",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent Households with a Computing Device (Computer or Smartphone)"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_soc_iso_comp")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_soc_iso_comp")
-                                                                     )
-                                                                   )
-                                                          )
-                                                          
-                                                   )
-                                                 )
+                                box(title = "Select Your State",
+                                    width = 3,
+                                    selectInput("soc_whichstate", label = NULL,
+                                                choices = list("Iowa",
+                                                               "Oregon",
+                                                               "Virginia"), 
+                                                selected = "Iowa")
                                 )
-                        ),        
-                        
-                        # BUILT CAPITAL CONTENT -------------------------
-                        tabItem(tabName = "built",
-                                fluidRow(
-                                  box(title = "About Built Capital",
-                                      width = 9,
-                                      "Built capital refers to the physical infrastructure that facilitates community activities, such as 
-                                    broadband and other information technologies, utilities, water/sewer systems, roads and bridges, business parks, 
-                                    hospitals, main street buildings, playgrounds, and housing."
-                                  ),
-                                  box(title = "Select Your State",
-                                      width = 3,
-                                      selectInput("built_whichstate", label = NULL,
-                                                  choices = list("Iowa",
-                                                                 "Oregon",
-                                                                 "Virginia"), 
-                                                  selected = "Iowa")
-                                  )
                                 ),
-                                fluidRow(
-                                  box(
-                                    "COMING SOON."
-                                  )
-                                )
-                        ),  
-                        
-                        # NATURAL CAPITAL CONTENT -------------------------
-                        tabItem(tabName = "natural",
-                                
-                                fluidRow(
-                                  box(title = "About Natural Capital",
-                                      width = 9,
-                                      "Natural capital refers to the stock of natural or environmental ecosystem assets that provide a flow of 
-                                    useful goods or services to create possibilities and limits to community development, such as air, water, 
-                                    soil, biodiversity, and weather."
-                                  ),
-                                  box(title = "Select Your State",
-                                      width = 3,
-                                      selectInput("nat_whichstate", label = NULL,
-                                                  choices = list("Iowa",
-                                                                 "Oregon",
-                                                                 "Virginia"), 
-                                                  selected = "Iowa")
-                                  )
-                                ),
-                                
-                                fluidRow(
-                                  box(title = "Explore Composite Indices",
-                                      width = 12,
-                                      column(11,
-                                             radioGroupButtons(
-                                               inputId = "natidx_choice", #label = "Make a choice :",
-                                               choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
-                                               checkIcon = list(yes = icon("angle-double-right")),
-                                               justified = FALSE, status = "success", 
-                                               direction = "horizontal", width = "100%", individual = TRUE)
-                                      ),
-                                      column(1,
-                                             circleButton(inputId = "infobutton_nat", icon = icon("info"), status = "info", size = "sm")
-                                      )
-                                  )
-                                  
-                                ),
-                                #
-                                # QUANTITY OF RESOURCES PANEL ------------------------------------------
-                                #
-                                
-                                conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Quantity of Resources Index",
-                                                       width = 12,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_nat_index_quantres")
-                                                   )
-                                                   
-                                                 ),
-                                                 fluidRow(
-                                                   tabBox(title = "Quantity of Resources Measures",
-                                                          id = "tab_indexnat_quantres",
-                                                          width = 12,
-                                                          side = "right",
-                                                          tabPanel(title = "County Area in Farmland",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent of County Area in Farmland"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_nat_quantres_farmland")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_nat_quantres_farmland")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "County Area in Water",
-                                                                   fluidRow(
-                                                                     h4(strong("Percent of County Area in Water"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_nat_quantres_water")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_nat_quantres_water")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Forestry Sales",
-                                                                   fluidRow(
-                                                                     h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_nat_quantres_forestsales")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_nat_quantres_forestsales")
-                                                                     )
-                                                                   )
-                                                          ),
-                                                          tabPanel(title = "Agri-Tourism and Recreational Revenue",
-                                                                   fluidRow(
-                                                                     h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_nat_quantres_rev")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_nat_quantres_rev")
-                                                                     )
-                                                                   )
-                                                          )
-                                                   )
-                                                 )
-                                ),
-                                #
-                                # QUALITY OF RESOURCES PANEL ------------------------------------------
-                                #
-                                
-                                conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Quality of Resources Index",
-                                                       width = 12,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_nat_index_qualres")
-                                                   )
-                                                   
-                                                 ),
-                                                 fluidRow(
-                                                   tabBox(title = "Quality of Resources Measures",
-                                                          id = "tab_indexnat_qualres",
-                                                          width = 12,
-                                                          side = "right",
-                                                          tabPanel(title = "Fine Particulate Matter",
-                                                                   fluidRow(
-                                                                     h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("County-Level Map")),
-                                                                       leafletOutput("plot_nat_qualres_part")
-                                                                     ),
-                                                                     column(
-                                                                       width = 6,
-                                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                       plotlyOutput("plotly_nat_qualres_part")
-                                                                     )
-                                                                   )
-                                                          )
-                                                   )
-                                                 )
-                                )
-                        ),  
-                        
-                        # POLITICAL CAPITAL CONTENT -------------------------------------------------
-                        
-                        tabItem(tabName = "political",
-                                
-                                fluidRow(
-                                  box(title = "About Political Capital",
-                                      width = 9,
-                                      "Political capital refers to the ability of a community to influence and enforce rules, 
-                                    regulations, and standards through their organizations, connections, voice, and power as citizens."
-                                  ),
-                                  box(title = "Select Your State",
-                                      width = 3,
-                                      selectInput("pol_whichstate", label = NULL,
-                                                  choices = list("Iowa",
-                                                                 "Oregon",
-                                                                 "Virginia"), 
-                                                  selected = "Iowa")
-                                  )
-                                ),
-                                
-                                fluidRow(
-                                  box(
+                              
+                              fluidRow(
+                                box(title = "Explore Composite Indices",
                                     width = 12,
                                     column(11,
-                                           h4(strong("Explore Composite Indices"))
+                                           radioGroupButtons(
+                                             inputId = "socidx_choice", #label = "Make a choice :",
+                                             choices = c("SOCIAL ENGAGEMENT", "ISOLATION"), # SOCIAL RELATIONSHIPS
+                                             checkIcon = list(yes = icon("angle-double-right")),
+                                             justified = FALSE, status = "success", 
+                                             direction = "horizontal", width = "100%", individual = TRUE),
+                                           tags$script("$(\"input:radio[name='socidx_choice'][value='ISOLATION']\").parent().css('background-color', '#A59200');")
                                     ),
-                                    column(1,
-                                           #infobutton_fin
-                                           circleButton(inputId = "pcindex_info", icon = icon("info"), status = "info", size = "sm")
-                                    )
-                                  )
-                                  
-                                ),
-                                
-                                # POLITICAL PANEL ------------------------------------------
-                                
-                                tabPanel("input.finidx_choice == 'POLITICAL CAPITAL INDEX'",
-                                         
-                                         fluidRow(
-                                           
-                                           box(title = "Political Capital Index",
-                                               width = 12,
-                                               leafletOutput("plot_political_index")
-                                           )
-                                           
-                                         ),
-                                         fluidRow(
-                                           tabBox(title = "Political Capital Measures",
-                                                  id = "tab_indexfin_co",
-                                                  width = 12,
-                                                  side = "right",
-                                                  tabPanel(title = "Financial Contributions",
-                                                           fluidRow(
-                                                             h4(strong("Number of Individuals Contributing Financial Resources to Political Candidates per 1,000 People"), align = "center"),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("County-Level Map")),
-                                                               leafletOutput("leaflet_contrib")
-                                                             ),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("Measure Box Plot and Values by Rurality")),
-                                                               plotlyOutput("plotly_contrib")
-                                                             )
-                                                           )
-                                                  ),
-                                                  tabPanel(title = "Participation",
-                                                           fluidRow(
-                                                             h4(strong("Number of Organizations per 1,000 People"), align = "center"),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("County-Level Map")),
-                                                               leafletOutput("leaflet_organization")
-                                                             ),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("Measure Box Plot and Values by Rurality")),
-                                                               plotlyOutput("plotly_organization")
-                                                             )
-                                                           )
-                                                  )
-                                                  ,
-                                                  tabPanel(title = "Representation",
-                                                           fluidRow(
-                                                             h4(strong("Voter Turnout"), align = "center"),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("County-Level Map")),
-                                                               leafletOutput("leaflet_voters")
-                                                             ),
-                                                             column(
-                                                               width = 6,
-                                                               h5(strong("Measure Box Plot and Values by Rurality")),
-                                                               plotlyOutput("plotly_voters")
-                                                             )
-                                                           )
-                                                  )
-                                                  
-                                           )
-                                         )
+                                    column(1, 
+                                           circleButton(inputId = "infobutton_soc", icon = icon("info"), status = "info", size = "sm"))
                                 )
                                 
-                        ),
-                        
-                        # POLICY ASSETS CONTENT -------------------------
-                        tabItem(tabName = "policyassets",
-                                fluidRow(style = "margin: 6px",
-                                         width = 12, 
-                                         fluidRow( width=12,
-                                                   br(),
-                                                   box(width = 12,
-                                                       h4(strong("Domains of Policy Assets") ) ),
-                                                   
-                                                   column(title = "Policy Assets",
-                                                          width = 6,
-                                                          box(width = 12,
-                                                              br(style="text-align: justify;", "Policy questions for each area were constructed to 
+                              ),
+                              
+                              #
+                              # SOCIAL ENGAGEMENT PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.socidx_choice == 'SOCIAL ENGAGEMENT'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Social Engagment Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_index_socengage")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Social Engagement Measures",
+                                                        id = "tab_indexsoc_eng",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "Census Response Rate",
+                                                                 fluidRow(
+                                                                   h4(strong("Census 2020 Mail and Online Self Response Rate"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_eng_census")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_eng_census")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Election Turnout",
+                                                                 fluidRow(
+                                                                   h4(strong("Presidential Election 2016 Voter Turnout"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_eng_turnout")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_eng_turnout")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Civic Associations and Establishments",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Civic Associations and Establishments per 1,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_eng_civic")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_eng_civic")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Non-Profit Organizations",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Non-Profit Organizations per 1,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_eng_nonprof")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_eng_nonprof")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                 )
+                                               )
+                              ),
+                              #
+                              # SOCIAL RELATIONSHIPS PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.socidx_choice == 'SOCIAL RELATIONSHIPS'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Social Relationships Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_index_relationships")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Social Relationships Measures",
+                                                        id = "tab_indexsoc_rel",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "Juvenile Arrests",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Juvenile Arrests per 1000 Juveniles"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_juvarrests")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_juvarrests")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Violent Crimes",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Violent Crimes per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_violentcrimes")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_violentcrimes")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Grandparent Householders Responsible for Grandchildren",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Grandparent Householders Responsible for Own Grandchildren"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_grandparent")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_grandparent")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Homeowners",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Homeowners"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_homeown")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_homeown")
+                                                                   )
+                                                                 )
+                                                        ), 
+                                                        tabPanel(title = "Living in the Same House as One Year Prior",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Population Living in the Same House that They Lived in One Year Prior"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_samehouse")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_samehouse")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Households with Nonrelatives Present",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Households with Nonrelatives Present"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_rel_nonrel")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_rel_nonrel")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                 )
+                                               )
+                              ),
+                              # ISOLATION PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.socidx_choice == 'ISOLATION'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Isolation Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_soc_index_isolation")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Social Relationships Measures",
+                                                        id = "tab_indexsoc_iso",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "Commute",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Workers with More than an Hour of Commute by Themselves"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_commute")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_commute")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Spoken English Proficiency",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent of Residents That Are Not Proficient in Speaking English"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_english")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_english")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Residents Who are 65+ and Live Alone",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent of All County Residents Who are Both Over 65 and Live Alone"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_65alone")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_65alone")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Poor Mental Health Days",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent of People Who Indicated That They Have More Than 14 Poor Mental Health Days per Month (Frequent Mental Distress)"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_mentalhealth")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_mentalhealth")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Suicide Rate",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Suicides per 1,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_suicide")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_suicide")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Computing Devices",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent Households with a Computing Device (Computer or Smartphone)"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_soc_iso_comp")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_soc_iso_comp")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                 )
+                                               )
+                              )
+                      ),        
+                      
+                      # BUILT CAPITAL CONTENT -------------------------
+                      tabItem(tabName = "built",
+                              fluidRow(
+                                box(title = "About Built Capital",
+                                    width = 9,
+                                    "Built capital refers to the physical infrastructure that facilitates community activities, such as 
+                                    broadband and other information technologies, utilities, water/sewer systems, roads and bridges, business parks, 
+                                    hospitals, main street buildings, playgrounds, and housing."
+                                ),
+                                box(title = "Select Your State",
+                                    width = 3,
+                                    selectInput("built_whichstate", label = NULL,
+                                                choices = list("Iowa",
+                                                               "Oregon",
+                                                               "Virginia"), 
+                                                selected = "Iowa")
+                                )
+                                ),
+                              fluidRow(
+                                box(
+                                  "COMING SOON."
+                                )
+                              )
+                      ),  
+                      
+                      # NATURAL CAPITAL CONTENT -------------------------
+                      tabItem(tabName = "natural",
+                              
+                              fluidRow(
+                                box(title = "About Natural Capital",
+                                    width = 9,
+                                    "Natural capital refers to the stock of natural or environmental ecosystem assets that provide a flow of 
+                                    useful goods or services to create possibilities and limits to community development, such as air, water, 
+                                    soil, biodiversity, and weather."
+                                ),
+                                box(title = "Select Your State",
+                                    width = 3,
+                                    selectInput("nat_whichstate", label = NULL,
+                                                choices = list("Iowa",
+                                                               "Oregon",
+                                                               "Virginia"), 
+                                                selected = "Iowa")
+                                )
+                                ),
+                              
+                              fluidRow(
+                                box(title = "Explore Composite Indices",
+                                    width = 12,
+                                    column(11,
+                                           radioGroupButtons(
+                                             inputId = "natidx_choice", #label = "Make a choice :",
+                                             choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
+                                             checkIcon = list(yes = icon("angle-double-right")),
+                                             justified = FALSE, status = "success", 
+                                             direction = "horizontal", width = "100%", individual = TRUE)
+                                    ),
+                                    column(1,
+                                           circleButton(inputId = "infobutton_nat", icon = icon("info"), status = "info", size = "sm")
+                                    )
+                                )
+                                
+                              ),
+                              #
+                              # QUANTITY OF RESOURCES PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Quantity of Resources Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_index_quantres")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Quantity of Resources Measures",
+                                                        id = "tab_indexnat_quantres",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "County Area in Farmland",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_farmland")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_farmland")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "County Area in Water",
+                                                                 fluidRow(
+                                                                   h4(strong("Percent of County Area in Water"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_water")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_water")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Forestry Sales",
+                                                                 fluidRow(
+                                                                   h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_forestsales")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_forestsales")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Agri-Tourism and Recreational Revenue",
+                                                                 fluidRow(
+                                                                   h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_rev")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_rev")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
+                              ),
+                              #
+                              # QUALITY OF RESOURCES PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Quality of Resources Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_index_qualres")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Quality of Resources Measures",
+                                                        id = "tab_indexnat_qualres",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "Fine Particulate Matter",
+                                                                 fluidRow(
+                                                                   h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_qualres_part")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_qualres_part")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
+                              )
+                      ),  
+                      
+                      # POLITICAL CAPITAL CONTENT -------------------------------------------------
+                      
+                      tabItem(tabName = "political",
+                              
+                              fluidRow(
+                                box(title = "About Political Capital",
+                                    width = 9,
+                                    "Political capital refers to the ability of a community to influence and enforce rules, 
+                                    regulations, and standards through their organizations, connections, voice, and power as citizens."
+                                ),
+                                box(title = "Select Your State",
+                                    width = 3,
+                                    selectInput("pol_whichstate", label = NULL,
+                                                choices = list("Iowa",
+                                                               "Oregon",
+                                                               "Virginia"), 
+                                                selected = "Iowa")
+                                )
+                                ),
+                              
+                              fluidRow(
+                                box(
+                                  width = 12,
+                                  column(11,
+                                         h4(strong("Explore Composite Indices"))
+                                  ),
+                                  column(1,
+                                         #infobutton_fin
+                                         circleButton(inputId = "pcindex_info", icon = icon("info"), status = "info", size = "sm")
+                                  )
+                                )
+                                
+                              ),
+                              
+                              # POLITICAL PANEL ------------------------------------------
+                              
+                              tabPanel("input.finidx_choice == 'POLITICAL CAPITAL INDEX'",
+                                       
+                                       fluidRow(
+                                         
+                                         box(title = "Political Capital Index",
+                                             width = 12,
+                                             leafletOutput("plot_political_index")
+                                         )
+                                         
+                                       ),
+                                       fluidRow(
+                                         tabBox(title = "Political Capital Measures",
+                                                id = "tab_indexfin_co",
+                                                width = 12,
+                                                side = "right",
+                                                tabPanel(title = "Financial Contributions",
+                                                         fluidRow(
+                                                           h4(strong("Number of Individuals Contributing Financial Resources to Political Candidates per 1,000 People"), align = "center"),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("County-Level Map")),
+                                                             leafletOutput("leaflet_contrib")
+                                                           ),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("Measure Box Plot and Values by Rurality")),
+                                                             plotlyOutput("plotly_contrib")
+                                                           )
+                                                         )
+                                                ),
+                                                tabPanel(title = "Participation",
+                                                         fluidRow(
+                                                           h4(strong("Number of Organizations per 1,000 People"), align = "center"),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("County-Level Map")),
+                                                             leafletOutput("leaflet_organization")
+                                                           ),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("Measure Box Plot and Values by Rurality")),
+                                                             plotlyOutput("plotly_organization")
+                                                           )
+                                                         )
+                                                )
+                                                ,
+                                                tabPanel(title = "Representation",
+                                                         fluidRow(
+                                                           h4(strong("Voter Turnout"), align = "center"),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("County-Level Map")),
+                                                             leafletOutput("leaflet_voters")
+                                                           ),
+                                                           column(
+                                                             width = 6,
+                                                             h5(strong("Measure Box Plot and Values by Rurality")),
+                                                             plotlyOutput("plotly_voters")
+                                                           )
+                                                         )
+                                                )
+                                                
+                                         )
+                                       )
+                              )
+                              
+                    ),
+                    
+                    # POLICY ASSETS CONTENT -------------------------
+                    tabItem(tabName = "policyassets",
+                            fluidRow(style = "margin: 6px",
+                                     width = 12, 
+                                     fluidRow( width=12,
+                                               br(),
+                                               box(width = 12,
+                                                   h4(strong("Domains of Policy Assets") ) ),
+                                               
+                                               column(title = "Policy Assets",
+                                                      width = 6,
+                                                      box(width = 12,
+                                                          br(style="text-align: justify;", "Policy questions for each area were constructed to 
                                                              have a “Yes” or “No” response, where a “Yes” indicates the policy has the potential to have a positive impact based on empirical research. A response of “Yes” was assigned a value of 1. 
                                                              If the state did not have a particular policy or regulation, it was assigned a value of 0.
                                                              For example, Student Discipline is one of the sub-domains identified within the Education policy area. Multiple questions regarding Student Discipline were evaluated such as:"),
-                                                              br(tags$li('Is there a ban on corporal punishment?'),
-                                                                 
-                                                                 tags$li('Are there in-school disciplinary approaches other than corporal punishment?')),
-                                                              
-                                                              br(style="text-align: justify;","According to Cuddy and Reeves (2014), students subject to corporal punishment performed worse than their peers in non-punitive environments. 
+                                                          br(tags$li('Is there a ban on corporal punishment?'),
+                                                             
+                                                             tags$li('Are there in-school disciplinary approaches other than corporal punishment?')),
+                                                          
+                                                          br(style="text-align: justify;","According to Cuddy and Reeves (2014), students subject to corporal punishment performed worse than their peers in non-punitive environments. 
                                                              Therefore, if a state banned corporal punishment they received a value of 1, if corporal punishment was not banned or there was no policy or 
                                                              regulation on corporal punishment that policy question was assigned a 0."),
-                                                              br(style="text-align: justify;","Policy areas have multiple domains. We standardized the scores by summing across a domain and dividing by the number of 
+                                                          br(style="text-align: justify;","Policy areas have multiple domains. We standardized the scores by summing across a domain and dividing by the number of 
                                                              questions. The final score for a domain was calculated by taking the mean across the domains. The final score for a policy area was calculated 
                                                              by taking the mean across the domains. The following table summarizes the areas of policy and their respective domains. The specific questions and their values can be observed by choosing the respective area.") 
-                                                              )
-                                                   ),
-                                                   column(6, align= "center",
-                                                          br(),
-                                                          br(),
-                                                          box(width = 12,
-                                                              img(src = "policy_assets_img.png", height = 510 , width = 400)) 
                                                           )
-                                         ),
-                                         br(),
-                                         br(),
-                                         fluidRow(
-                                           tabBox(title = "  ",
-                                                  id = "tab_indexfin_ag",
-                                                  width = 12,
-                                                  side = "left",
-                                                  tabPanel(title = "Education",
-                                                           fluidRow(
-                                                             column(4,
-                                                                    br(),
-                                                                    strong("Background"),
-                                                                    br(style="text-align: justify;","Education is a fundamental vehicle enabling economic mobility.   Timothy Bartik (Senior Economist at W.E. Upjohn Institute for Employment Research) states that for every one dollar invested in high quality early childhood programs, a state economy will benefit with a two to three dollar return on investment. "),
-                                                                    br(style="text-align: justify;","Four subdomains were identified: school climate, early childhood education, post-secondary affordability, and workforce development. There are 19 subcategories which are derived from 73 policy questions.  "),
-                                                                    br(style="text-align: justify;","a. As defined by the National School Climate Center", strong("School climate"), "refers to the quality and character of school life. School climate is based on patterns of students', parents' and school personnel's experience of school life and reflects norms, goals, values, interpersonal relationships, teaching and learning practices, and organizational structures. A sustainable, positive school climate fosters youth development and learning necessary for a productive, contributing and satisfying life in a democratic society.” It addresses suspensions, specific infractions and conditions; prevention and non-punitive behavioral interventions; monitoring and accountability; school resources for safety and truant/attendance officers; and state education agency support."),
-                                                                    br(style="text-align: justify;","b.", strong("Early childhood"), "includes those school years from pre-kindergarten to the third grade. Early childhood education policies group them by kindergarten requirements; teacher quality; school readiness and transitions; assessment intervention and retention; family engagement; and social-emotional learning."),
-                                                                    br(style="text-align: justify;","c.", strong("Post-secondary education"),"is the educational level following the completion of secondary education (high school). Post-secondary education includes non-degree credentials such as certifications, licenses, and work experience programs, as well as, college and professional degrees.  Post-secondary affordability policies grouped them by, need and merit based financial aid; financial aid; and free college."),
-                                                                    br(style="text-align: justify;","d.", strong("Workforce development."), "The Federal Workforce Innovation and Opportunity Act (WIOA) encourages state policymakers to seek ways to connect education, job seekers, and employers in their states by developing a one-stop delivery system that provides information on career and training services, access to employer programs and activities, and access to real-time labor market information. Workforce development policies grouped them by, statewide apprenticeships; connecting education to work; and post-secondary career and technical education.")
-                                                             ),
-                                                             
-                                                             column(8, 
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    plotOutput("political_dom_edu",  width = "auto", height=800)  
-                                                             )
-                                                           ),
-                                                           hr(),
-                                                           
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width =12,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    br(),
-                                                                                    h3("Data Sources"),
-                                                                                    tags$a(href="https://www.ecs.org/research-reports/key-issues/postsecondary-affordability/", "Education Commission of The States: Postsecondary Affordability"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ecs.org/research-reports/key-issues/early-childhood-education/", "Education Commission of The States: Early Childhood Education"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ecs.org/research-reports/key-issues/workforce-development/", "Education Commission of The States: Workforce Development"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ecs.org/research-reports/key-issues/school-climate/", "Education Commission of The States: School Climate"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Oregon%20School%20Discipline%20Laws%20and%20Regulations.pdf/", "Oregon Compilation of School Discipline Laws and Regulations"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Virginia%20School%20Discipline%20Laws%20and%20Regulations.pdf", "Virginia Compilation of School Discipline Laws and Regulations"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Iowa%20School%20Discipline%20Laws%20and%20Regulations.pdf", "Iowa Compilation of School Discipline Laws and Regulations"),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.brookings.edu/research/hitting-kids-american-parenting-and-physical-punishment/", "Brookings Corporal Punishment"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.pnas.org/content/116/17/8255", "PNAS Corporal Punishment"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ecs.org/50-state-comparison-postsecondary-education-funding/", "ECS Early Childhood Programs as Economic Development Tool"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://cew.georgetown.edu/cew-reports/recovery-job-growth-and-education-requirements-through-2020/", "Georgetown Job Growth and Education Requirements through 2020"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.luminafoundation.org/news-and-views/does-higher-education-really-increase-economic-mobility/", "Lumina Foundation: Does higher education really increase economic mobility?")
-                                                                             )
-                                                                    ),
-                                                                    br(),
-                                                                    br()
-                                                           )
-                                                  ), 
-                                                  
-                                                  tabPanel(title = "Employment",
-                                                           fluidRow( 
-                                                             column(4,
-                                                                    br(),
-                                                                    strong("Background"),
-                                                                    br(),
-                                                                    br(style="text-align: justify;","The majority of research on economic mobility focuses on income, particularly, labor income.  Policies regarding employment are essential to connect the ability to generate income of individuals with the probability to improve social and economic status.  Communities with adequate policies enhancing employment show significant improvements to overcome barriers that commonly maintain low levels of mobility.  Employment is the fastest and probably the most direct mechanism to access services of a strong and “healthy” middle class, such as, housing, childcare, high-performing schools, safe neighborhoods, college education, etc. Zimmerman (2008) suggests that there is evidence to support that increasing minimum wage legislation potentially benefits a considerable proportion of the population and legislation favoring unions increases mobility since union members typically earn higher wages than non-members (Card, 1996. Shea, 1997)."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;","Three aspects serve as a theoretical umbrella to understand the impact of employment related policies on social mobility: wage legislation, organizing capacity and considerations for protections."),
-                                                                    br(style="text-align: justify;", strong("Wage"), "legislation seeks to highlight the existence of local policies regarding minimum wages.", strong("Organizing"), "refers to the presence of union-friendly orientation.  Finally,", strong("Protection"), " covers a wide range of details concerning different aspect of employment protection that go beyond monetary aspects and include paid sick leave, equal pay mandates, pregnancy benefits, family care, etc.  These categories are suggested by the Report on the Work index by Oxfam (Oxfam, 2018).  For instance, Oregon seems to have a high rank of work index since it has the fourth highest minimum wage, part of the top states allowing organization of workers in 2018, etc. On the other hand, Virginia seems to have one of the lowest minimum wages along with other 21 states, and Iowa occupies a middle position among all the states according to the Oxfam ranking.")
-                                                             ),
-                                                             column(8,
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    plotOutput("political_dom_emp",  width = "auto", height = 800)
-                                                             )
-                                                           ),
-                                                           hr(),
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width = 12,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    br(),
-                                                                                    h3("Data Sources"),
-                                                                                    tags$a(href="https://policy-practice.oxfamamerica.org/work/poverty-in-the-us/best-states-to-work/",
-                                                                                           "OXFAM: \"The Best and Worst States to work in America\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://statusofwomendata.org/state-data/",
-                                                                                           "Status of Women: State Data"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.osha.gov/stateplans ",
-                                                                                           "OSHA: State Plans"),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.urban.org/sites/default/files/publication/31191/1001163-labor-market-institutions-and-economic-mobility.pdf", "Zimmerman, S.: \"Labor market institutions and economic mobility\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://davidcard.berkeley.edu/papers/union-struct-wage.pdf", "Card, David.: The Effect of Unions on the Structure of Wages: A Longitudinal Analysis."),
-                                                                                    br(),
-                                                                                    tags$a(href="https://s3.amazonaws.com/oxfam-us/www/static/media/files/Best_States_to_Work_Index.pdf", "OMFAM: \"The Best States To Work Index. A Guide To Labor Policy in US States\" "),
-                                                                                    br(),
-                                                                                    tags$a(href="http://papers.nber.org/papers/w6026 ", "Shea, John: \"Does Parents’ Money Matter?\" ")
-                                                                                    
-                                                                             )
-                                                                    ),
-                                                                    br(),
-                                                                    br()
-                                                           )
-                                                  ), 
-                                                  tabPanel(title = "Housing",
-                                                           fluidRow(
-                                                             column(4,  
-                                                                    br(),
-                                                                    strong("Background"),
-                                                                    br(style="text-align: justify;", "Housing policies are crucial to evidence how policies may affect economic mobility.  Low income families struggle to obtain low housing prices.  We researched various housing and zoning policies to better understand which legislation may promote or delay mobility."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;","There are three main subdomains within housing and zoning policy: assistance policies, financial policies, and development policies."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;",strong("Assistance"), "policies are programs and discounts which aid in reducing the cost of housing for disadvantaged individuals. Loan assistance programs for disabled members and first-time homeowners are examples."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;","Housing", strong("Financial"), " policy describes policies which aid in covering costs to help provide a fair financial environment when purchasing or renting homes. This includes loan assistance programs, home price discounts and tax exemptions. By understanding housing financial policies and their effects on communities, we can understand which policies cultivate the ideal environment for economic mobility."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;",strong("Development"), " policies are land use and planning regulations that influence the cost and equity of housing. Restricting the development of multi-unit housing, for example, can drive up the cost of housing.")
-                                                             ), 
-                                                             
-                                                             column(8, 
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    ###graph here
-                                                                    plotOutput("political_dom_hou",  width = "auto", height = 800)     
-                                                             )
-                                                           ),
-                                                           hr(),
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width = 12,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    br(),
-                                                                                    h3("Data Sources"),
-                                                                                    tags$a(href="https://www.fha.com/fha-grants?state=OR#:~:text=First%20Time%20Home%20Buyer%20Loan,within%20the%20City%20of%20Corvallis.", "Federal Housing Administration (FHA): \"States with First Time Home Buyer Programs\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://smartasset.com/mortgage/first-time-home-buyer-programs-iowa", "Smart Asset: \"First Time Home Buyer Programs in Iowa (2019)\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://m.vhda.com/loancombo.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing Loan Combo\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.legis.iowa.gov/docs/code/16.54.pdf", "Iowa Finance Authority (IFA): \"Home Ownership Assistance Programs in Iowa\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vhda.com/Programs/Pages/MilitaryVeteransPrograms.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing and the US military\""),
-                                                                                    br(),
-                                                                                    tags$a(href= "https://www.iowafinance.com/homeownership/mortgage-programs/military-homeownership-assistance-program/#:~:text=We'd%20like%20to%20help,and%20Homes%20for%20Iowans%20programs", "Iowa Finance Authority (IFA): \"Military Homeownership Assistance Program\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.oregon.gov/odva/Benefits/Pages/Home-Loans.aspx#:~:text=ODVA%20Home%20Loan%20Program,than%20334%2C000%20veterans%20since%201945", "Oregon Department of Veterans' Affairs (ODVA): \"Benefits and Programs\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.militarytimes.com/home-hq/2018/08/21/not-just-va-7-more-states-with-veteran-friendly-home-loan-programs/", "Military Times: \"States with Veteran-Friendly Home Loan Programs\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vhda.com/Programs/Pages/GrantingFreedom.aspx", "Virginia Housing Development Authority (VHDA): \"Granting Freedom Program\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.dvs.virginia.gov/benefits/real-estate-tax-exemption", "Virginia Department of Veterans' Services: \"Real Estate Tax Exemption\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vhda.com/Programs/Pages/Programs.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing Programs\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.self.inc/blog/the-complete-guide-to-home-loans-for-people-with-disabilities", "Self: \"The Complete Guide to Home Loans for People with Disabilities\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.disabled-world.com/disability/finance/american-home-loans.php", "Disabled World: \"Disability Housing and Home Loans for Disabled Americans\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://tax.iowa.gov/sites/default/files/2019-08/PTCandRRPForecast.pdf ", "Iowa Department of Revenue: \"Iowa’s Disabled and Senior Citizens Property Tax Credit and Rent Reimbursement Program Expenditure Projections Study\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.eldercaredirectory.org/state-resources.htm", "Eldercare Directory: \"State Resources\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.hud.gov/states/virginia/homeownership/seniors", "The United States Department of Housing and Urban Development (HUD): \"Housing Resources for Seniors: Virginia\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://vda.virginia.gov/", "VDA: \"Office of Aging Services\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.seniorresource.com/virginia.htm", "Senior Resource: \"Virginia Senior Resources\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.hud.gov/states/virginia/renting", "The United States Department of Housing and Urban Development (HUD): \"Virginia Rental Help\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.portland.gov/phb/nplte#:~:text=In%201985%2C%20Oregon%20legislature%20authorized,held%20by%20charitable%2C%20nonprofit%20organizations.&text=program%20to%202027.-,The%20tax%20exemption%20is%20intended%20to%20benefit%20low%2Dincome%20renters,that%20provide%20this%20housing%20opportunity", "City of Portland, Oregon: \"Non-Profit Low Income Housing Limited Tax Exemption (NPLTE)\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vhda.com/BusinessPartners/MFDevelopers/LIHTCProgram/Pages/LIHTCProgram.aspx", "Virginia Housing Development Authority (VHDA): \"Low-Income Housing Tax Credit Program\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://tax.iowa.gov/tax-credits-and-exemptions#:~:text=Iowa%20Low%2DRent%20Housing%20Exemption&text=Eligibility%3A%20Property%20owned%20and%20operated,no%20later%20than%20February%201", "Iowa Department of Revenue: \"Tax Credits and Exemptions\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://bpr.berkeley.edu/2018/06/01/how-portlands-right-to-return-is-indeed-right-to-return-housing-to-the-underrepresented/ ", "Berkeley Political Review: \"Portland's 'Right to Return'\""),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.urban.org/sites/default/files/alfresco/publication-pdfs/2000428-Housing-Policy-Levers-to-Promote-Economic-Mobility.pdf", "Urban Institute: \"Housing Policy Levers to Promote Economic Mobility\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.cato.org/publications/policy-analysis/zoning-land-use-planning-housing-affordability", "The Cato Institute: \"Zoning, Land‐Use Planning, and Housing Affordability\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.dcpolicycenter.org/publications/economic-cost-land-use/", "DC Policy Center: \"The economic costs of land use regulations\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.urban.org/sites/default/files/publication/98758/lithc_how_it_works_and_who_it_serves_final_2.pdf", "Urban Institute: \"The Low-Income Housing Tax Credit\"")
-                                                                                    
-                                                                             )
-                                                                    ),
-                                                                    br(),
-                                                                    br()
-                                                           )
-                                                  ),
-                                                  
-                                                  tabPanel(title = "Law Enforcement",
-                                                           fluidRow(
-                                                             column(4, 
-                                                                    br(),
-                                                                    strong("Background"),
-                                                                    br(style="text-align: justify;", "Law enforcement policies play an essential role in economic
+                                                          ),
+                                               column(6, align= "center",
+                                                      br(),
+                                                      br(),
+                                                      box(width = 12,
+                                                          img(src = "policy_assets_img.png", height = 510 , width = 400)) 
+                                               )
+                                                          ),
+                                     br(),
+                                     br(),
+                                     fluidRow(
+                                       tabBox(title = "  ",
+                                              id = "tab_indexfin_ag",
+                                              width = 12,
+                                              side = "left",
+                                              tabPanel(title = "Education",
+                                                       fluidRow(
+                                                         column(4,
+                                                                br(),
+                                                                strong("Background"),
+                                                                br(style="text-align: justify;","Education is a fundamental vehicle enabling economic mobility.   Timothy Bartik (Senior Economist at W.E. Upjohn Institute for Employment Research) states that for every one dollar invested in high quality early childhood programs, a state economy will benefit with a two to three dollar return on investment. "),
+                                                                br(style="text-align: justify;","Four subdomains were identified: school climate, early childhood education, post-secondary affordability, and workforce development. There are 19 subcategories which are derived from 73 policy questions.  "),
+                                                                br(style="text-align: justify;","a. As defined by the National School Climate Center", strong("School climate"), "refers to the quality and character of school life. School climate is based on patterns of students', parents' and school personnel's experience of school life and reflects norms, goals, values, interpersonal relationships, teaching and learning practices, and organizational structures. A sustainable, positive school climate fosters youth development and learning necessary for a productive, contributing and satisfying life in a democratic society.” It addresses suspensions, specific infractions and conditions; prevention and non-punitive behavioral interventions; monitoring and accountability; school resources for safety and truant/attendance officers; and state education agency support."),
+                                                                br(style="text-align: justify;","b.", strong("Early childhood"), "includes those school years from pre-kindergarten to the third grade. Early childhood education policies group them by kindergarten requirements; teacher quality; school readiness and transitions; assessment intervention and retention; family engagement; and social-emotional learning."),
+                                                                br(style="text-align: justify;","c.", strong("Post-secondary education"),"is the educational level following the completion of secondary education (high school). Post-secondary education includes non-degree credentials such as certifications, licenses, and work experience programs, as well as, college and professional degrees.  Post-secondary affordability policies grouped them by, need and merit based financial aid; financial aid; and free college."),
+                                                                br(style="text-align: justify;","d.", strong("Workforce development."), "The Federal Workforce Innovation and Opportunity Act (WIOA) encourages state policymakers to seek ways to connect education, job seekers, and employers in their states by developing a one-stop delivery system that provides information on career and training services, access to employer programs and activities, and access to real-time labor market information. Workforce development policies grouped them by, statewide apprenticeships; connecting education to work; and post-secondary career and technical education.")
+                                                         ),
+                                                         
+                                                         column(8, 
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                plotOutput("political_dom_edu",  width = "auto", height=800)  
+                                                         )
+                                                       ),
+                                                       hr(),
+                                                       
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width =12,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                br(),
+                                                                                h3("Data Sources"),
+                                                                                tags$a(href="https://www.ecs.org/research-reports/key-issues/postsecondary-affordability/", "Education Commission of The States: Postsecondary Affordability"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ecs.org/research-reports/key-issues/early-childhood-education/", "Education Commission of The States: Early Childhood Education"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ecs.org/research-reports/key-issues/workforce-development/", "Education Commission of The States: Workforce Development"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ecs.org/research-reports/key-issues/school-climate/", "Education Commission of The States: School Climate"),
+                                                                                br(),
+                                                                                tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Oregon%20School%20Discipline%20Laws%20and%20Regulations.pdf/", "Oregon Compilation of School Discipline Laws and Regulations"),
+                                                                                br(),
+                                                                                tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Virginia%20School%20Discipline%20Laws%20and%20Regulations.pdf", "Virginia Compilation of School Discipline Laws and Regulations"),
+                                                                                br(),
+                                                                                tags$a(href="https://safesupportivelearning.ed.gov/sites/default/files/discipline-compendium/Iowa%20School%20Discipline%20Laws%20and%20Regulations.pdf", "Iowa Compilation of School Discipline Laws and Regulations"),
+                                                                                br(),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.brookings.edu/research/hitting-kids-american-parenting-and-physical-punishment/", "Brookings Corporal Punishment"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.pnas.org/content/116/17/8255", "PNAS Corporal Punishment"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ecs.org/50-state-comparison-postsecondary-education-funding/", "ECS Early Childhood Programs as Economic Development Tool"),
+                                                                                br(),
+                                                                                tags$a(href="https://cew.georgetown.edu/cew-reports/recovery-job-growth-and-education-requirements-through-2020/", "Georgetown Job Growth and Education Requirements through 2020"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.luminafoundation.org/news-and-views/does-higher-education-really-increase-economic-mobility/", "Lumina Foundation: Does higher education really increase economic mobility?")
+                                                                         )
+                                                                ),
+                                                                br(),
+                                                                br()
+                                                       )
+                                              ), 
+                                              
+                                              tabPanel(title = "Employment",
+                                                       fluidRow( 
+                                                         column(4,
+                                                                br(),
+                                                                strong("Background"),
+                                                                br(),
+                                                                br(style="text-align: justify;","The majority of research on economic mobility focuses on income, particularly, labor income.  Policies regarding employment are essential to connect the ability to generate income of individuals with the probability to improve social and economic status.  Communities with adequate policies enhancing employment show significant improvements to overcome barriers that commonly maintain low levels of mobility.  Employment is the fastest and probably the most direct mechanism to access services of a strong and “healthy” middle class, such as, housing, childcare, high-performing schools, safe neighborhoods, college education, etc. Zimmerman (2008) suggests that there is evidence to support that increasing minimum wage legislation potentially benefits a considerable proportion of the population and legislation favoring unions increases mobility since union members typically earn higher wages than non-members (Card, 1996. Shea, 1997)."),
+                                                                br(),
+                                                                br(style="text-align: justify;","Three aspects serve as a theoretical umbrella to understand the impact of employment related policies on social mobility: wage legislation, organizing capacity and considerations for protections."),
+                                                                br(style="text-align: justify;", strong("Wage"), "legislation seeks to highlight the existence of local policies regarding minimum wages.", strong("Organizing"), "refers to the presence of union-friendly orientation.  Finally,", strong("Protection"), " covers a wide range of details concerning different aspect of employment protection that go beyond monetary aspects and include paid sick leave, equal pay mandates, pregnancy benefits, family care, etc.  These categories are suggested by the Report on the Work index by Oxfam (Oxfam, 2018).  For instance, Oregon seems to have a high rank of work index since it has the fourth highest minimum wage, part of the top states allowing organization of workers in 2018, etc. On the other hand, Virginia seems to have one of the lowest minimum wages along with other 21 states, and Iowa occupies a middle position among all the states according to the Oxfam ranking.")
+                                                         ),
+                                                         column(8,
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                plotOutput("political_dom_emp",  width = "auto", height = 800)
+                                                         )
+                                                       ),
+                                                       hr(),
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width = 12,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                br(),
+                                                                                h3("Data Sources"),
+                                                                                tags$a(href="https://policy-practice.oxfamamerica.org/work/poverty-in-the-us/best-states-to-work/",
+                                                                                       "OXFAM: \"The Best and Worst States to work in America\""),
+                                                                                br(),
+                                                                                tags$a(href="https://statusofwomendata.org/state-data/",
+                                                                                       "Status of Women: State Data"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.osha.gov/stateplans ",
+                                                                                       "OSHA: State Plans"),
+                                                                                br(),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.urban.org/sites/default/files/publication/31191/1001163-labor-market-institutions-and-economic-mobility.pdf", "Zimmerman, S.: \"Labor market institutions and economic mobility\""),
+                                                                                br(),
+                                                                                tags$a(href="https://davidcard.berkeley.edu/papers/union-struct-wage.pdf", "Card, David.: The Effect of Unions on the Structure of Wages: A Longitudinal Analysis."),
+                                                                                br(),
+                                                                                tags$a(href="https://s3.amazonaws.com/oxfam-us/www/static/media/files/Best_States_to_Work_Index.pdf", "OMFAM: \"The Best States To Work Index. A Guide To Labor Policy in US States\" "),
+                                                                                br(),
+                                                                                tags$a(href="http://papers.nber.org/papers/w6026 ", "Shea, John: \"Does Parents’ Money Matter?\" ")
+                                                                                
+                                                                         )
+                                                                ),
+                                                                br(),
+                                                                br()
+                                                       )
+                                              ), 
+                                              tabPanel(title = "Housing",
+                                                       fluidRow(
+                                                         column(4,  
+                                                                br(),
+                                                                strong("Background"),
+                                                                br(style="text-align: justify;", "Housing policies are crucial to evidence how policies may affect economic mobility.  Low income families struggle to obtain low housing prices.  We researched various housing and zoning policies to better understand which legislation may promote or delay mobility."),
+                                                                br(),
+                                                                br(style="text-align: justify;","There are three main subdomains within housing and zoning policy: assistance policies, financial policies, and development policies."),
+                                                                br(),
+                                                                br(style="text-align: justify;",strong("Assistance"), "policies are programs and discounts which aid in reducing the cost of housing for disadvantaged individuals. Loan assistance programs for disabled members and first-time homeowners are examples."),
+                                                                br(),
+                                                                br(style="text-align: justify;","Housing", strong("Financial"), " policy describes policies which aid in covering costs to help provide a fair financial environment when purchasing or renting homes. This includes loan assistance programs, home price discounts and tax exemptions. By understanding housing financial policies and their effects on communities, we can understand which policies cultivate the ideal environment for economic mobility."),
+                                                                br(),
+                                                                br(style="text-align: justify;",strong("Development"), " policies are land use and planning regulations that influence the cost and equity of housing. Restricting the development of multi-unit housing, for example, can drive up the cost of housing.")
+                                                         ), 
+                                                         
+                                                         column(8, 
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                ###graph here
+                                                                plotOutput("political_dom_hou",  width = "auto", height = 800)     
+                                                         )
+                                                       ),
+                                                       hr(),
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width = 12,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                br(),
+                                                                                h3("Data Sources"),
+                                                                                tags$a(href="https://www.fha.com/fha-grants?state=OR#:~:text=First%20Time%20Home%20Buyer%20Loan,within%20the%20City%20of%20Corvallis.", "Federal Housing Administration (FHA): \"States with First Time Home Buyer Programs\""),
+                                                                                br(),
+                                                                                tags$a(href="https://smartasset.com/mortgage/first-time-home-buyer-programs-iowa", "Smart Asset: \"First Time Home Buyer Programs in Iowa (2019)\""),
+                                                                                br(),
+                                                                                tags$a(href="https://m.vhda.com/loancombo.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing Loan Combo\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.legis.iowa.gov/docs/code/16.54.pdf", "Iowa Finance Authority (IFA): \"Home Ownership Assistance Programs in Iowa\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vhda.com/Programs/Pages/MilitaryVeteransPrograms.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing and the US military\""),
+                                                                                br(),
+                                                                                tags$a(href= "https://www.iowafinance.com/homeownership/mortgage-programs/military-homeownership-assistance-program/#:~:text=We'd%20like%20to%20help,and%20Homes%20for%20Iowans%20programs", "Iowa Finance Authority (IFA): \"Military Homeownership Assistance Program\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.oregon.gov/odva/Benefits/Pages/Home-Loans.aspx#:~:text=ODVA%20Home%20Loan%20Program,than%20334%2C000%20veterans%20since%201945", "Oregon Department of Veterans' Affairs (ODVA): \"Benefits and Programs\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.militarytimes.com/home-hq/2018/08/21/not-just-va-7-more-states-with-veteran-friendly-home-loan-programs/", "Military Times: \"States with Veteran-Friendly Home Loan Programs\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vhda.com/Programs/Pages/GrantingFreedom.aspx", "Virginia Housing Development Authority (VHDA): \"Granting Freedom Program\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.dvs.virginia.gov/benefits/real-estate-tax-exemption", "Virginia Department of Veterans' Services: \"Real Estate Tax Exemption\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vhda.com/Programs/Pages/Programs.aspx", "Virginia Housing Development Authority (VHDA): \"Virginia Housing Programs\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.self.inc/blog/the-complete-guide-to-home-loans-for-people-with-disabilities", "Self: \"The Complete Guide to Home Loans for People with Disabilities\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.disabled-world.com/disability/finance/american-home-loans.php", "Disabled World: \"Disability Housing and Home Loans for Disabled Americans\""),
+                                                                                br(),
+                                                                                tags$a(href="https://tax.iowa.gov/sites/default/files/2019-08/PTCandRRPForecast.pdf ", "Iowa Department of Revenue: \"Iowa’s Disabled and Senior Citizens Property Tax Credit and Rent Reimbursement Program Expenditure Projections Study\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.eldercaredirectory.org/state-resources.htm", "Eldercare Directory: \"State Resources\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.hud.gov/states/virginia/homeownership/seniors", "The United States Department of Housing and Urban Development (HUD): \"Housing Resources for Seniors: Virginia\""),
+                                                                                br(),
+                                                                                tags$a(href="https://vda.virginia.gov/", "VDA: \"Office of Aging Services\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.seniorresource.com/virginia.htm", "Senior Resource: \"Virginia Senior Resources\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.hud.gov/states/virginia/renting", "The United States Department of Housing and Urban Development (HUD): \"Virginia Rental Help\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.portland.gov/phb/nplte#:~:text=In%201985%2C%20Oregon%20legislature%20authorized,held%20by%20charitable%2C%20nonprofit%20organizations.&text=program%20to%202027.-,The%20tax%20exemption%20is%20intended%20to%20benefit%20low%2Dincome%20renters,that%20provide%20this%20housing%20opportunity", "City of Portland, Oregon: \"Non-Profit Low Income Housing Limited Tax Exemption (NPLTE)\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vhda.com/BusinessPartners/MFDevelopers/LIHTCProgram/Pages/LIHTCProgram.aspx", "Virginia Housing Development Authority (VHDA): \"Low-Income Housing Tax Credit Program\""),
+                                                                                br(),
+                                                                                tags$a(href="https://tax.iowa.gov/tax-credits-and-exemptions#:~:text=Iowa%20Low%2DRent%20Housing%20Exemption&text=Eligibility%3A%20Property%20owned%20and%20operated,no%20later%20than%20February%201", "Iowa Department of Revenue: \"Tax Credits and Exemptions\""),
+                                                                                br(),
+                                                                                tags$a(href="https://bpr.berkeley.edu/2018/06/01/how-portlands-right-to-return-is-indeed-right-to-return-housing-to-the-underrepresented/ ", "Berkeley Political Review: \"Portland's 'Right to Return'\""),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.urban.org/sites/default/files/alfresco/publication-pdfs/2000428-Housing-Policy-Levers-to-Promote-Economic-Mobility.pdf", "Urban Institute: \"Housing Policy Levers to Promote Economic Mobility\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.cato.org/publications/policy-analysis/zoning-land-use-planning-housing-affordability", "The Cato Institute: \"Zoning, Land‐Use Planning, and Housing Affordability\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.dcpolicycenter.org/publications/economic-cost-land-use/", "DC Policy Center: \"The economic costs of land use regulations\""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.urban.org/sites/default/files/publication/98758/lithc_how_it_works_and_who_it_serves_final_2.pdf", "Urban Institute: \"The Low-Income Housing Tax Credit\"")
+                                                                                
+                                                                         )
+                                                                ),
+                                                                br(),
+                                                                br()
+                                                       )
+                                              ),
+                                              
+                                              tabPanel(title = "Law Enforcement",
+                                                       fluidRow(
+                                                         column(4, 
+                                                                br(),
+                                                                strong("Background"),
+                                                                br(style="text-align: justify;", "Law enforcement policies play an essential role in economic
                                                                    mobility. Having a criminal record
                                                                    increases the difficulty to obtain a job. Moreover, the ramifications of a criminal record or an encounter with the law are 
                                                                    felt most by male citizens,
                                                                    particularly, Hispanic or Black men. Therefore, law enforcement becomes an increasingly important aspect of
                                                                    political capital that must be studied to understand economic mobility.  "),
-                                                                    
-                                                                    br(style="text-align: justify;", "Our research on law enforcement practices and policies identified of three main subdomains of interest: arrest and court proceedings, incarceration and community policing practices. The three subdomains are comprised of 20 policy questions which assess the existence or non-existence of a practice.  The entire dataset, both binary and qualitative, can be found by clicking on the “download CSV” button in the All Data tab in the Summary section of Data, Methods and Measures"),
-                                                                    br(style="text-align: justify;", "a.", strong("Arrest and Court Proceeding Policies"), " focused on the process of arresting and trying individuals in court. We analyzed stop and identify, bail, and civil asset forfeiture policies. Practices revealed inequalities across distinct socio-economic groups. For example, paying cash bail or having your assets seized has an effect on and is affected by an individual’s financial standing. In addition, we explored zero tolerance policies related to driving under the influence. "),
-                                                                    br(style="text-align: justify;", "b.", strong("Incarceration Practices"), " covers the policies that impact individuals held in state facilities. We focused on inmates’ rights as well as the equitability and social justness of practices within the facility and upon return to their communities.  Specifically, we assessed the ability to acquire skills and certifications, as well as, access necessary healthcare, youth adjudication and the death penalty. "),
-                                                                    br(style="text-align: justify;", "c.", strong("Community Policing Practices"), "explores the standards that officers must abide by in policing the community with a focus on the equality of standards. For example, custodial sexual misconduct policies are used to assess how states hold officers accountable for allegations of misconduct towards individuals under their custody. We include policies on body camera usage, demographic information collection and domestic violence related polices. Also, the nature of officer training programs, particularly those pertaining to treating individuals with mental health issues.")
-                                                             ),
-                                                             
-                                                             column(8,
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    ###graph here
-                                                                    plotOutput("political_dom_law",  width = "auto", height = 800)
-                                                             )
-                                                           ),
-                                                           hr(),
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width = 12,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    hr(), h3("Data Sources"),
-                                                                                    downloadButton("downloadData", "Download CSV"),
-                                                                                    
-                                                                                    br(),
-                                                                                    p("Key Data Sources are listed below. The entire list can be found by downloading the entire domain-specific dataset using the button above."),
-                                                                                    
-                                                                                    tags$a(href="https://justiceforwardva.com/bail-reform#:~:text=As%20it%20stands%2C%20Virginia%20employs,whether%20pretrial%20release%20is%20appropriate.&text=If%20a%20person%20cannot%20make,to%20pay%20the%20money%20bail.", "Justice Forward Virginia: Bail"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://ij.org/activism/legislation/civil-forfeiture-legislative-highlights/", "Institute for Justice: Civil Forfeiture Reforms on the State Level"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.aclu.org/state-standards-pregnancy-related-health-care-and-abortion-women-prison-0#hd4", "ACLU: State Standards For Pregnancy-related Health Care and Abortion for Women in Prison"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://static.prisonpolicy.org/scans/sprcsmstatelaw.pdf", "PrisonPolicy.Org: Custodial Sexual Misconduct Laws: A State-by-State Legislative Review"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/civil-and-criminal-justice/state-trends-in-law-enforcement-legislation-2014-2017.aspx", "National Conference of State Legislature: State Trends in Law Enforcement"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://statusofwomendata.org/explore-the-data/state-data/oregon/#violence-safety", "Status of Women in the United States"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.sentencingproject.org/publications/private-prisons-united-states/#:~:text=In%20six%20states%20the%20private,%2C%20and%20Georgia%20(110%25).", "Sentencing Project: Private Prisons in the United States"),
-                                                                                    
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.courts.oregon.gov/programs/inclusion/Documents/juvrights.pdf", "Courts.Oregon.Org: YOUTH FACES THE LAW:A Juvenile Rights Handbook"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://deathpenaltyinfo.org/state-and-federal-info/state-by-state", "Death Penalty Information Center: State by State"),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.theatlantic.com/politics/archive/2015/12/how-families-pay-the-never-ending-price-of-a-criminal-record/433641/", "The Atlantic: How Families Pay the Never-Ending Price of a Criminal Record"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncjrs.gov/pdffiles1/nij/grants/244756.pdf ", "NCJRS: Criminal Stigma, Race, Gender and Employment")
-                                                                             )
-                                                                    ),
-                                                                    br(),
-                                                                    br()
-                                                           )
-                                                  ),
-
-                                                  tabPanel(title = "Taxation",
-                                                           
-                                                           fluidRow( 
-                                                             column(4,
-                                                                    br(), 
-                                                                    strong("Background"),
-                                                                    br(style="text-align: justify;", "
+                                                                
+                                                                br(style="text-align: justify;", "Our research on law enforcement practices and policies identified of three main subdomains of interest: arrest and court proceedings, incarceration and community policing practices. The three subdomains are comprised of 20 policy questions which assess the existence or non-existence of a practice.  The entire dataset, both binary and qualitative, can be found by clicking on the “download CSV” button in the All Data tab in the Summary section of Data, Methods and Measures"),
+                                                                br(style="text-align: justify;", "a.", strong("Arrest and Court Proceeding Policies"), " focused on the process of arresting and trying individuals in court. We analyzed stop and identify, bail, and civil asset forfeiture policies. Practices revealed inequalities across distinct socio-economic groups. For example, paying cash bail or having your assets seized has an effect on and is affected by an individual’s financial standing. In addition, we explored zero tolerance policies related to driving under the influence. "),
+                                                                br(style="text-align: justify;", "b.", strong("Incarceration Practices"), " covers the policies that impact individuals held in state facilities. We focused on inmates’ rights as well as the equitability and social justness of practices within the facility and upon return to their communities.  Specifically, we assessed the ability to acquire skills and certifications, as well as, access necessary healthcare, youth adjudication and the death penalty. "),
+                                                                br(style="text-align: justify;", "c.", strong("Community Policing Practices"), "explores the standards that officers must abide by in policing the community with a focus on the equality of standards. For example, custodial sexual misconduct policies are used to assess how states hold officers accountable for allegations of misconduct towards individuals under their custody. We include policies on body camera usage, demographic information collection and domestic violence related polices. Also, the nature of officer training programs, particularly those pertaining to treating individuals with mental health issues.")
+                                                                ),
+                                                         
+                                                         column(8,
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                ###graph here
+                                                                plotOutput("political_dom_law",  width = "auto", height = 800)
+                                                         )
+                                                         ),
+                                                       hr(),
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width = 12,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                hr(), h3("Data Sources"),
+                                                                                downloadButton("downloadData", "Download CSV"),
+                                                                                
+                                                                                br(),
+                                                                                p("Key Data Sources are listed below. The entire list can be found by downloading the entire domain-specific dataset using the button above."),
+                                                                                
+                                                                                tags$a(href="https://justiceforwardva.com/bail-reform#:~:text=As%20it%20stands%2C%20Virginia%20employs,whether%20pretrial%20release%20is%20appropriate.&text=If%20a%20person%20cannot%20make,to%20pay%20the%20money%20bail.", "Justice Forward Virginia: Bail"),
+                                                                                br(),
+                                                                                tags$a(href="https://ij.org/activism/legislation/civil-forfeiture-legislative-highlights/", "Institute for Justice: Civil Forfeiture Reforms on the State Level"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.aclu.org/state-standards-pregnancy-related-health-care-and-abortion-women-prison-0#hd4", "ACLU: State Standards For Pregnancy-related Health Care and Abortion for Women in Prison"),
+                                                                                br(),
+                                                                                tags$a(href="https://static.prisonpolicy.org/scans/sprcsmstatelaw.pdf", "PrisonPolicy.Org: Custodial Sexual Misconduct Laws: A State-by-State Legislative Review"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/civil-and-criminal-justice/state-trends-in-law-enforcement-legislation-2014-2017.aspx", "National Conference of State Legislature: State Trends in Law Enforcement"),
+                                                                                br(),
+                                                                                tags$a(href="https://statusofwomendata.org/explore-the-data/state-data/oregon/#violence-safety", "Status of Women in the United States"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.sentencingproject.org/publications/private-prisons-united-states/#:~:text=In%20six%20states%20the%20private,%2C%20and%20Georgia%20(110%25).", "Sentencing Project: Private Prisons in the United States"),
+                                                                                
+                                                                                br(),
+                                                                                tags$a(href="https://www.courts.oregon.gov/programs/inclusion/Documents/juvrights.pdf", "Courts.Oregon.Org: YOUTH FACES THE LAW:A Juvenile Rights Handbook"),
+                                                                                br(),
+                                                                                tags$a(href="https://deathpenaltyinfo.org/state-and-federal-info/state-by-state", "Death Penalty Information Center: State by State"),
+                                                                                br(),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.theatlantic.com/politics/archive/2015/12/how-families-pay-the-never-ending-price-of-a-criminal-record/433641/", "The Atlantic: How Families Pay the Never-Ending Price of a Criminal Record"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncjrs.gov/pdffiles1/nij/grants/244756.pdf ", "NCJRS: Criminal Stigma, Race, Gender and Employment")
+                                                                         )
+                                                                ),
+                                                                br(),
+                                                                br()
+                                                       )
+                                                       ),
+                                              
+                                              tabPanel(title = "Taxation",
+                                                       
+                                                       fluidRow( 
+                                                         column(4,
+                                                                br(), 
+                                                                strong("Background"),
+                                                                br(style="text-align: justify;", "
                                                                    Taxation may influence economic mobility since it may change the patterns of wealth accumulation and the distribution of resources in society.
                                                                    Tax revenues are used to fund goods and services that drive mobility, under the principle of equality, such as education and health, and tax deduction and credit policies
                                                                    lower the cost of mobility enhancing goods. Taxation can also lead to the redistribution of wealth, an important part of combating wealth inequality."),
-                                                                    br(style="text-align: justify;", "Since 1979, income inequality in the United States has increased dramatically. In every state, the average income of the top 5% of households is at least 10 times
+                                                                br(style="text-align: justify;", "Since 1979, income inequality in the United States has increased dramatically. In every state, the average income of the top 5% of households is at least 10 times
                                                                    that of the poorest 20%.  It is vital to understand how legislation of states may implement more progressive tax policies and re-evaluate regressive
                                                                    structures to boost economic mobility. Our research identified four main subdomains of tax policy: tax credits, wealth-related taxes, business tax policy, and the Gini index."),
-                                                                    br(style="text-align: justify;", strong("a. Tax credits"), "are negative marginal tax rates, or tax incentives, that reduce tax liability and increase tax refunds, which may improve economic mobility for low-income individuals.
+                                                                br(style="text-align: justify;", strong("a. Tax credits"), "are negative marginal tax rates, or tax incentives, that reduce tax liability and increase tax refunds, which may improve economic mobility for low-income individuals.
                                                                    They ease low- to moderate-income family burdens by providing appropriate financial support for expenses like childcare, income tax, and property tax.  "),
-                                                                    br(style="text-align: justify;", strong("b: Taxes on inherited wealth"), "such as the estate and inheritance tax, largely affect the wealthiest individuals. These taxes help redistribute income and wealth and, thus improve economic mobility.
+                                                                br(style="text-align: justify;", strong("b: Taxes on inherited wealth"), "such as the estate and inheritance tax, largely affect the wealthiest individuals. These taxes help redistribute income and wealth and, thus improve economic mobility.
                                                                    Since wealth concentration has exacerbated in recent decades, wealth-related taxes help upend financial barriers for low-income people.  "),
-                                                                    br(style="text-align: justify;", strong("c: Businesses"), "create opportunities for employment, thus increasing incomes, and provide access to services that increase future earning potentials.
+                                                                br(style="text-align: justify;", strong("c: Businesses"), "create opportunities for employment, thus increasing incomes, and provide access to services that increase future earning potentials.
                                                                    States play a significant role in supporting businesses by nullifying corporate tax avoidance strategies to equalize the playing field between multimillion-dollar corporations and small businesses, as well as, creating a tax climate that fosters entrepreneurial efforts. "),
-                                                                    br(style="text-align: justify;", strong("d.  The Gini coefficient"), "is a measure of  dispersion intended to represent income or wealth inequality in a nation or area. Because the Gini coefficient measures inequality after the effects of taxes, by understanding how Gini indexes change as a result
+                                                                br(style="text-align: justify;", strong("d.  The Gini coefficient"), "is a measure of  dispersion intended to represent income or wealth inequality in a nation or area. Because the Gini coefficient measures inequality after the effects of taxes, by understanding how Gini indexes change as a result
                                                                    of tax policies and financial redistribution, we can better understand how tax policy can support economic mobility.  ")
-                                                             ),
-                                                             column(8,
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    plotOutput("political_dom_tax",  width = "auto", height = 800))
-                                                           ), 
-                                                           hr(),
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width = 3,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    br(),
-                                                                                    h3("Data Sources"),
-                                                                                    tags$a(href = "https://www.americanadoptions.com/blog/your-state-adoption-tax-credit-and-how-you-can-protect-it/", "American Adoptions"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.cbpp.org/27-states-plus-dc-require-combined-reporting-for-the-state-corporate-income-tax",
-                                                                                           "CBPP: 27 states plus DC Require Combined Reporting for the State Corporate Income Tax"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/states-and-local-governments-with-earned-income-tax-credit",
-                                                                                           "IRS: States and Local Governments with Earned Income Tax Credit "),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://itep.org/property-tax-circuit-breakers-2019/", "ITEP: Property Tax Circuit Breakers in 2019"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.livestories.com/statistics/iowa/des-moines-county-gini-index-income-inequality",
-                                                                                           "Live Stories: Des Moines County Gini Index of Income Inequality"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://opportunityindex.cfnova.org/indicator/chart?region=&demographic=&indicator=12&date_start=2005&date_end=2017",
-                                                                                           "Opportunity Index of Northern Virginia: Gini Coefficient"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.realized1031.com/capital-gains-tax-rate", "Realized: Capital Gain Tax Rates by State"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://files.taxfoundation.org/20180925174436/2019-State-Business-Tax-Climate-Index.pdf",
-                                                                                           "Tax Foundation: State Business Tax Climate Index"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://taxfoundation.org/state-corporate-income-tax-rates-brackets-2020/",
-                                                                                           "Tax Foundation: State Corporate Income Tax Rate Brackets 2020"),
-                                                                                    br(),
-                                                                                    tags$a(href="http://www.taxcreditsforworkersandfamilies.org/state-tax-credits/",
-                                                                                           "TCFW: State Tax Credits"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.thebalance.com/state-estate-tax-and-exemption-chart-3505462", "The Balance: State Estate Tax and Exemption Chart"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.thebalance.com/state-inheritance-tax-chart-3505460", "The Balance: State Inheritance Tax Charts"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.qualityinfo.org/-/wage-inequality-in-oregon-a-wide-gap", "Quality Info: Wage Inequality in Oregon"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://en.wikipedia.org/wiki/List_of_U.S._states_by_Gini_coefficient",
-                                                                                           "Wikipedia: List of U.S. States by Gini Coefficient"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://data.worldbank.org/indicator/SI.POV.GINI", "World Bank: Gini Index"),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.cbpp.org/research/state-budget-and-tax/how-state-tax-policies-can-stop-increasing-inequality-and-start",
-                                                                                           "CBPP: How State Tax Policies Can Stop Increasing Inequality and Start Reducing it"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://www.cbpp.org/research/state-budget-and-tax/state-taxes-on-inherited-wealth",
-                                                                                           "CBPP: State Taxes on Inherited Wealth"),
-                                                                                    br(),
-                                                                                    tags$a(href = "https://hbr.org/2015/01/3-ways-businesses-are-addressing-inequality-in-emerging-markets",
-                                                                                           "Harvard Business Review: 3 Ways Businesses are Addressing Inequality in Emerging Markets"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.fool.com/taxes/2020/02/15/your-2020-guide-to-tax-credits.aspx",
-                                                                                           "Motley Fool: Your 2020 Guide to Tax Credits"),
-                                                                                    br()
-                                                                                    
-                                                                             )
-                                                                    ) 
-                                                           ), 
-                                                           br(),
-                                                           br()
-                                                  ), 
-                                                  
-                                                  tabPanel(title = "Voting",
-                                                           fluidRow( 
-                                                             column(4,
-                                                                    br(),
-                                                                    strong("Background"),
-                                                                    br(style="text-align: justify;", "Chetty et al. (2014) established a positive correlation between social capital 
+                                                                ),
+                                                         column(8,
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                plotOutput("political_dom_tax",  width = "auto", height = 800))
+                                                                ), 
+                                                       hr(),
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width = 3,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                br(),
+                                                                                h3("Data Sources"),
+                                                                                tags$a(href = "https://www.americanadoptions.com/blog/your-state-adoption-tax-credit-and-how-you-can-protect-it/", "American Adoptions"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.cbpp.org/27-states-plus-dc-require-combined-reporting-for-the-state-corporate-income-tax",
+                                                                                       "CBPP: 27 states plus DC Require Combined Reporting for the State Corporate Income Tax"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/states-and-local-governments-with-earned-income-tax-credit",
+                                                                                       "IRS: States and Local Governments with Earned Income Tax Credit "),
+                                                                                br(),
+                                                                                tags$a(href = "https://itep.org/property-tax-circuit-breakers-2019/", "ITEP: Property Tax Circuit Breakers in 2019"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.livestories.com/statistics/iowa/des-moines-county-gini-index-income-inequality",
+                                                                                       "Live Stories: Des Moines County Gini Index of Income Inequality"),
+                                                                                br(),
+                                                                                tags$a(href = "https://opportunityindex.cfnova.org/indicator/chart?region=&demographic=&indicator=12&date_start=2005&date_end=2017",
+                                                                                       "Opportunity Index of Northern Virginia: Gini Coefficient"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.realized1031.com/capital-gains-tax-rate", "Realized: Capital Gain Tax Rates by State"),
+                                                                                br(),
+                                                                                tags$a(href = "https://files.taxfoundation.org/20180925174436/2019-State-Business-Tax-Climate-Index.pdf",
+                                                                                       "Tax Foundation: State Business Tax Climate Index"),
+                                                                                br(),
+                                                                                tags$a(href = "https://taxfoundation.org/state-corporate-income-tax-rates-brackets-2020/",
+                                                                                       "Tax Foundation: State Corporate Income Tax Rate Brackets 2020"),
+                                                                                br(),
+                                                                                tags$a(href="http://www.taxcreditsforworkersandfamilies.org/state-tax-credits/",
+                                                                                       "TCFW: State Tax Credits"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.thebalance.com/state-estate-tax-and-exemption-chart-3505462", "The Balance: State Estate Tax and Exemption Chart"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.thebalance.com/state-inheritance-tax-chart-3505460", "The Balance: State Inheritance Tax Charts"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.qualityinfo.org/-/wage-inequality-in-oregon-a-wide-gap", "Quality Info: Wage Inequality in Oregon"),
+                                                                                br(),
+                                                                                tags$a(href = "https://en.wikipedia.org/wiki/List_of_U.S._states_by_Gini_coefficient",
+                                                                                       "Wikipedia: List of U.S. States by Gini Coefficient"),
+                                                                                br(),
+                                                                                tags$a(href = "https://data.worldbank.org/indicator/SI.POV.GINI", "World Bank: Gini Index"),
+                                                                                br(),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.cbpp.org/research/state-budget-and-tax/how-state-tax-policies-can-stop-increasing-inequality-and-start",
+                                                                                       "CBPP: How State Tax Policies Can Stop Increasing Inequality and Start Reducing it"),
+                                                                                br(),
+                                                                                tags$a(href = "https://www.cbpp.org/research/state-budget-and-tax/state-taxes-on-inherited-wealth",
+                                                                                       "CBPP: State Taxes on Inherited Wealth"),
+                                                                                br(),
+                                                                                tags$a(href = "https://hbr.org/2015/01/3-ways-businesses-are-addressing-inequality-in-emerging-markets",
+                                                                                       "Harvard Business Review: 3 Ways Businesses are Addressing Inequality in Emerging Markets"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.fool.com/taxes/2020/02/15/your-2020-guide-to-tax-credits.aspx",
+                                                                                       "Motley Fool: Your 2020 Guide to Tax Credits"),
+                                                                                br()
+                                                                                
+                                                                         )
+                                                                ) 
+                                                       ), 
+                                                       br(),
+                                                       br()
+                                                         ), 
+                                              
+                                              tabPanel(title = "Voting",
+                                                       fluidRow( 
+                                                         column(4,
+                                                                br(),
+                                                                strong("Background"),
+                                                                br(style="text-align: justify;", "Chetty et al. (2014) established a positive correlation between social capital 
                                                                    and upward mobility. Social capital is a group level phenomena that reflects the cohesiveness of a community,
                                                                    the connections between people and organizations. Quantifying social capital relies on surrogate measurements 
                                                                    like the number of non-profits, response rate to the Census, voter turnout, the number of civic and social associations 
                                                                    (Rupasingha et al., 2006)."),
-                                                                    br(),
-                                                                    br(style="text-align: justify;", "Here we focus on policies that have potential to impact voter turnout such as 
+                                                                br(),
+                                                                br(style="text-align: justify;", "Here we focus on policies that have potential to impact voter turnout such as 
                                                                    automatic voter registration, online registration, and voter photo ID requirements. Innovations in automatic voter 
                                                                    registration have streamlined the way Americans register to vote, by providing automatic registration at DMV offices 
                                                                    and social service agencies. These policies can dramatically increase the number of registered voters. For example, 
@@ -2128,476 +2124,476 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                    January 1, 2017, registration rates jumped 62 percent when compared to the first half of 2016. In contrast, strict photo 
                                                                    ID policies block 11 percent of eligible voters that do not have government issued photo IDs and that percentage is even 
                                                                    higher among seniors, minorities, people with disabilities, low-income voters, and students.")
-                                                             ),
-                                                             column(8,
-                                                                    h3(strong( "Asset Map")),
-                                                                    br('The following figure summarizes the extent of every domain for each state.'),
-                                                                    ###graph here
-                                                                    plotOutput("political_dom_vot",  width = "auto", height = 800)
-                                                             )
-                                                           ),
-                                                           hr(), 
-                                                           
-                                                           tabPanel("Data Sources & References",
-                                                                    fluidRow(width = 12,
-                                                                             column(1),
-                                                                             column(10, h3(strong("Data Sources and References")),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("Data Sources"),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-id.aspx", "National Conference on State Legislatures: \" Voter Identification Requirements | Voter ID Laws\" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/early-voting-in-state-elections.aspx", "National Conference on State Legislatures: \"State Laws Governing Early Voting \" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://evic.reed.edu/", "EVIC: Early Voting Information Center"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vote.org/early-voting-calendar/", "Vote.org: \"Early Voting by State \" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.elections.virginia.gov/casting-a-ballot/absentee-voting/index.html", "Virgnia Department of Elections: \" Absentee and Early Voting\""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://ballotpedia.org/Absentee/mail-in_voting", "Ballotopedia: Absentee/mail-in voting"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/absentee-and-early-voting.aspx", "National Conference on State Legislatures: \" Voting Outside the Polling Place- Absentee, All-Mail and other Voting at Home Options \" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/felon-voting-rights.aspx", "National Conference on State Legislatures: \"Felon Voting Rights \""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-registration.aspx", "National Conference on State Legislatures: \"Voter Registration \""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/automatic-voter-registration.aspx", "National Conference on State Legislatures: \"Automatic Voter Registration \""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.brennancenter.org/our-work/research-reports/history-avr-implementation-dates", "Brennan Center for Justice: \"History of AVR & Implementation Dates \" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.fhwa.dot.gov/policyinformation/quickfinddata/qfdrivers.cfm", "Office of Highway Policy Information: \"Drivers and Driver Licensing\" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/electronic-or-online-voter-registration.aspx", "National Conference on State Legislatures: \"Online Voter Registration \""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-registration-deadlines.aspx", "National Conference on State Legislatures: \"Voter Registration Deadlines \""),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.vote.org/voter-registration-deadlines/", "Vote.org: \"Voter Registration Deadlines\" "),
-                                                                                    br(),
-                                                                                    tags$a(href="-https://www.ncsl.org/research/elections-and-campaigns/preregistration-for-young-voters.aspx", "National Conference on State Legislatures: \"Preregistration for Young \" "),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.elections.virginia.gov/registration/how-to-register/", "Virgnia Department of Elections: \"How to Register\" "),
-                                                                                    br(),
-                                                                                    
-                                                                                    h3("References"),
-                                                                                    tags$a(href="https://www.brennancenter.org/our-work/research-reports/automatic-voter-registration-summary", "Brennan Center for Justice: Automatic Voter Registration a Summary"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.brennancenter.org/issues/ensure-every-american-can-vote/vote-suppression/voter-id", "Brennan Center for Justice: Voter ID"),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.nber.org/papers/w19843 ", "Chetty, R., Hendren, N., Kline, P., & Saez, E.: Where is the Land of Opportunity? The Geography of Intergenerational Mobility in the United States."),
-                                                                                    br(),
-                                                                                    tags$a(href="https://www.researchgate.net/publication/222822589_The_Production_of_Social_Capital_in_US_Counties", "Rupasingha, A., Goetz, S. J., & Freshwater, D.: The production of social capital in US counties. Journal of Socio-Economics")
-                                                                                    
-                                                                             ) 
-                                                                    ),
-                                                                    br(),
-                                                                    br()
-                                                           )
-                                                  )
-                                                  
-                                           )
-                                         )
-                                )
-                                
-                        ),
-                        
-                        
-                        # CULTURAL CAPITAL CONTENT -------------------------
-                        tabItem(tabName = "cultural",
-                                fluidRow(
-                                  box(title = "About Cultural Capital",
-                                      width = 9,
-                                      "Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
+                                                                ),
+                                                         column(8,
+                                                                h3(strong( "Asset Map")),
+                                                                br('The following figure summarizes the extent of every domain for each state.'),
+                                                                ###graph here
+                                                                plotOutput("political_dom_vot",  width = "auto", height = 800)
+                                                         )
+                                                                ),
+                                                       hr(), 
+                                                       
+                                                       tabPanel("Data Sources & References",
+                                                                fluidRow(width = 12,
+                                                                         column(1),
+                                                                         column(10, h3(strong("Data Sources and References")),
+                                                                                br(),
+                                                                                
+                                                                                h3("Data Sources"),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-id.aspx", "National Conference on State Legislatures: \" Voter Identification Requirements | Voter ID Laws\" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/early-voting-in-state-elections.aspx", "National Conference on State Legislatures: \"State Laws Governing Early Voting \" "),
+                                                                                br(),
+                                                                                tags$a(href="https://evic.reed.edu/", "EVIC: Early Voting Information Center"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vote.org/early-voting-calendar/", "Vote.org: \"Early Voting by State \" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.elections.virginia.gov/casting-a-ballot/absentee-voting/index.html", "Virgnia Department of Elections: \" Absentee and Early Voting\""),
+                                                                                br(),
+                                                                                tags$a(href="https://ballotpedia.org/Absentee/mail-in_voting", "Ballotopedia: Absentee/mail-in voting"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/absentee-and-early-voting.aspx", "National Conference on State Legislatures: \" Voting Outside the Polling Place- Absentee, All-Mail and other Voting at Home Options \" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/felon-voting-rights.aspx", "National Conference on State Legislatures: \"Felon Voting Rights \""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-registration.aspx", "National Conference on State Legislatures: \"Voter Registration \""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/automatic-voter-registration.aspx", "National Conference on State Legislatures: \"Automatic Voter Registration \""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.brennancenter.org/our-work/research-reports/history-avr-implementation-dates", "Brennan Center for Justice: \"History of AVR & Implementation Dates \" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.fhwa.dot.gov/policyinformation/quickfinddata/qfdrivers.cfm", "Office of Highway Policy Information: \"Drivers and Driver Licensing\" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/electronic-or-online-voter-registration.aspx", "National Conference on State Legislatures: \"Online Voter Registration \""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.ncsl.org/research/elections-and-campaigns/voter-registration-deadlines.aspx", "National Conference on State Legislatures: \"Voter Registration Deadlines \""),
+                                                                                br(),
+                                                                                tags$a(href="https://www.vote.org/voter-registration-deadlines/", "Vote.org: \"Voter Registration Deadlines\" "),
+                                                                                br(),
+                                                                                tags$a(href="-https://www.ncsl.org/research/elections-and-campaigns/preregistration-for-young-voters.aspx", "National Conference on State Legislatures: \"Preregistration for Young \" "),
+                                                                                br(),
+                                                                                tags$a(href="https://www.elections.virginia.gov/registration/how-to-register/", "Virgnia Department of Elections: \"How to Register\" "),
+                                                                                br(),
+                                                                                
+                                                                                h3("References"),
+                                                                                tags$a(href="https://www.brennancenter.org/our-work/research-reports/automatic-voter-registration-summary", "Brennan Center for Justice: Automatic Voter Registration a Summary"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.brennancenter.org/issues/ensure-every-american-can-vote/vote-suppression/voter-id", "Brennan Center for Justice: Voter ID"),
+                                                                                br(),
+                                                                                tags$a(href="https://www.nber.org/papers/w19843 ", "Chetty, R., Hendren, N., Kline, P., & Saez, E.: Where is the Land of Opportunity? The Geography of Intergenerational Mobility in the United States."),
+                                                                                br(),
+                                                                                tags$a(href="https://www.researchgate.net/publication/222822589_The_Production_of_Social_Capital_in_US_Counties", "Rupasingha, A., Goetz, S. J., & Freshwater, D.: The production of social capital in US counties. Journal of Socio-Economics")
+                                                                                
+                                                                         ) 
+                                                                ),
+                                                                br(),
+                                                                br()
+                                                       )
+                                                         )
+                                              
+                                                       )
+                                       )
+                                                       )
+                            
+                    ),
+                    
+                    
+                    # CULTURAL CAPITAL CONTENT -------------------------
+                    tabItem(tabName = "cultural",
+                            fluidRow(
+                              box(title = "About Cultural Capital",
+                                  width = 9,
+                                  "Cultural capital refers to the shared values, beliefs, dispositions, and perspectives that emanate 
                                   from membership in a particular cultural group, often developing over generations, and provide a basis for 
                                   collective efforts to solve community problems."
+                              ),
+                              box(title = "Select Your State",
+                                  width = 3,
+                                  selectInput("cult_whichstate", label = NULL,
+                                              choices = list("Iowa",
+                                                             "Oregon",
+                                                             "Virginia"), 
+                                              selected = "Iowa")
+                              )
+                              ),
+                            fluidRow(
+                              box(title = "Explore Diversity Measures",
+                                  width = 12,
+                                  column(11,
+                                         radioGroupButtons(
+                                           inputId = "cultidx_choice", 
+                                           choices = c("RELIGION", "ANCESTRY"),
+                                           checkIcon = list(yes = icon("angle-double-right")),
+                                           direction = "horizontal", width = "100%",
+                                           justified = FALSE, status = "success", individual = TRUE)
                                   ),
-                                  box(title = "Select Your State",
-                                      width = 3,
-                                      selectInput("cult_whichstate", label = NULL,
-                                                  choices = list("Iowa",
-                                                                 "Oregon",
-                                                                 "Virginia"), 
-                                                  selected = "Iowa")
+                                  column(1,
+                                         circleButton(inputId = "infobutton_cult", icon = icon("info"), status = "info", size = "sm")
                                   )
-                                ),
-                                fluidRow(
-                                  box(title = "Explore Diversity Measures",
-                                      width = 12,
-                                      column(11,
-                                             radioGroupButtons(
-                                               inputId = "cultidx_choice", 
-                                               choices = c("RELIGION", "ANCESTRY"),
-                                               checkIcon = list(yes = icon("angle-double-right")),
-                                               direction = "horizontal", width = "100%",
-                                               justified = FALSE, status = "success", individual = TRUE)
-                                      ),
-                                      column(1,
-                                             circleButton(inputId = "infobutton_cult", icon = icon("info"), status = "info", size = "sm")
-                                      )
-                                  )
-                                  
-                                ),
-                                
-                                conditionalPanel("input.cultidx_choice == 'RELIGION'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Number of Religious Groups",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_rich"), 
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_rich")
-                                                   ),
-                                                   
-                                                   box(title = "Gini-Simpson Diversity Index",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_gsi"),
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_gsi")
-                                                  )
-                                                   
-                                                   
-                                                  )
-                                ),
-                                
-                                conditionalPanel("input.cultidx_choice == 'ANCESTRY'",
-                                                 
-                                                 fluidRow(
-                                                   
-                                                   box(title = "Number of Ancestry Groups",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_ancrich"), 
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_ancrich")
-                                                   ),
-                                                   
-                                                   box(title = "Gini-Simpson Diversity Index",
-                                                       width = 6,
-                                                       h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_cult_index_ancgsi"),
-                                                       h5(strong("Measure Box Plot and Values by Rurality")),
-                                                       plotlyOutput("plotly_cult_index_ancgsi")
-                                                   )
-                                                   
-                                                   
-                                                 )
-                                )
-                                
-                                
-                        ),
-                        
-                        # DATA AND METHODS CONTENT -------------------------
-                        tabItem(tabName = "datamethods",
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Measures and Data Sources",
-                                      selectInput("topic", "Select capital:", width = "100%", choices = c(
-                                        "All",
-                                        "Financial",
-                                        "Human",
-                                        "Social",
-                                        "Natural", 
-                                        "Built", 
-                                        "Political", 
-                                        "Cultural")),
-                                      DTOutput("measures_table"))
-                                )
-                        ),
-                        # DATA DESCRIPTION CONTENT -------------------------
-                        tabItem(tabName = "datadescription",
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Data Descriptions",
-                                column(4,
-                                       flipBox(
-                                         id = 1,
-                                         box_width = 8,
-                                         main_img = "dataseticons/acs.jpg",
-                                         front_title = "American Community Survey",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                            tags$div("The", tags$a("American Community Survey (ACS)", href= "https://www.census.gov/programs-surveys/acs"),
-                                                    "is an ongoing yearly survey conducted by the U.S Census Bureau. 
-                                            ACS samples households to compile 1-year and 5-year datasets providing 
-                                            information on population sociodemographic and socioeconomic characteristics.
-                                            ACS is available at census block group geographic level and above.")
-                                         )
-                                       ),
-                                       br(""),
-                                       flipBox(
-                                         id = 3,
-                                         box_width = 8,
-                                         main_img = "dataseticons/bls.jpg",
-                                         front_title = "Local Area Unemployment Statistics",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The", tags$a("Local Area Unemployment Statistics dataset", href = "https://www.bls.gov/lau/"), "is published by the Bureau of Labor 
-                                             Statistics (BLS), which is charged with collecting data on the labor force. The dataset
-                                             includes annual information about unemployment. BLS provides data at the county level and above.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 4,
-                                         box_width = 8,
-                                         main_img = "dataseticons/arda.jpg",
-                                         front_title = "The Association of Religion Data Archives",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The",tags$a("Association of Religion Data Archives (ARDA)", href = "https://www.thearda.com/"),
-                                                    "is a collection of surveys, polls,
-                                             and other data submitted by researchers to the ARDA. ARDA compiles multi-year 
-                                             data on congregations, membership, and religious preferences at the international 
-                                             and national levels. ARDA data is available at the county level and above.")
-                                         )
-                                       )
-                                       ),
-                                column(4,
-                                       flipBox(
-                                         id = 5,
-                                         box_width = 8,
-                                         main_img = "dataseticons/fec.jpg",
-                                         front_title = "Federal Election Commission Data",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The", tags$a("Federal Election Commission",href="https://www.fec.gov/"), "is a regulatory agency of US elections. It
-                                             produces datasets that encompass information about the funds raised and spent by all 
-                                             candidates and elected officials. They provide their data at the 1-year intervals,
-                                             available at the district level and above.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 6,
-                                         box_width = 8,
-                                         main_img = "dataseticons/mit.jpg",
-                                         front_title = "MIT Elections Lab",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The", tags$a("MIT Election Lab",href="https://electionlab.mit.edu/"), "provides data about voting behaviors in elections. Their 
-                                             datasets include demographic information and voting behaviors, including voter 
-                                             participation. Their data is provided for each election, at the local precinct-level 
-                                             and above.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 7,
-                                         box_width = 8,
-                                         main_img = "dataseticons/usda.jpg",
-                                         front_title = "National Census of Agriculture",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("TheUnited States Department of Agriculture publishes the", tags$a("National Agricultural 
-                                             Statistics Service Census of Agriculture", href = "https://www.nass.usda.gov/AgCensus/"), "with data about demographics, agriculture, 
-                                             environment, livestock, and research. Data are provided annually and are available
-                                             at district-level geography and above.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 8,
-                                         box_width = 8,
-                                         main_img = "dataseticons/dave.jpg",
-                                         front_title = "Atlas of US Presidential Elections",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div(tags$a("Dave Leip’s Atlas of US Presidential Elections", href = "https://uselectionatlas.org/"), "is a public-access dataset that 
-                                             provides information on election results. The website provides data annually
-                                             on polling, predictions, endorsement, voting and electoral college outcomes 
-                                             during each election. Data are available at state-level.")
-                                         )
-                                       )
-                                       ),
-                                column(4,
-                                       flipBox(
-                                         id = 9,
-                                         box_width = 8,
-                                         main_img = "dataseticons/urban.jpg",
-                                         front_title = "Debt in America",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The Urban Institute's", tags$a("Debt of America", href = "https://apps.urban.org/features/debt-interactive-map/"), "is a dataset that includes information on Americans' 
-                                             financial behaviors. It is based on sampled de-identified data from 
-                                             credit bureaus, as well as on 1-year and 5-year American Community Survey estimates. 
-                                             Data are available at county-level geography and above.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 10,
-                                         box_width = 8,
-                                         main_img = "dataseticons/census.jpg",
-                                         front_title = "County Business Patterns",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The", tags$a("County Business Patterns (CBP)", href = "https://www.census.gov/programs-surveys/cbp.html"),"dataset is provided by the US Census Bureau and 
-                                             contains information on businesses at the county level. The annual data includes 
-                                             codes of each type of business, how many businesses are located in a given geography, 
-                                             and information about those businesses.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 11,
-                                         box_width = 8,
-                                         main_img = "dataseticons/cdc.jpg",
-                                         front_title = "Centers for Disease Control and Prevention Data",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("Department of Health and Human Services", tags$a("Center for Disease Control and Prevention", href = "https://www.cdc.gov/")," 
-                                             provide data on health and disease prevalence. They include yearly sample data at the 
-                                             county-level on common diseases and general health statistics.")
-                                         )
-                                       ),
-                                       br(),
-                                       flipBox(
-                                         id = 12,
-                                         box_width = 8,
-                                         main_img = "dataseticons/robert.jpg",
-                                         front_title = "County Health Rankings",
-                                         back_title = "About the Data",
-                                         back_content = tagList(
-                                           tags$div("The", tags$a("Robert Wood Johnson County Health Rankings", href = "https://www.countyhealthrankings.org/"), "data provide yearly estimates of health 
-                                             indicators at the county-level. 
-                                             Rankings take into account health outcomes, health behaviors, sociodemographic 
-                                             characteristics, and the physical environment. The dataset aggregates county-level information from 
-                                             multiple sources.")
-                                         )
-                                         )
-                                       )
-                                  )
-                                )
-                                ),
-                        
-                        # BIBLIOGRAPHY CONTENT -------------------------
-                        tabItem(tabName = "biblio",
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Bibliography",
-                                      selectInput("topic_biblio", "Select capital:", width = "100%", choices = c(
-                                        "All",
-                                        "Financial",
-                                        "Human",
-                                        "Social",
-                                        "Natural", 
-                                        "Built", 
-                                        "Political", 
-                                        "Cultural")),
-                                      DTOutput("biblio_table"))
-                                )
-                        ),
-                        
-                        # CONTACT CONTENT -------------------------
-                        tabItem(tabName = "contact",
-                                fluidRow(
-                                  box(width = 4,
-                                      title = "About Us",
-                                      "We are a partnership of five universities—the University of Virginia, Virginia Tech, Virginia State University, 
+                              )
+                              
+                            ),
+                            
+                            conditionalPanel("input.cultidx_choice == 'RELIGION'",
+                                             
+                                             fluidRow(
+                                               
+                                               box(title = "Number of Religious Groups",
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_cult_index_rich"), 
+                                                   h5(strong("Measure Box Plot and Values by Rurality")),
+                                                   plotlyOutput("plotly_cult_index_rich")
+                                               ),
+                                               
+                                               box(title = "Gini-Simpson Diversity Index",
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_cult_index_gsi"),
+                                                   h5(strong("Measure Box Plot and Values by Rurality")),
+                                                   plotlyOutput("plotly_cult_index_gsi")
+                                               )
+                                               
+                                               
+                                             )
+                            ),
+                            
+                            conditionalPanel("input.cultidx_choice == 'ANCESTRY'",
+                                             
+                                             fluidRow(
+                                               
+                                               box(title = "Number of Ancestry Groups",
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_cult_index_ancrich"), 
+                                                   h5(strong("Measure Box Plot and Values by Rurality")),
+                                                   plotlyOutput("plotly_cult_index_ancrich")
+                                               ),
+                                               
+                                               box(title = "Gini-Simpson Diversity Index",
+                                                   width = 6,
+                                                   h5(strong("County-Level Map")),
+                                                   leafletOutput("plot_cult_index_ancgsi"),
+                                                   h5(strong("Measure Box Plot and Values by Rurality")),
+                                                   plotlyOutput("plotly_cult_index_ancgsi")
+                                               )
+                                               
+                                               
+                                             )
+                            )
+                            
+                            
+                    ),
+                    
+                    # DATA AND METHODS CONTENT -------------------------
+                    tabItem(tabName = "datamethods",
+                            fluidRow(
+                              box(width = 12,
+                                  title = "Measures and Data Sources",
+                                  selectInput("topic", "Select capital:", width = "100%", choices = c(
+                                    "All",
+                                    "Financial",
+                                    "Human",
+                                    "Social",
+                                    "Natural", 
+                                    "Built", 
+                                    "Political", 
+                                    "Cultural")),
+                                  DTOutput("measures_table"))
+                            )
+                    ),
+                    # DATA DESCRIPTION CONTENT -------------------------
+                    tabItem(tabName = "datadescription",
+                            fluidRow(
+                              box(width = 12,
+                                  title = "Data Descriptions",
+                                  column(4,
+                                         flipBox(
+                                           id = 1,
+                                           box_width = 8,
+                                           main_img = "dataseticons/acs.jpg",
+                                           front_title = "American Community Survey",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("American Community Survey (ACS)", href= "https://www.census.gov/programs-surveys/acs"),
+                                                      "is an ongoing yearly survey conducted by the U.S Census Bureau. 
+                                                      ACS samples households to compile 1-year and 5-year datasets providing 
+                                                      information on population sociodemographic and socioeconomic characteristics.
+                                                      ACS is available at census block group geographic level and above.")
+                                             )
+                                             ),
+                                         br(""),
+                                         flipBox(
+                                           id = 3,
+                                           box_width = 8,
+                                           main_img = "dataseticons/bls.jpg",
+                                           front_title = "Local Area Unemployment Statistics",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("Local Area Unemployment Statistics dataset", href = "https://www.bls.gov/lau/"), "is published by the Bureau of Labor 
+                                                      Statistics (BLS), which is charged with collecting data on the labor force. The dataset
+                                                      includes annual information about unemployment. BLS provides data at the county level and above.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 4,
+                                           box_width = 8,
+                                           main_img = "dataseticons/arda.jpg",
+                                           front_title = "The Association of Religion Data Archives",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The",tags$a("Association of Religion Data Archives (ARDA)", href = "https://www.thearda.com/"),
+                                                      "is a collection of surveys, polls,
+                                                      and other data submitted by researchers to the ARDA. ARDA compiles multi-year 
+                                                      data on congregations, membership, and religious preferences at the international 
+                                                      and national levels. ARDA data is available at the county level and above.")
+                                             )
+                                             )
+                                             ),
+                                  column(4,
+                                         flipBox(
+                                           id = 5,
+                                           box_width = 8,
+                                           main_img = "dataseticons/fec.jpg",
+                                           front_title = "Federal Election Commission Data",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("Federal Election Commission",href="https://www.fec.gov/"), "is a regulatory agency of US elections. It
+                                                      produces datasets that encompass information about the funds raised and spent by all 
+                                                      candidates and elected officials. They provide their data at the 1-year intervals,
+                                                      available at the district level and above.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 6,
+                                           box_width = 8,
+                                           main_img = "dataseticons/mit.jpg",
+                                           front_title = "MIT Elections Lab",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("MIT Election Lab",href="https://electionlab.mit.edu/"), "provides data about voting behaviors in elections. Their 
+                                                      datasets include demographic information and voting behaviors, including voter 
+                                                      participation. Their data is provided for each election, at the local precinct-level 
+                                                      and above.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 7,
+                                           box_width = 8,
+                                           main_img = "dataseticons/usda.jpg",
+                                           front_title = "National Census of Agriculture",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("TheUnited States Department of Agriculture publishes the", tags$a("National Agricultural 
+                                                                                                                         Statistics Service Census of Agriculture", href = "https://www.nass.usda.gov/AgCensus/"), "with data about demographics, agriculture, 
+                                                      environment, livestock, and research. Data are provided annually and are available
+                                                      at district-level geography and above.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 8,
+                                           box_width = 8,
+                                           main_img = "dataseticons/dave.jpg",
+                                           front_title = "Atlas of US Presidential Elections",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div(tags$a("Dave Leip’s Atlas of US Presidential Elections", href = "https://uselectionatlas.org/"), "is a public-access dataset that 
+                                                      provides information on election results. The website provides data annually
+                                                      on polling, predictions, endorsement, voting and electoral college outcomes 
+                                                      during each election. Data are available at state-level.")
+                                             )
+                                             )
+                                             ),
+                                  column(4,
+                                         flipBox(
+                                           id = 9,
+                                           box_width = 8,
+                                           main_img = "dataseticons/urban.jpg",
+                                           front_title = "Debt in America",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The Urban Institute's", tags$a("Debt of America", href = "https://apps.urban.org/features/debt-interactive-map/"), "is a dataset that includes information on Americans' 
+                                                      financial behaviors. It is based on sampled de-identified data from 
+                                                      credit bureaus, as well as on 1-year and 5-year American Community Survey estimates. 
+                                                      Data are available at county-level geography and above.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 10,
+                                           box_width = 8,
+                                           main_img = "dataseticons/census.jpg",
+                                           front_title = "County Business Patterns",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("County Business Patterns (CBP)", href = "https://www.census.gov/programs-surveys/cbp.html"),"dataset is provided by the US Census Bureau and 
+                                                      contains information on businesses at the county level. The annual data includes 
+                                                      codes of each type of business, how many businesses are located in a given geography, 
+                                                      and information about those businesses.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 11,
+                                           box_width = 8,
+                                           main_img = "dataseticons/cdc.jpg",
+                                           front_title = "Centers for Disease Control and Prevention Data",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("Department of Health and Human Services", tags$a("Center for Disease Control and Prevention", href = "https://www.cdc.gov/")," 
+                                                      provide data on health and disease prevalence. They include yearly sample data at the 
+                                                      county-level on common diseases and general health statistics.")
+                                             )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 12,
+                                           box_width = 8,
+                                           main_img = "dataseticons/robert.jpg",
+                                           front_title = "County Health Rankings",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("Robert Wood Johnson County Health Rankings", href = "https://www.countyhealthrankings.org/"), "data provide yearly estimates of health 
+                                                      indicators at the county-level. 
+                                                      Rankings take into account health outcomes, health behaviors, sociodemographic 
+                                                      characteristics, and the physical environment. The dataset aggregates county-level information from 
+                                                      multiple sources.")
+                                             )
+                                             )
+                                             )
+                                             )
+                                           )
+                                         ),
+                    
+                    # BIBLIOGRAPHY CONTENT -------------------------
+                    tabItem(tabName = "biblio",
+                            fluidRow(
+                              box(width = 12,
+                                  title = "Bibliography",
+                                  selectInput("topic_biblio", "Select capital:", width = "100%", choices = c(
+                                    "All",
+                                    "Financial",
+                                    "Human",
+                                    "Social",
+                                    "Natural", 
+                                    "Built", 
+                                    "Political", 
+                                    "Cultural")),
+                                  DTOutput("biblio_table"))
+                            )
+                    ),
+                    
+                    # CONTACT CONTENT -------------------------
+                    tabItem(tabName = "contact",
+                            fluidRow(
+                              box(width = 4,
+                                  title = "About Us",
+                                  "We are a partnership of five universities—the University of Virginia, Virginia Tech, Virginia State University, 
                                   Iowa State University, and Oregon State University—funded by the Bill & Melinda Gates Foundation to pilot 
                                   an initiative that will use data science to unravel complex, community challenges and advance economic 
                                   mobility across Virginia, Iowa, and Oregon.", 
-                                      br(""),
-                                      a(href = "https://datascienceforthepublicgood.org/economic-mobility/about", "Learn more about us.")
-                                  ),
-                                  box(width = 4,
-                                      title = "Advancing Economic Mobility",
-                                      "This project is part of our Advancing Economic Mobility: Towards A National Community Learning Network initiative,
+                                  br(""),
+                                  a(href = "https://datascienceforthepublicgood.org/economic-mobility/about", "Learn more about us.")
+                              ),
+                              box(width = 4,
+                                  title = "Advancing Economic Mobility",
+                                  "This project is part of our Advancing Economic Mobility: Towards A National Community Learning Network initiative,
                                   which will amplify the viability of Cooperate Extension professionals to discover opportunities and enable the 
                                   integration of data-driven governance at local and state levels.", 
-                                      br(""),
-                                      a(href = "https://datascienceforthepublicgood.org/economic-mobility/", "Learn more about the initiative.")
-                                  ),
-                                  box(width = 4,
-                                      title = "Contact",
-                                      "Please direct inquiries to", a(href = "https://biocomplexity.virginia.edu/teja-pristavec", "Teja Pristavec."))
-                                ),
-                                
-                                fluidRow(
-                                  box(width = 12,
-                                      title = "Acknowledgements",
-                                      p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
-                                      
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_vatech.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
-                                                    href = "https://ext.vt.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                               tags$li("Susan Chen, Associate Professor, Department of Agricultural and Applied Economics"),
-                                               tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food, Virginia Cooperative Extension"),
-                                               tags$li("Matthew Holt, Professor and Department Head, Department of Agricultural and Applied Economics"),
-                                               tags$li("Ed Jones, Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences"),
-                                               tags$li("Michael Lambur, Associate Director, Program Development, Virginia Cooperative Extension"),
-                                               tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health, Virginia Cooperative Extension"),
-                                               style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             ),
-                                             br()   
-                                      ),
-                                      
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_isu.png", width = '40%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
-                                                    href = "https://www.iastate.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                                     tags$li("Todd Abraham, Assistant Director of Data and Analytics for the Iowa Integrated Data System"),
-                                                     tags$li("Cass Dorius, Associate Professor of Human Development and Family Studies"), 
-                                                     tags$li("Shawn Dorius, Associate Professor of Sociology"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             ),
-                                             p(em("Students:"), "Joel Von Behren, Jessie Bustin, Grant Durbahn, 
-                                                     Haley Jeppson, Vikram Magal, Atefeh Rajabalizadah, Kishor Sridhar, 
-                                                     Katie Thompson, Matthew Voss" 
-                                             ),
-                                             br()
-                                      ),
-
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_osu.jpg", width = '50%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
-                                                    href = "https://oregonstate.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                                     tags$li("Shawn Irvine, Economic Development Director, City of Independence, Oregon"),
-                                                     tags$li("Deborah John, Professor and Extension Specialist, College of Public Health and Human Sciences"),
-                                                     tags$li("Stuart Reitz, Professor and Director, Malheur Experiment Station"),
-                                                     tags$li("Lindsey Shirley, Associate Provost, University Extension & Engagement"),
-                                                     tags$li("Brett M. Tyler, Director of the Center for Genome Research and Biocomputing and Stewart Professor of Gene Research"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             )
-                                      ),
-                                      
-                                      column(width = 3,
-                                             tags$a(tags$img(src = "logo_bii.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
-                                                    href = "https://biocomplexity.virginia.edu/"),
-                                             br(),
-                                             tags$ul(em("Faculty:"),
-                                                     tags$li("Sallie Keller, Division Director, Distinguished Professor in Biocomplexity, and Professor of Public Health Sciences, School of Medicine"),
-                                                     tags$li("Brandon Kramer, Postdoctoral Research Associate"),
-                                                     tags$li("Vicki Lancaster, Principal Scientist"),
-                                                     tags$li("Kathryn Linehan, Research Scientist"),
-                                                     tags$li("Sarah McDonald, Research Assistant"),
-                                                     tags$li("Cesar Montalvo, Postdoctoral Research Associate"),
-                                                     tags$li("Teja Pristavec, Research Assistant Professor"),
-                                                     tags$li("Stephanie Shipp, Deputy Division Director and Research Professor"),
-                                                     style = "list-style: none; margin-left: 0px; padding-left: 0px"
-                                             ),
-                                             p(em("Students:"), "Riya Berry, Tasfia Chowdhury, Martha Czernuszenko,
-                                               Lara Haase, Saimun Habib, Owen Hart, Vatsala Ramanan, Morgan Stockham"
-                                             )
-                                             
-                                      )
-                                      
-                                  )
+                                  br(""),
+                                  a(href = "https://datascienceforthepublicgood.org/economic-mobility/", "Learn more about the initiative.")
+                              ),
+                              box(width = 4,
+                                  title = "Contact",
+                                  "Please direct inquiries to", a(href = "https://biocomplexity.virginia.edu/teja-pristavec", "Teja Pristavec."))
+                            ),
+                            
+                            fluidRow(
+                              box(width = 12,
+                                  title = "Acknowledgements",
+                                  p("We would like to thank our colleagues for their input and contributions to this project.", align = "left"),
                                   
-                                )
-                                
-                        )      
-                      )
-                    )
-)
+                                  column(width = 3,
+                                         tags$a(tags$img(src = "logo_vatech.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
+                                                href = "https://ext.vt.edu/"),
+                                         br(),
+                                         tags$ul(em("Faculty:"),
+                                                 tags$li("Susan Chen, Associate Professor, Department of Agricultural and Applied Economics"),
+                                                 tags$li("Daniel Goerlich, Associate Director, Economy, Community, and Food, Virginia Cooperative Extension"),
+                                                 tags$li("Matthew Holt, Professor and Department Head, Department of Agricultural and Applied Economics"),
+                                                 tags$li("Ed Jones, Director, Virginia Cooperative Extension and Associate Dean, College of Agriculture and Life Sciences"),
+                                                 tags$li("Michael Lambur, Associate Director, Program Development, Virginia Cooperative Extension"),
+                                                 tags$li("Cathy Sutphin, Associate Director, Youth, Families, and Health, Virginia Cooperative Extension"),
+                                                 style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                         ),
+                                         br()   
+                                  ),
+                                  
+                                  column(width = 3,
+                                         tags$a(tags$img(src = "logo_isu.png", width = '40%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
+                                                href = "https://www.iastate.edu/"),
+                                         br(),
+                                         tags$ul(em("Faculty:"),
+                                                 tags$li("Todd Abraham, Assistant Director of Data and Analytics for the Iowa Integrated Data System"),
+                                                 tags$li("Cass Dorius, Associate Professor of Human Development and Family Studies"), 
+                                                 tags$li("Shawn Dorius, Associate Professor of Sociology"),
+                                                 style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                         ),
+                                         p(em("Students:"), "Joel Von Behren, Jessie Bustin, Grant Durbahn, 
+                                           Haley Jeppson, Vikram Magal, Atefeh Rajabalizadah, Kishor Sridhar, 
+                                           Katie Thompson, Matthew Voss" 
+                                         ),
+                                         br()
+                                         ),
+                                  
+                                  column(width = 3,
+                                         tags$a(tags$img(src = "logo_osu.jpg", width = '50%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"),
+                                                href = "https://oregonstate.edu/"),
+                                         br(),
+                                         tags$ul(em("Faculty:"),
+                                                 tags$li("Shawn Irvine, Economic Development Director, City of Independence, Oregon"),
+                                                 tags$li("Deborah John, Professor and Extension Specialist, College of Public Health and Human Sciences"),
+                                                 tags$li("Stuart Reitz, Professor and Director, Malheur Experiment Station"),
+                                                 tags$li("Lindsey Shirley, Associate Provost, University Extension & Engagement"),
+                                                 tags$li("Brett M. Tyler, Director of the Center for Genome Research and Biocomputing and Stewart Professor of Gene Research"),
+                                                 style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                         )
+                                  ),
+                                  
+                                  column(width = 3,
+                                         tags$a(tags$img(src = "logo_bii.png", width = '70%', style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4"), 
+                                                href = "https://biocomplexity.virginia.edu/"),
+                                         br(),
+                                         tags$ul(em("Faculty:"),
+                                                 tags$li("Sallie Keller, Division Director, Distinguished Professor in Biocomplexity, and Professor of Public Health Sciences, School of Medicine"),
+                                                 tags$li("Brandon Kramer, Postdoctoral Research Associate"),
+                                                 tags$li("Vicki Lancaster, Principal Scientist"),
+                                                 tags$li("Kathryn Linehan, Research Scientist"),
+                                                 tags$li("Sarah McDonald, Research Assistant"),
+                                                 tags$li("Cesar Montalvo, Postdoctoral Research Associate"),
+                                                 tags$li("Teja Pristavec, Research Assistant Professor"),
+                                                 tags$li("Stephanie Shipp, Deputy Division Director and Research Professor"),
+                                                 style = "list-style: none; margin-left: 0px; padding-left: 0px"
+                                         ),
+                                         p(em("Students:"), "Riya Berry, Tasfia Chowdhury, Martha Czernuszenko,
+                                           Lara Haase, Saimun Habib, Owen Hart, Vatsala Ramanan, Morgan Stockham"
+                                         )
+                                         
+                                         )
+                                  
+                                  )
+                              
+                                  )
+                            
+                            )      
+                                           )
+                                           )
+                                  )
 
 
 #
@@ -2647,7 +2643,7 @@ server <- function(input, output, session) {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
-
+  
   
   # Function for indicator boxplots --------------------------
   
@@ -3998,7 +3994,7 @@ server <- function(input, output, session) {
   #
   # Political - Contributions - Boxplot and Map ------------------
   #     
-
+  
   output$leaflet_contrib <- renderLeaflet({
     
     data_var <- pol_data()$pol_contrib
@@ -4138,7 +4134,7 @@ server <- function(input, output, session) {
       geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
   })
   
-
+  
   # EDUCATION
   output$political_dom_edu <- renderPlot({
     data <- read_csv("data/pol_final_2.csv") 
@@ -4223,7 +4219,7 @@ server <- function(input, output, session) {
   output$political_dom_tax <- renderPlot({
     data <- read_csv("data/pol_final_2.csv") 
     data <- data %>% filter(dom=="Taxation")
-
+    
     # Set a number of 'empty bar' to add at the end of each group
     empty_bar <- 3
     to_add <- data.frame( matrix(NA, empty_bar*nlevels(data$group), ncol(data)) )
@@ -4296,7 +4292,7 @@ server <- function(input, output, session) {
       # Add base line information
       geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
       geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
-
+    
   })  
   
   # HOUSING
@@ -4376,7 +4372,7 @@ server <- function(input, output, session) {
       # Add base line information
       geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
       geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
-
+    
   })  
   
   # EMPLOYMENT
@@ -4535,7 +4531,7 @@ server <- function(input, output, session) {
       # Add base line information
       geom_segment(data=base_data, aes(x = start, y = -0.1, xend = end, yend = -0.1), colour = "black", alpha=0.8, size=0.6 , inherit.aes = FALSE )  +
       geom_text(data=base_data, aes(x = title, y = -0.2, label=group), hjust=c(arr), colour = "black", alpha=1, size=4, fontface="bold", inherit.aes = FALSE)
- 
+    
   })
   
   #
@@ -4583,7 +4579,7 @@ server <- function(input, output, session) {
   
   
   output$plot_cult_index_rich <- renderLeaflet({
-
+    
     data_var <- cult_data()$cult_rich
     var_label <- "Number of Religious Groups"
     
@@ -4727,7 +4723,7 @@ server <- function(input, output, session) {
                       value = tags$h5("Financial capital refers to the economic features of the community such as debt capital, investment capital,
                                       savings, tax revenue, tax abatements, and grants, as well as entrepreneurship, persistent poverty, 
                                       industry concentration, and philanthropy.") 
-    )
+                      )
   })
   
   output$hum_ibox <- renderInfoBox({
@@ -4737,7 +4733,7 @@ server <- function(input, output, session) {
                       color = "olive", icon = ic, 
                       value = tags$h5("Human capital refers to the knowledge, skills, education, credentials, physical health, mental health, 
                                       and other acquired or inherited traits essential for an optimal quality of life.")
-    )
+                      )
   })
   
   output$soc_ibox <- renderInfoBox({
@@ -4748,7 +4744,7 @@ server <- function(input, output, session) {
                       value = tags$h5("Social capital refers to the resources, information, and support that communities can access 
                                       through the bonds among members of the community and their families  that promote mutual trust, 
                                       reciprocity, collective identity, and a sense of a shared future.")
-    )
+                      )
   })
   
   output$built_ibox <- renderInfoBox({
@@ -4759,7 +4755,7 @@ server <- function(input, output, session) {
                       value = tags$h5("Built capital refers to the physical infrastructure that facilitates community activities, 
                                       such as broadband and other information technologies, utilities, water/sewer systems, roads 
                                       and bridges, business parks, hospitals, main street buildings, playgrounds, and housing.")
-    )
+                      )
   })
   
   output$nat_ibox <- renderInfoBox({
@@ -4795,7 +4791,7 @@ server <- function(input, output, session) {
   })
   
   
-}
+  }
 
 
 #

@@ -118,13 +118,13 @@ pcp_data <- hrsa_pcps %>%
 
 data <- mental_health_data %>% 
   left_join(nhsc_data, by = c("STATEFP", "NAME.y")) %>% 
-  mutate(nhsc_facs = replace_na(nhsc_facs, 0)) %>% 
   left_join(pcp_data, by = c("STATEFP", "GEOID", "NAME.y")) %>% 
-  mutate(pcp_facs = replace_na(pcp_facs, 0)) %>%
   left_join(dental_health_data, by = c("STATEFP", "GEOID", "NAME.y")) %>% 
-  mutate(dental_facs = replace_na(dental_facs, 0)) %>%
   select(STATEFP, GEOID, NAME.y, pcp_facs, nhsc_facs, dental_facs, mentalhealth_facs) %>% 
-  mutate(GEOID = as.character(GEOID))
+  mutate(nhsc_facs = replace_na(nhsc_facs, 0), 
+         pcp_facs = replace_na(pcp_facs, 0),
+         dental_facs = replace_na(dental_facs, 0),
+         GEOID = as.character(GEOID))
 
 
 # write this to the data folder 
