@@ -2350,8 +2350,37 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                       data on congregations, membership, and religious preferences at the international 
                                                       and national levels. ARDA data is available at the county level and above.")
                                              )
+                                             ),
+                                         br(),
+                                         flipBox(
+                                           id = 13,
+                                           box_width = 8,
+                                           main_img = "dataseticons/forest.jpg",
+                                           front_title = "USDA Forest Service",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("USDA Forest Service", href = "https://www.fia.fs.fed.us/tools-data/"), 
+                                                      "maintains the Design and Analysis Toolkit for Inventory and Monitoring 
+                                                      (DATIM) that provides modules to 
+                                                      analyze the availability and sustainability of forest resources. 
+                                                      Data are available annually at various geographic levels.")
                                              )
                                              ),
+                                         br(),
+                                         flipBox(
+                                           id = 14,
+                                           box_width = 8,
+                                           main_img = "dataseticons/bea.jpg",
+                                           front_title = "US Bureau of Economic Analysis ",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("US Bureau of Economic Analysis", href = "https://apps.bea.gov/iTable/iTable.cfm?reqid=99&step=1#reqid=99&step=1&isuri=1"), 
+                                                      "produces information about the 
+                                                      US gross domestic product, (GDP), foreign trade, investment and industry data. 
+                                                      Its section of GDP and personal income mapping contains data on national total output produced by county for the 2001-2018 period.  ")
+                                             )
+                                             )
+                                           ),
                                   column(4,
                                          flipBox(
                                            id = 5,
@@ -2459,13 +2488,27 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                            back_title = "About the Data",
                                            back_content = tagList(
                                              tags$div("The", tags$a("Robert Wood Johnson County Health Rankings", href = "https://www.countyhealthrankings.org/"), "data provide yearly estimates of health 
-                                                      indicators at the county-level. 
-                                                      Rankings take into account health outcomes, health behaviors, sociodemographic 
-                                                      characteristics, and the physical environment. The dataset aggregates county-level information from 
-                                                      multiple sources.")
-                                             )
-                                             )
-                                             )
+                                             indicators at the county-level. 
+                                             Rankings take into account health outcomes, health behaviors, sociodemographic 
+                                             characteristics, and the physical environment. The dataset aggregates county-level information from 
+                                             multiple sources.")
+                                           )
+                                         ),
+                                         br(),
+                                         flipBox(
+                                           id = 15,
+                                           box_width = 8,
+                                           main_img = "dataseticons/usgs.jpg",
+                                           front_title = "US Geological Survey ",
+                                           back_title = "About the Data",
+                                           back_content = tagList(
+                                             tags$div("The", tags$a("US Geological Survey (USGS)", href = "https://www.usgs.gov/mission-areas/water-resources"), 
+                                                      "explores water conditions, including streamflow, water levels, quality, and use. 
+                                              USGS collects data at approximately 1.9 million sites in all 50 states and in territories. 
+                                              Data are available at site and county level.")
+                                           )
+                                         )
+                                           )
                                              )
                                            )
                                          ),
