@@ -1463,7 +1463,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                     column(11,
                                            radioGroupButtons(
                                              inputId = "natidx_choice", #label = "Make a choice :",
-                                             choices = c("QUANTITY OF RESOURCES", "QUALITY OF RESOURCES"),
+                                             choices = c("LAND RESOURCES", "WATER RESOURCES", "AIR RESOURCES", "DEPENDENCE", "VULNERABILITY"),
                                              checkIcon = list(yes = icon("angle-double-right")),
                                              justified = FALSE, status = "success", 
                                              direction = "horizontal", width = "100%", individual = TRUE)
@@ -1475,28 +1475,41 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                 
                               ),
                               #
-                              # QUANTITY OF RESOURCES PANEL ------------------------------------------
+                              #  LAND RESOURCES ------------------------------------------
                               #
                               
-                              conditionalPanel("input.natidx_choice == 'QUANTITY OF RESOURCES'",
+                              conditionalPanel("input.natidx_choice == 'LAND RESOURCES'",
                                                
                                                fluidRow(
                                                  
-                                                 box(title = "Quantity of Resources Index",
+                                                 box(title = "Land Resources Index ",
                                                      width = 12,
                                                      h5(strong("County-Level Map")),
-                                                     leafletOutput("plot_nat_index_quantres")
+                                                     leafletOutput("plot_nat_index_land")
                                                  )
                                                  
                                                ),
                                                fluidRow(
-                                                 tabBox(title = "Quantity of Resources Measures",
+                                                 tabBox(title = "Land Resources Index Measures ",
                                                         id = "tab_indexnat_quantres",
                                                         width = 12,
                                                         side = "right",
-                                                        tabPanel(title = "County Area in Farmland",
+                                                        tabPanel(title = "Farmland",
                                                                  fluidRow(
-                                                                   h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                                   #h4(strong("Percent of County Area in Farmland"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Percent of County Area in Farmland"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_farmland", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
@@ -1509,9 +1522,105 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                    )
                                                                  )
                                                         ),
-                                                        tabPanel(title = "County Area in Water",
+                                                        #new forestland
+                                                        tabPanel(title = "Forestland",
                                                                  fluidRow(
-                                                                   h4(strong("Percent of County Area in Water"), align = "center"),
+                                                                   #h4(strong("Percent of County Area in Forestland"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Percent of County Area in Forestland"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_forestland2", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_forestland")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_forestland")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        ##Timberland
+                                                        tabPanel(title = "Timberland",
+                                                                 fluidRow(
+                                                                   #h4(strong("Percent of County Area in Timberland"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Percent of County Area in Timberland"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_timberland", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_quantres_timberland")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_quantres_timberland")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                        
+                                                 )
+                                               )
+                              ),
+                              #
+                              # WATER RESOURCES ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.natidx_choice == 'WATER RESOURCES'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Water Resources Index ",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_nat_index_water")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Water Resources Index Measures",
+                                                        id = "tab_indexnat_qualres",
+                                                        width = 12,
+                                                        side = "right",
+                                                        tabPanel(title = "Water Area",
+                                                                 fluidRow(
+                                                                   #h4(strong("Percent of County Area in Water"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Percent of County Area in Water"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_countywater", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
@@ -1524,62 +1633,134 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                    )
                                                                  )
                                                         ),
-                                                        tabPanel(title = "Forestry Sales",
+                                                        #new total water withdrawals
+                                                        tabPanel(title = "Water Withdrawals",
                                                                  fluidRow(
-                                                                   h4(strong("Forestry Sales per 10,000 Acres"), align = "center"),
+                                                                   #h4(strong("Total Water Withdrawals (Surface and Ground)"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Total Water Withdrawals (Surface and Ground), Millions of Gallons per Day"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_waterwithdrawal", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
-                                                                     leafletOutput("plot_nat_quantres_forestsales")
+                                                                     leafletOutput("plot_nat_water_with")
                                                                    ),
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                     plotlyOutput("plotly_nat_quantres_forestsales")
+                                                                     plotlyOutput("plotly_nat_water_with")
                                                                    )
                                                                  )
                                                         ),
-                                                        tabPanel(title = "Agri-Tourism and Recreational Revenue",
+                                                        #water with irrigation
+                                                        tabPanel(title = "Irrigation",
                                                                  fluidRow(
-                                                                   h4(strong("Agri-Tourism and Recreational Revenue per 10,000 Acres"), align = "center"),
+                                                                   #h4(strong("Water Withdrawals for Irrigation"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Water Withdrawals for Irrigation, Millions of Gallons per Day"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_irrig", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
-                                                                     leafletOutput("plot_nat_quantres_rev")
+                                                                     leafletOutput("plot_nat_irrig_water")
                                                                    ),
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                     plotlyOutput("plotly_nat_quantres_rev")
+                                                                     plotlyOutput("plotly_nat_irrig_water")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        #water use
+                                                        tabPanel(title = "Daily Use",
+                                                                 fluidRow(
+                                                                   #h4(strong("Water Wse - Domestic, Publicly Supplied (gallons/day)"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Domestic Water Use, Publicly Supplied, Gallons per Day"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_pcwateruse", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_water_percapita_galday")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_water_percapita_galday")
                                                                    )
                                                                  )
                                                         )
+                                                        
+                                                        
+                                                        
                                                  )
                                                )
-                              ),
-                              #
-                              # QUALITY OF RESOURCES PANEL ------------------------------------------
-                              #
+                              ), 
                               
-                              conditionalPanel("input.natidx_choice == 'QUALITY OF RESOURCES'",
+                              # AIR RESOURCES  ------------------------------------------
+                              conditionalPanel("input.natidx_choice == 'AIR RESOURCES'",
                                                
                                                fluidRow(
                                                  
-                                                 box(title = "Quality of Resources Index",
+                                                 box(title = "Air Resources Index ",
                                                      width = 12,
-                                                     h5(strong("County-Level Map")),
-                                                     leafletOutput("plot_nat_index_qualres")
+                                                     h5(strong("County-Level Map"))
+                                                     ,
+                                                     leafletOutput("plot_nat_index_air")
                                                  )
                                                  
                                                ),
                                                fluidRow(
-                                                 tabBox(title = "Quality of Resources Measures",
+                                                 tabBox(title = "Air Resources Index Measures ",
                                                         id = "tab_indexnat_qualres",
                                                         width = 12,
                                                         side = "right",
-                                                        tabPanel(title = "Fine Particulate Matter",
+                                                        tabPanel(title = "Particulate Matter",
                                                                  fluidRow(
-                                                                   h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                                   #h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Average Daily Density of Fine Particulate Matter"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_partmatter", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
@@ -1591,11 +1772,298 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      plotlyOutput("plotly_nat_qualres_part")
                                                                    )
                                                                  )
+                                                        ),
+                                                        #new
+                                                        tabPanel(title = "Pollution",
+                                                                 fluidRow(
+                                                                   #h4(strong("Annual Average Air Concentration Estimates In Microgram Per Cubic Meter"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Annual Average Air Concentration Estimates In Microgram Per Cubic Meter"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_airpollution", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_airpollutionconc")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_airconcenpollution")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        #new cancer risk
+                                                        tabPanel(title = "Cancer Risk",
+                                                                 fluidRow(
+                                                                   #h4(strong("Annual Average Cancer Risk Estimates Per Million (Pollutant: Benzene)"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Annual Average Cancer Risk Estimates Per Million (Pollutant: Benzene)"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_cancerisk", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_cancerisk")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_cancerisk")
+                                                                   )
+                                                                 )
                                                         )
+                                                        
+                                                        
+                                                 )
+                                               )
+                              ),
+                              
+                              ##GDP DEPENDENCE on NAT RESOURCES  ------------------------------------------
+                              conditionalPanel("input.natidx_choice == 'DEPENDENCE'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Natural Capital Dependence Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map"))
+                                                     ,
+                                                     leafletOutput("plot_nat_index_produc")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Natural Capital Dependence Index Measures, Percentage of GDP",
+                                                        id = "tab_indexnat_qualres",
+                                                        width = 12,
+                                                        side = "right",
+                                                        
+                                                        tabPanel(title = "Agricultural Production",
+                                                                 fluidRow(
+                                                                   #h4(strong("County GDP - Agriculture, Forestry, Fishing and Hunting"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("County GDP - Agriculture, Forestry, Fishing and Hunting"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_agproduction", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_agric_gdp")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_agric_gdp")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        
+                                                        #mining gdp
+                                                        tabPanel(title = "Mining Production",
+                                                                 fluidRow(
+                                                                   #h4(strong("County GDP -  Mining, quarrying, and oil and gas extraction"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("County GDP -  Mining, Quarrying, and Oil and Gas Extraction"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_miningproduction", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_mining_gdp")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_mining_gdp")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                        
+                                                 )
+                                               )
+                              ),
+                              
+                              #VULNERABILITY TO CLIMATE  ------------------------------------------
+                              conditionalPanel("input.natidx_choice == 'VULNERABILITY'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Climate Vulnerability Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map"))
+                                                     ,
+                                                     leafletOutput("plot_nat_index_vulner")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Climate Vulnerability Index Measures ",
+                                                        id = "tab_indexnat_qualres",
+                                                        width = 12,
+                                                        side = "right",
+                                                        
+                                                        tabPanel(title = "Flood Vulnerability",
+                                                                 fluidRow(
+                                                                   #h4(strong("Percent Area (Square Miles) Within FEMA Designated Flood Hazard Area"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Percent Area (Square Miles) Within FEMA Designated Flood Hazard Area"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_flood", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_flood_haz_pcarea")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_flood_haz_pcarea")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        #new vulnerability fire
+                                                        tabPanel(title = "Fire Vulnerability",
+                                                                 fluidRow(
+                                                                   #h4(strong("Population Vulnerable To Predicted Surface Smoke From Wildland Fires"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Population Vulnerable To Predicted Surface Smoke From Wildland Fires"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_fire", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_firevulnerab_pop")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_firevulnerab_pop")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        #vulnerability heat curr
+                                                        tabPanel(title = "Heat Vulnerability",
+                                                                 fluidRow(
+                                                                   #h4(strong("Number of Extreme Heat Days, 2016"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Number of Extreme Heat Days (2016)"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_heat", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_ext_heatdays")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_ext_heatdays")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        #vulnerability heat projected
+                                                        tabPanel(title = "Projected Heat",
+                                                                 fluidRow(
+                                                                   #h4(strong("Number of Projected Extreme Heat Days (2022)"), align = "center"),
+                                                                   ##
+                                                                   fluidRow(
+                                                                     width = 12,
+                                                                     column(11,
+                                                                            h4(strong("Number of Projected Extreme Heat Days (2020)"), align = "center")
+                                                                     ),
+                                                                     column(1
+                                                                            # ,
+                                                                            # #infobutton_fin
+                                                                            # circleButton(inputId = "info_expl_heatproj", icon = icon("info"), status = "info", size = "xs")
+                                                                     )
+                                                                   ),
+                                                                   ##
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_nat_ext_heatdays_proj")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_nat_ext_heatdays_proj")
+                                                                   )
+                                                                 )
+                                                        )
+                                                        
+                                                        
+                                                        
                                                  )
                                                )
                               )
-                      ),  
+                              
+                              
+                              
+                      ),
                       
                       # POLITICAL CAPITAL CONTENT -------------------------------------------------
                       
@@ -2954,12 +3422,24 @@ server <- function(input, output, session) {
   #
   # Natural Index Maps--------------------------------------------------
   #
-  output$plot_nat_index_quantres <- renderLeaflet({
-    create_index(nat_data(), nat_data()$nat_index_quantres, "Quantity of Resources Index")
+  output$plot_nat_index_land <- renderLeaflet({
+    create_index(nat_data(), nat_data()$nat_index_LAND, "Land Resources Index")
   })
   
-  output$plot_nat_index_qualres <- renderLeaflet({
-    create_index(nat_data(), nat_data()$nat_index_qualres, "Quantity of Resources Index")
+  output$plot_nat_index_water <- renderLeaflet({
+    create_index(nat_data(), nat_data()$nat_index_WATER, "Water Resources Index")
+  })
+  
+  output$plot_nat_index_air <- renderLeaflet({
+    create_index_neg(nat_data(), nat_data()$nat_index_AIR, "Air Resources Index")
+  })
+  
+  output$plot_nat_index_produc <- renderLeaflet({
+    create_index(nat_data(), nat_data()$nat_index_DEPEND, "Natural Capital Dependence Index")
+  })
+  
+  output$plot_nat_index_vulner <- renderLeaflet({
+    create_index_neg(nat_data(), nat_data()$nat_index_VULNER, "Vulnerability Index")
   })
   
   #
@@ -3843,9 +4323,7 @@ server <- function(input, output, session) {
     create_indicator_neg(soc_data(), data_var, var_label)
   }) 
   
-  # 
-  # Natural - Quantity of Resources - Boxplot and Map ------------------
-  #  
+  # Natural - Land - Boxplot and Map ------------------
   
   output$plotly_nat_quantres_farmland <- renderPlotly({
     
@@ -3855,6 +4333,25 @@ server <- function(input, output, session) {
     create_boxplot(nat_data(), data_var, var_label)
   })
   
+  #new forestland
+  output$plotly_nat_quantres_forestland <- renderPlotly({
+    
+    data_var <- nat_data()$nat_forestlandpc
+    var_label <- "Percent of County Area in Forestland"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  ##timberland
+  output$plotly_nat_quantres_timberland <- renderPlotly({
+    
+    data_var <- nat_data()$nat_timberland_sqmiles
+    var_label <- "Percent of County Area in Timberland"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  
   output$plot_nat_quantres_farmland <- renderLeaflet({
     
     data_var <- nat_data()$nat_pctagacres
@@ -3863,6 +4360,26 @@ server <- function(input, output, session) {
     create_indicator(nat_data(), data_var, var_label)
   }) 
   
+  #new forestland
+  output$plot_nat_quantres_forestland <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_forestlandpc
+    var_label <- "Percent of County Area in Forestland"
+    
+    create_indicator(nat_data(), data_var, var_label)
+  }) 
+  
+  #timberland
+  output$plot_nat_quantres_timberland <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_timberland_sqmiles
+    var_label <- "Area (squared miles) in Timberland"
+    
+    create_indicator(nat_data(), data_var, var_label)
+  }) 
+  
+  
+  # Natural - Water - Boxplot and Map   ------------------
   output$plotly_nat_quantres_water <- renderPlotly({
     
     data_var <- nat_data()$nat_pctwater
@@ -3870,6 +4387,31 @@ server <- function(input, output, session) {
     
     create_boxplot(nat_data(), data_var, var_label)
   })
+  #new
+  output$plotly_nat_water_with <- renderPlotly({
+    
+    data_var <- nat_data()$nat_water_with
+    var_label <- "Total Water Withdrawals, Millions of Gallons per Day"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  #irrigation
+  output$plotly_nat_irrig_water <- renderPlotly({
+    
+    data_var <- nat_data()$nat_irrig_water
+    var_label <- "Water Withdrawals for Irrigation, Millions of Gallons per Day"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  #water use
+  output$plotly_nat_water_percapita_galday <- renderPlotly({
+    
+    data_var <- nat_data()$nat_water_percapita_galday
+    var_label <- "Domestic Water Use, Gallons per Day"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
   
   output$plot_nat_quantres_water <- renderLeaflet({
     
@@ -3879,144 +4421,36 @@ server <- function(input, output, session) {
     create_indicator(nat_data(), data_var, var_label)
   }) 
   
-  output$plotly_nat_quantres_forestsales <- renderPlotly({
+  #new water withdrawals
+  output$plot_nat_water_with <- renderLeaflet({
     
-    data_var <- nat_data()$nat_forestryrevper10kacres
-    var_label <- "Forestry Sales per 10,000 Acres"
+    data_var <- nat_data()$nat_water_with
+    var_label <- "Total Water Withdrawals (Surface and Ground), Millions of Gallons per Day"
     
-    create_boxplot(nat_data(), data_var, var_label)
-  })
-  
-  #custom plot for forest sales
-  
-  output$plot_nat_quantres_forestsales <- renderLeaflet({
-    
-    custom <- nat_data()
-    
-    y <- ifelse(custom$nat_forestryrevper10kacres == 0, "0", 
-                ifelse(is.na(custom$nat_forestryrevper10kacres) == T, NA, 
-                       as.character(cut(custom$nat_forestryrevper10kacres, 
-                                        breaks=c(quantile(custom[custom$nat_forestryrevper10kacres != 0, "nat_forestryrevper10kacres"] %>% st_drop_geometry(), 
-                                                          probs = seq(0, 1, by = 0.25), na.rm = T)), dig.lab=10, include.lowest=TRUE))))
-    z <- str_extract_all(string = y, pattern = "(\\[|\\()\\d+.\\.\\d{2}|\\d+.\\.\\d{2}|^0$", simplify = T)
-    z <- as.data.frame(z)
-    z$V3 <- ""
-    
-    for (i in 1:nrow(z)){
-      if(!is.na(z[i, "V1"]) & !(z[i, "V1"] == "0")){
-        z[i, "V3"] <-  paste(z[i, "V1"], ",", z[i, "V2"], "]", sep = "")
-      } else if(!is.na(z[i, "V1"]) & z[i, "V1"] == "0"){
-        z[i, "V3"] <- "0"
-      } else{
-        z[i, "V3"] = NA
-      }
-    }
-    
-    custom$cat <- factor(z$V3 , levels = c("0", "[35.45,955.56]", "(955.56,1587.77]", "(1587.77,5236.00]", "(5236.00,29449.17]"))
-    
-    pal <- colorFactor(cbGreens[1:5], custom$cat,
-                       na.color = cbGreens[6])
-    
-    var_label <- "Forestry Sales per 10,000 Acres"
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            custom$NAME.y,
-            "<br />",
-            "<strong>", var_label, ": </strong>",
-            round(custom$nat_agritourrevper10kacres, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = custom) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(cat),
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"))) %>%
-      addLegend("bottomleft",
-                pal= pal,
-                na.label = "Not Available",
-                values =  ~(cat),
-                title = "Value", 
-                opacity = 0.7)
+    create_indicator(nat_data(), data_var, var_label)
   }) 
   
-  output$plotly_nat_quantres_rev <- renderPlotly({
+  #irrigation
+  output$plot_nat_irrig_water <- renderLeaflet({
     
-    data_var <- nat_data()$nat_agritourrevper10kacres
-    var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
+    data_var <- nat_data()$nat_irrig_water
+    var_label <- "Water Withdrawals for Irrigation, Millions of Gallons per Day"
     
-    create_boxplot(nat_data(), data_var, var_label)
-  })
-  
-  # custom plot for agritourism
-  output$plot_nat_quantres_rev <- renderLeaflet({
-    
-    custom <- nat_data()
-    
-    y <- ifelse(custom$nat_agritourrevper10kacres == 0, "0", 
-                ifelse(is.na(custom$nat_agritourrevper10kacres) == T, NA, 
-                       as.character(cut(custom$nat_agritourrevper10kacres, 
-                                        breaks=c(quantile(custom[custom$nat_agritourrevper10kacres != 0, "nat_agritourrevper10kacres"] %>% st_drop_geometry(), 
-                                                          probs = seq(0, 1, by = 0.25), na.rm = T)), dig.lab=10, include.lowest=TRUE))))
-    
-    z <- str_extract_all(string = y, pattern = "(\\[|\\()\\d+.\\.\\d{2}|\\d+.\\.\\d{2}|^0$", simplify = T)
-    z <- as.data.frame(z)
-    
-    z$V3 <- ""
-    
-    for (i in 1:nrow(z)){
-      if(!is.na(z[i, "V1"]) & !(z[i, "V1"] == "0")){
-        z[i, "V3"] <-  paste(z[i, "V1"], ",", z[i, "V2"], "]", sep = "")
-      } else if(!is.na(z[i, "V1"]) & z[i, "V1"] == "0"){
-        z[i, "V3"] <- "0"
-      } else{
-        z[i, "V3"] = NA
-      }
-    }
-    
-    custom$cat <- factor(z$V3 , levels = c("0", "[26.58,371.27]", "(371.27,608.19]", "(608.19,1414.83]", "(1414.83,16509.72]"))
-    
-    pal <- colorFactor(cbGreens[1:5], custom$cat,
-                       na.color = cbGreens[6])
-    
-    var_label <- "Agri-Tourism and Recreational Revenue per 10,000 Acres"
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            custom$NAME.y,
-            "<br />",
-            "<strong>", var_label, ": </strong>",
-            round(custom$nat_agritourrevper10kacres, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = custom) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(cat),
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020", label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"))) %>%
-      addLegend("bottomleft",
-                pal= pal,               
-                na.label = "Not Available",
-                values =  ~(cat),
-                title = "Value", 
-                opacity = 0.7)
+    create_indicator(nat_data(), data_var, var_label)
   }) 
+  
+  #water use
+  output$plot_nat_water_percapita_galday <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_water_percapita_galday
+    var_label <- "Domestic Water Use, Gallons per Day"
+    
+    create_indicator(nat_data(), data_var, var_label)
+  }) 
+  
   
   #
-  # Natural - Quality of Resources - Boxplot and Map ------------------
-  #     
+  # Natural - Air - Boxplot and Map  ------------------
   
   output$plotly_nat_qualres_part <- renderPlotly({
     
@@ -4026,12 +4460,163 @@ server <- function(input, output, session) {
     create_boxplot(nat_data(), data_var, var_label)
   })
   
+  #air concentration
+  output$plotly_nat_airconcenpollution <- renderPlotly({
+    
+    data_var <- nat_data()$nat_airpollution_conc_benz
+    var_label <- "Annual Average Air Concentration Estimates In Microgram Per Cubic Meter"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #cancer risk
+  output$plotly_nat_cancerisk <- renderPlotly({
+    
+    data_var <- nat_data()$nat_cancer_risk_benz_estpm
+    var_label <- "Annual Average Cancer Risk Estimates Per Million (Pollutant: Benzene) "
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })  
+  
+  #new air concentration
+  output$plot_nat_airpollutionconc <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_airpollution_conc_benz
+    var_label <- "Annual Average Air Concentration Estimates In Microgram Per Cubic Meter"
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
   output$plot_nat_qualres_part <- renderLeaflet({
     
     data_var <- nat_data()$nat_particulatedensity
     var_label <- "Average Daily Density of Fine Particulate Matter"
     
     create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  #cancer risk
+  output$plot_nat_cancerisk <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_cancer_risk_benz_estpm
+    var_label <- "Annual Average Cancer Risk Estimates Per Million (Pollutant: Benzene)"
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  # Natural - Vulnerability - Boxplot and Map  ------------------
+  
+  #vulnerability flood
+  output$plotly_nat_flood_haz_pcarea <- renderPlotly({
+    
+    data_var <- nat_data()$nat_flood_haz_pcarea
+    var_label <- "Percent Area"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #vulneratility fire
+  output$plotly_nat_firevulnerab_pop <- renderPlotly({
+    
+    data_var <- nat_data()$nat_firevulnerab_pop
+    var_label <- "Population Vulnerable"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #vulnerability heat curr
+  output$plotly_nat_ext_heatdays <- renderPlotly({
+    
+    data_var <- nat_data()$nat_ext_heatdays
+    var_label <- "Number of Extreme Heat Days"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #vulnerability heat projected
+  output$plotly_nat_ext_heatdays_proj <- renderPlotly({
+    
+    data_var <-  as.numeric(nat_data()$nat_ext_heatdays_proj)  
+    var_label <- "Number of Future Extreme Heat Days"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #vulnerability flood
+  output$plot_nat_flood_haz_pcarea <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_flood_haz_pcarea
+    var_label <- "Percent Area"
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  #vulnerability fire
+  output$plot_nat_firevulnerab_pop <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_firevulnerab_pop
+    var_label <- "Population Vulnerable"
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  #vulnerability heat curr
+  output$plot_nat_ext_heatdays <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_ext_heatdays
+    var_label <- "Number of Extreme Heat Days "
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  #vulnerability heat projected
+  output$plot_nat_ext_heatdays_proj <- renderLeaflet({
+    
+    data_var <- as.numeric(nat_data()$nat_ext_heatdays_proj) 
+    var_label <- "Number of Future Extreme Heat Days "
+    
+    create_indicator_neg(nat_data(), data_var, var_label)
+  }) 
+  
+  
+  # Natural - GDP Dependence - Boxplot and Map  ----------------
+  
+  #ag gdp
+  output$plotly_nat_agric_gdp <- renderPlotly({
+    
+    data_var <- nat_data()$nat_agric_gdp
+    var_label <- "Percentage of Agricultural GDP"
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  #gdp mining
+  output$plotly_nat_mining_gdp <- renderPlotly({
+    
+    data_var <- nat_data()$nat_mining_gdp
+    var_label <- "Percentage of Mining GDP "
+    
+    create_boxplot(nat_data(), data_var, var_label)
+  })
+  
+  
+  #gdp ag
+  output$plot_nat_agric_gdp <- renderLeaflet({
+    
+    data_var <- nat_data()$nat_agric_gdp
+    var_label <- "Percentage of Agricultural GDP"
+    
+    create_indicator(nat_data(), data_var, var_label)
+  }) 
+  
+  #gdp mining
+  output$plot_nat_mining_gdp <- renderLeaflet({
+    
+    #data_var <- na.omit(nat_data()$nat_mining_gdp)
+    data_var <- nat_data()$nat_mining_gdp 
+    var_label <- "Percentage of Mining GDP"
+    
+    create_indicator(nat_data(), data_var, var_label)
   }) 
   
   #
