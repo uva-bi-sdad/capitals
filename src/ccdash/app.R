@@ -3433,9 +3433,38 @@ server <- function(input, output, session) {
   output$plot_nat_index_air <- renderLeaflet({
     create_index_neg(nat_data(), nat_data()$nat_index_AIR, "Air Resources Index")
   })
-  
+    
   output$plot_nat_index_produc <- renderLeaflet({
-    create_index(nat_data(), nat_data()$nat_index_DEPEND, "Natural Capital Dependence Index")
+    
+    pal <- colorNumeric(cbGreens[1:5], domain = nat_data()$nat_index_DEPEND, na.color = cbGreens[6])
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            nat_data()$NAME.y,
+            "<br />",
+            "<strong>", "Natural Capital Dependence Index", ": </strong>",
+            round(nat_data()$nat_index_DEPEND, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = nat_data()) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(nat_data()$nat_index_DEPEND), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(nat_data()$nat_index_DEPEND),
+                title = "%GDP That Depends on<br>Natural Resources",
+                opacity = 0.7,
+                na.label = "Not Available")
   })
   
   output$plot_nat_index_vulner <- renderLeaflet({
