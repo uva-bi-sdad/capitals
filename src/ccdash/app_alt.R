@@ -1422,7 +1422,24 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
 #####                        
                         
                         # BUILT CAPITAL CONTENT ----------------------
+# housing 
+# built_medpropval, built_medyrbuilt, built_pctsinghaus, built_pctvacant 
+
+# telecomm
+# built_pct2bbandprov, built_pctbband, cell_tower_count, built_cell_tower_adj, built_publibs, built_publibs_adj, built_lib_avcomputers, built_lib_avcomputers_adj, built_lib_computeruse, built_lib_computeruse_adj
+
+# transportation 
+# built_pct2bbandprov, built_pctbband, built_bridge_count_adj, built_perc_poor_bridges, built_perc_fair_bridges, built_road_count_adj, built_miles_of_road_adj
                         
+# educ facs 
+# built_publicschool_adj, built_privateschool_adj, built_university_adj, built_suppcollege_adj, built_educ_facs
+
+# emergency facs 
+# built_hospitals_adj, built_urgentcares_count, built_mentalhealthfacs_adj, built_fire_stations_adj, built_localpolice_adj, built_emergency_facs
+
+# convention facs 
+# built_placesofworship_adj, built_fairgrounds_adj, built_sportvenues_adj, built_convention_facs, built_energy_facs
+
                         tabItem(tabName = "built",
                                 fluidRow(
                                   box(title = "About Built Capital",
@@ -1447,7 +1464,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       column(11,
                                              radioGroupButtons(
                                                inputId = "builtidx_choice", #label = "Make a choice :",       
-                                               choices = c("TELECOMMUNICATIONS", "TRANSPORTATION", "EDUCATION", "EMERGENCY", "ENERGY", "CONVENTION"),   
+                                               choices = c("TELECOMMUNICATIONS", "TRANSPORTATION", "EDUCATION", "EMERGENCY", "ENERGY", "CONVENTION", "HOUSING"),   
                                                checkIcon = list(yes = icon("angle-double-right")),
                                                justified = FALSE, status = "success", 
                                                direction = "horizontal", width = "100%", individual = TRUE)
