@@ -1449,7 +1449,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       column(11,
                                              radioGroupButtons(
                                                inputId = "builtidx_choice", #label = "Make a choice :",       
-                                               choices = c("HOUSING", "TELECOMMUNICATIONS", "TRANSPORTATION", "EDUCATION", "EMERGENCY", "ENERGY", "CONVENTION"),   
+                                               choices = c("HOUSING", "TELECOMMUNICATIONS", "TRANSPORTATION", "EDUCATION", "EMERGENCY", "CONVENTION"),   
                                                checkIcon = list(yes = icon("angle-double-right")),
                                                justified = FALSE, status = "success", 
                                                direction = "horizontal", width = "100%", individual = TRUE)
@@ -1476,7 +1476,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                    )),
                                                  fluidRow(
                                                           tabBox(title = "Housing Measures",
-                                                          id = "tab_indexbuilt_Housing",
+                                                          id = "tab_indexbuilt_housing",
                                                           width = 12,
                                                           side = "right",
                                                           
@@ -1596,7 +1596,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                      )
                                                                    )
                                                           ),
-                                                          tabPanel(title = "Computers in Public Libraries",
+                                                          tabPanel(title = "Public Computers",
                                                                    fluidRow(
                                                                      h4(strong("Number of Computers in Public Libraries per 100,000 Population"), align = "center"),
                                                                      column(
@@ -1869,7 +1869,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                    box(title = "Emergency Facilities Index",
                                                        width = 12,
                                                        h5(strong("County-Level Map")),
-                                                       leafletOutput("plot_built_emerg_facs")
+                                                       leafletOutput("plot_built_index_emerg")
                                                    )),
                                                  
                                                  fluidRow(
@@ -3542,14 +3542,23 @@ server <- function(input, output, session) {
   #
   # Built Index Maps--------------------------------------------------
   #
-  output$plot_soc_index_socengage <- renderLeaflet({
-    create_index(built_data(), built_data()$built_index_eng, "Social Engagement Index")
+  output$plot_built_index_housing <- renderLeaflet({
+    create_index(built_data(), built_data()$built_index_eng, "Housing Index")
   })
-  output$plot_soc_index_relationships <- renderLeaflet({
-    create_index(built_data(), built_data()$built_index_relat, "Social Relationships Index")
+  output$plot_built_index_telecom <- renderLeaflet({
+    create_index(built_data(), built_data()$built_index_telecom, "Telecommunications Index")
   })
-  output$plot_soc_index_isolation <- renderLeaflet({
-    create_index_neg(built_data(), built_data()$built_index_isol, "Social Isolation Index")
+  output$plot_built_index_transpo <- renderLeaflet({
+    create_index_neg(built_data(), built_data()$built_index_transpo, "Transportation Index")
+  })
+  output$plot_built_index_edu <- renderLeaflet({
+    create_index_neg(built_data(), built_data()$built_index_edu, "Educational Facilities Index")
+  })
+  output$plot_built_index_emerg <- renderLeaflet({
+    create_index_neg(built_data(), built_data()$built_index_emerg, "Emergecny Facilties Index")
+  })
+  output$plot_built_index_conv <- renderLeaflet({
+    create_index_neg(built_data(), built_data()$built_index_conv, "Convention Facilties Index")
   })
   
   #
