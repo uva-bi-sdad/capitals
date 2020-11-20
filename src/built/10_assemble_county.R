@@ -9,20 +9,20 @@ library(sf)
 
 # county level data -----------------------------------------------------------------------
 
-acs_data <- read_rds("./rivanna_data/built/built_acs_2018.Rds")
-hud_data <- read_rds("./rivanna_data/built/built_hud_2019.Rds") %>% st_drop_geometry()
-fcc_data <- read_rds("./rivanna_data/built/built_fcc_2019.Rds") %>% st_drop_geometry()
-dot_data <- read_rds("./rivanna_data/built/built_dot_2020.Rds") 
-imls_data <- read_rds("./rivanna_data/built/built_imls_2018.rds")
-hifld_data <- read_rds("./rivanna_data/built/built_hifld_2020.rds") %>% st_drop_geometry()
-hrsa_data <- read_rds("./rivanna_data/built/built_hrsa_2019.Rds")
-#irs_data <- read_rds("./rivanna_data/built/built_acs_2018.Rds")
-#epa_data <- read_rds("./rivanna_data/built/built_acs_2018.Rds")
+acs_data <- read_rds("~/git/capitals/rivanna_data/built/built_acs_2018.Rds")
+hud_data <- read_rds("~/git/capitals/rivanna_data/built/built_hud_2019.Rds") %>% st_drop_geometry()
+fcc_data <- read_rds("~/git/capitals/rivanna_data/built/built_fcc_2019.Rds") %>% st_drop_geometry()
+dot_data <- read_rds("~/git/capitals/rivanna_data/built/built_dot_2020.Rds") 
+imls_data <- read_rds("~/git/capitals/rivanna_data/built/built_imls_2018.rds")
+hifld_data <- read_rds("~/git/capitals/rivanna_data/built/built_hifld_2020.rds") %>% st_drop_geometry()
+hrsa_data <- read_rds("~/git/capitals/rivanna_data/built/built_hrsa_2019.Rds")
+#irs_data <- read_rds("~/git/capitals/rivanna_data/built/built_acs_2018.Rds")
+#epa_data <- read_rds("~/git/capitals/rivanna_data/built/built_acs_2018.Rds")
 
 
 # pull in rurality data -----------------------------------------------------------------------
 
-rurality <- read_excel("./rivanna_data/rurality/IRR_2000_2010.xlsx", 
+rurality <- read_excel("~/git/capitals/rivanna_data/rurality/IRR_2000_2010.xlsx", 
                        sheet = 2, range = cell_cols("A:C"), col_types = c("text", "text", "numeric")) %>% clean_names()
 rurality$fips2010 <- ifelse(nchar(rurality$fips2010) == 4, paste0("0", rurality$fips2010), rurality$fips2010)
 
@@ -135,9 +135,11 @@ data <- data %>% # telecom
          built_sportvenues_adj = (sportvenues_count / COUNTYPOP * 10000),
          built_convention_facs = ((placesofworship_count + fairgrounds_count + sportvenues_count) / COUNTYPOP * 10000),
          built_energy_facs = ((electric_substations_count + power_plant_count +  ethanol_plant_count + ethanol_loading_count +
-           petro_plant_count + petro_terminal_count + biodiesel_plant_count) / COUNTYPOP  * 10000))
-
-)
+           petro_plant_count + petro_terminal_count + biodiesel_plant_count) / COUNTYPOP  * 10000)) %>% 
+  mutate(county = NAME.y) %>%
+  separate(county, c("county"), sep = ";", extra = "drop") %>% 
+  select(STATEFP, state, COUNTYFP, county, everything())
+  
 
 
 test_data %>% 
@@ -150,14 +152,14 @@ test_data %>%
          #road_count, road_count_adj, miles_of_road, miles_of_road_adj
          ) 
 
-# LEFT OFF HERE ---> THE ROUND COUNTS DON'T MAKE SENSE IN THE CITIES, NEED TO GO BACK AND CHECK ALL THE VARS THAT WERE INCLUDED
+
 
 
 #
 # Write -----------------------------------------------------------------------
 #
 
-write_rds(data, "./rivanna_data/built/built_final.Rds")
-check <- read_rds("./rivanna_data/built/built_final.Rds")
-write_rds(check, "./src/ccdash/data/built_final.Rds")
+write_rds(data, "~/git/capitals/rivanna_data/built/built_final.Rds")
+check <- read_rds("~/git/capitals/rivanna_data/built/built_final.Rds")
+write_rds(check, "~/git/capitals/src/ccdash/data/built_final.Rds")
 

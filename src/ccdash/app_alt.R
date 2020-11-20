@@ -19,7 +19,7 @@ library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 
-#setwd("./src/ccdash/")
+setwd("~/git/capitals/src/ccdash/")
 datafin <- read_rds("data/fin_final.Rds")
 datahum <- read_rds("data/hum_final.Rds")
 datasoc <- read_rds("data/soc_final.Rds")
@@ -1454,6 +1454,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                justified = FALSE, status = "success", 
                                                direction = "horizontal", width = "100%", individual = TRUE)
                                       ),
+                                      #tags$script("$(\"input:radio[name='builtidx_choice'][value='HOUSING']\").parent().css('background-color', '#A59200');")),
                                       column(1,
                                              circleButton(inputId = "infobutton_built", icon = icon("info"), status = "info", size = "sm")  
                                       )
@@ -3270,6 +3271,10 @@ server <- function(input, output, session) {
     shinyalert(text = includeHTML("index_interpretation_cultural.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
+  observeEvent(input$infobutton_built, {
+    shinyalert(text = includeHTML("index_interpretation_built.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
   observeEvent(input$pcindex_info, {
     shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
@@ -3477,6 +3482,7 @@ server <- function(input, output, session) {
   pol_data <- reactive({datapol %>% filter(state == input$pol_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
   cult_data <- reactive({datacult %>% filter(state == input$cult_whichstate)})
+  built_data <- reactive({databuilt %>% filter(state == input$built_whichstate)})
   
   #
   # Capital Index Maps ------------------------------------------------
@@ -3555,7 +3561,7 @@ server <- function(input, output, session) {
     create_index_neg(built_data(), built_data()$built_index_edu, "Educational Facilities Index")
   })
   output$plot_built_index_emerg <- renderLeaflet({
-    create_index_neg(built_data(), built_data()$built_index_emerg, "Emergecny Facilties Index")
+    create_index_neg(built_data(), built_data()$built_index_emerg, "Emergency Facilties Index")
   })
   output$plot_built_index_conv <- renderLeaflet({
     create_index_neg(built_data(), built_data()$built_index_conv, "Convention Facilties Index")
@@ -5302,7 +5308,512 @@ server <- function(input, output, session) {
   })
   
   
+  # 
+  # Built - Housing Outcomes - Boxplot and Map ------------------
+  #  
   
+  output$plotly_built_housing_singlefam <- renderPlotly({
+    
+    data_var <- built_data()$built_pctsinghaus
+    var_label <- "Percentage of Households in Detached Single Family Units"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_singlefam <- renderPlotly({
+    
+    data_var <- built_data()$built_pctsinghaus
+    var_label <- "Percentage of Households in Detached Single Family Units"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_plumbing <- renderLeaflet({
+    
+    data_var <- built_data()$prc_complete_plumbing
+    var_label <- "Percentage of Households with Complete Plumbing"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_plumbing <- renderPlotly({
+    
+    data_var <- built_data()$prc_complete_plumbing
+    var_label <- "Percentage of Households with Complete Plumbing"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_vacant <- renderLeaflet({
+    
+    data_var <- built_data()$built_pctvacant
+    var_label <- "Percentage of Vacant Properties"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_vacant <- renderPlotly({
+    
+    data_var <- built_data()$built_pctvacant
+    var_label <- "Percentage of Vacant Properties"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_medpropage <- renderLeaflet({
+    
+    data_var <- built_data()$built_medyrbuilt
+    var_label <- "Median Year of Built Structures"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_medpropage <- renderPlotly({
+    
+    data_var <- built_data()$built_medyrbuilt
+    var_label <- "Median Year of Built Structures"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_medpropval <- renderLeaflet({
+    
+    data_var <- built_data()$built_medpropval
+    var_label <- "Median Household Property Value"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_medpropval <- renderPlotly({
+    
+    data_var <- built_data()$built_medpropval
+    var_label <- "Median Household Property Value"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  # 
+  # Built - Telecommunications Outcomes - Boxplot and Map ------------------
+  #  
+  
+  output$plotly_built_telecom_compuse <- renderPlotly({
+    
+    data_var <- built_data()$built_lib_computeruse_adj
+    var_label <- "Uses of Public Internet Computers in Libaries per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_compuse <- renderPlotly({
+    
+    data_var <- built_data()$built_lib_computeruse_adj
+    var_label <- "Uses of Public Internet Computers in Libaries per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_libcomps <- renderLeaflet({
+    
+    data_var <- built_data()$built_lib_avcomputers_adj
+    var_label <- "Number of Computers in Public Libraries per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_libcomps <- renderPlotly({
+    
+    data_var <- built_data()$built_lib_avcomputers_adj
+    var_label <- "Number of Computers in Public Libraries per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_libs <- renderLeaflet({
+    
+    data_var <- built_data()$built_publibs_adj
+    var_label <- "Number of Public Libraries Per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_libs <- renderPlotly({
+    
+    data_var <- built_data()$built_publibs_adj
+    var_label <- "Number of Public Libraries Per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_towers <- renderLeaflet({
+    
+    data_var <- built_data()$built_cell_tower_adj
+    var_label <- "Number of Cell Towers Per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_towers <- renderPlotly({
+    
+    data_var <- built_data()$built_cell_tower_adj
+    var_label <- "Number of Cell Towers Per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_hholdbband <- renderLeaflet({
+    
+    data_var <- built_data()$built_pctbband
+    var_label <- "Percentage of Households with Broadband Subscription"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_hholdbband <- renderPlotly({
+    
+    data_var <- built_data()$built_pctbband
+    var_label <- "Percentage of Households with Broadband Subscription"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_2bbandpvdrs <- renderLeaflet({
+    
+    data_var <- built_data()$built_pct2bbandprov
+    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_2bbandpvdrs <- renderPlotly({
+    
+    data_var <- built_data()$built_pct2bbandprov
+    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  
+  # 
+  # Built - Transportation Facilities - Boxplot and Map ------------------
+  #  
+  
+  output$plotly_built_miles <- renderPlotly({
+    
+    data_var <- built_data()$built_miles_of_road_adj
+    var_label <- "Miles of Roads per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_miles <- renderPlotly({
+    
+    data_var <- built_data()$built_miles_of_road_adj
+    var_label <- "Miles of Roads per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_roads <- renderPlotly({
+    
+    data_var <- built_data()$built_road_count_adj
+    var_label <- "Total Roads per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_roads <- renderPlotly({
+    
+    data_var <- built_data()$built_road_count_adj
+    var_label <- "Total Roads per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_bridgequality <- renderPlotly({
+    
+    data_var <- built_data()$built_perc_poor_bridges
+    var_label <- "Percentage of Low Quality Bridges"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_bridgequality <- renderPlotly({
+    
+    data_var <- built_data()$built_perc_poor_bridges
+    var_label <- "Percentage of Low Quality Bridges"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_bridges <- renderPlotly({
+    
+    data_var <- built_data()$built_bridge_count_adj
+    var_label <- "Number of Bridges per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_bridges <- renderPlotly({
+    
+    data_var <- built_data()$built_bridge_count_adj
+    var_label <- "Number of Bridges per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  
+  # 
+  # Built - Educational Facilities - Boxplot and Map ------------------
+  #  
+  
+  output$plotly_built_educfacs <- renderPlotly({
+    
+    data_var <- built_data()$built_educ_facs
+    var_label <- "Total Number of Educational Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_educfacs <- renderPlotly({
+    
+    data_var <- built_data()$built_educ_facs
+    var_label <- "Total Number of Educational Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_suppcolleges <- renderPlotly({
+    
+    data_var <- built_data()$built_suppcollege_adj
+    var_label <- "Number of Supplementary Colleges per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_suppcolleges <- renderPlotly({
+    
+    data_var <- built_data()$built_suppcollege_adj
+    var_label <- "Number of Supplementary Colleges per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_universities <- renderPlotly({
+    
+    data_var <- built_data()$built_university_adj
+    var_label <- "Number of Universities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_universities <- renderPlotly({
+    
+    data_var <- built_data()$built_university_adj
+    var_label <- "Number of Universities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_private_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_privateschool_adj
+    var_label <- "Number of Private Schools per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_private_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_privateschool_adj
+    var_label <- "Number of Private Schools per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_public_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_publicschool_adj
+    var_label <- "Public Schools per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_public_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_publicschool_adj
+    var_label <- "Public Schools per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  
+  # 
+  # Built - Emergency Facilities - Boxplot and Map ------------------
+  #  
+  
+  output$plotly_built_emerg_facs <- renderPlotly({
+    
+    data_var <- built_data()$built_emergency_facs
+    var_label <- "All Emergency Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_emerg_facs <- renderPlotly({
+    
+    data_var <- built_data()$built_emergency_facs
+    var_label <- "All Emergency Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_police <- renderPlotly({
+    
+    data_var <- built_data()$built_localpolice_adj
+    var_label <- "Police Stations per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_police <- renderPlotly({
+    
+    data_var <- built_data()$built_localpolice_adj
+    var_label <- "Police Stations per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_fire <- renderPlotly({
+    
+    data_var <- built_data()$built_fire_stations_adj
+    var_label <- "Fire Stations per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_fire <- renderPlotly({
+    
+    data_var <- built_data()$built_fire_stations_adj
+    var_label <- "Fire Stations per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_mentalhealth <- renderPlotly({
+    
+    data_var <- built_data()$built_mentalhealthfacs_adj
+    var_label <- "Mental Health Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_mentalhealth <- renderPlotly({
+    
+    data_var <- built_data()$built_mentalhealthfacs_adj
+    var_label <- "Mental Health Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_urgentcare <- renderPlotly({
+    
+    data_var <- built_data()$built_urgentcares_count
+    var_label <- "Urgent Care Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_urgentcare <- renderPlotly({
+    
+    data_var <- built_data()$built_urgentcares_count
+    var_label <- "Urgent Care Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_hospitals <- renderPlotly({
+    
+    data_var <- built_data()$built_hospitals_adj
+    var_label <- "Hospitals per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_hospitals <- renderPlotly({
+    
+    data_var <- built_data()$built_hospitals_adj
+    var_label <- "Hospitals per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  # 
+  # Built - Convention Facilities - Boxplot and Map ------------------
+  #  
+  
+  output$plotly_built_conv_facs <- renderPlotly({
+    
+    data_var <- built_data()$built_convention_facs
+    var_label <- "All Convention Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_conv_facs <- renderPlotly({
+    
+    data_var <- built_data()$built_convention_facs
+    var_label <- "All Convention Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_sports <- renderLeaflet({
+    
+    data_var <- built_data()$built_sportvenues_adj
+    var_label <- "Sports Venues per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_sports <- renderPlotly({
+    
+    data_var <- built_data()$built_sportvenues_adj
+    var_label <- "Sports Venues per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_fairgrounds <- renderLeaflet({
+    
+    data_var <- built_data()$built_fairgrounds_adj
+    var_label <- "Fairgrounds/Convention Centers per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_fairgrounds <- renderPlotly({
+    
+    data_var <- built_data()$built_fairgrounds_adj
+    var_label <- "Fairgrounds/Convention Centers per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_worship <- renderLeaflet({
+    
+    data_var <- built_data()$built_placesofworship_adj
+    var_label <- "Places of Worship per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_worship <- renderPlotly({
+    
+    data_var <- built_data()$built_placesofworship_adj
+    var_label <- "Places of Worship per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
   
   
   #--------- Measures table -------------------------
@@ -5442,8 +5953,8 @@ server <- function(input, output, session) {
                             for collective efforts to solve community problems.")
     )
   })
-  
-  
+
+
 }
 
 

@@ -78,7 +78,11 @@ acsdata <- data %>% transmute(
   built_pctbband = (B28011_004E / B28011_001E) *100,
   prc_complete_plumbing = (B25047_002E / B25047_001E) *100,
   prc_lacking_plumbing = (B25047_003E / B25047_001E) *100
-)
+) %>% 
+  mutate(state = ifelse(str_detect(STATEFP, "19"), "Iowa", no = STATEFP),
+         state = ifelse(str_detect(STATEFP, "41"), "Oregon", no = state),
+         state = ifelse(str_detect(STATEFP, "51"), "Virginia", no = state)) %>% 
+  select(STATEFP, state, COUNTYFP,)
 
 #view(acsdata)
 
@@ -87,4 +91,4 @@ acsdata <- data %>% transmute(
 # Write ------------------------------------------------------------------------
 #
 
-write_rds(acsdata, "./rivanna_data/built/built_acs_2018.Rds")
+write_rds(acsdata, "~/git/capitals/rivanna_data/built/built_acs_2018.Rds")
