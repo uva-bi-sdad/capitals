@@ -1,0 +1,101 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+#inputs 
+built_whichstate
+builtidx_choice 
+infobutton_built
+
+#outputs 
+plot_built_index_telecomm
+tab_indexbuilt_telecomm
+
+# housing 
+built_medpropval, X
+built_medyrbuilt, X 
+built_pctsinghaus X 
+built_pctvacant   X 
+prc_complete_plumbing X
+
+# telecomm
+# built_pct2bbandprov X
+# built_pctbband      X
+# built_cell_tower_adj    X 
+# built_publibs_adj   X
+# built_lib_avcomputers_adj   X
+# built_lib_computeruse_adj   X
+
+# transportation 
+# built_bridge_count_adj  X 
+# built_perc_poor_bridges  X 
+# built_road_count_adj   X 
+# built_miles_of_road_adj  X 
+                        
+# educ facs                       > index easy
+# built_publicschool_adj, 
+# built_privateschool_adj, 
+# built_university_adj, 
+# built_suppcollege_adj, 
+# built_educ_facs
+
+# emergency facs                  > index easy
+# built_hospitals_adj,  
+# built_urgentcares_count,  X 
+# built_mentalhealthfacs_adj,  X 
+# built_fire_stations_adj, X 
+# built_localpolice_adj,  X 
+# built_emergency_facs    X
+
+# convention facs                 > index easy
+# built_placesofworship_adj, 
+# built_fairgrounds_adj, 
+# built_sportvenues_adj, 
+# built_convention_facs, 
+
+
+```{md}
+
+├── built capital
+    ├── housing
+        ├── built_medpropval: median property value 
+        ├── built_medyrbuilt: built structure median age
+        ├── percentage of single family housing 
+        ├── percentage of vacant properties 
+        ├── number of subsidized units (per 100 pop)
+        ├── number of people in subsidized units (per 100 pop)
+    ├── telecommunications
+        ├── percentage of population with two broadband providers
+        ├── percentage of households with broadband subscription 
+        ├── built_cell_tower_adj: number of cell towers (adjusted by land area)
+        ├── built_publibs_adj: number of libraries (adjusted by pop)
+        ├── built_lib_avcomputers_adj: number of available computers with internet access in libraries (adj by pop)
+        ├── built_lib_computeruse_adj: number of public computers used in libraries (adj by pop)
+    ├── transportation 
+        ├── number of bridges (adjusted by land area)
+        ├── percentage of low quality bridges 
+        ├── number of roads (adjusted by land area)
+        ├── total miles of roads (adjusted by land area)
+    #├── educational_facilities 
+        #├── number of universities (adj by population)
+        #├── number of supplemental colleges (adj by population)
+        #├── number of public schools (adj by population)
+        #├── number of private schools (adj by population)
+        #├── composite number of educational facilities (adj by population)
+    #├── emergency_services
+        #├── number of hospitals (adj by population)
+        #├── number of urgent care facilties (adj by population)
+        #├── number of mental healthcare facilties (adj by population)
+        #├── number of fire stations (adj by population)
+        #├── number of police stations (adj by population)
+        #├── composite number of emergency service facilities (adj by population)
+    #├── convention_facilities
+        #├── number of major sporting venues (adjusted by pop)
+        #├── number of convention centers & fairgrounds (adjusted by pop)
+        #├── number of places of worship (adjusted by pop)
+        #├── composite number of convention facilities (adjusted by pop)
+```
+
+

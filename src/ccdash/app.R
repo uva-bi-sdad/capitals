@@ -25,6 +25,7 @@ datasoc <- read_rds("data/soc_final.Rds")
 datanat <- read_rds("data/nat_final.Rds")
 datapol <- read_rds("data/pol_final_1.Rds")
 datacult <- read_rds("data/cult_final.Rds")
+databuilt <- read_rds("data/built_final.Rds")
 
 measures <- read.csv("data/measures.csv")
 biblio <- read.csv("data/bibliography.csv")
@@ -1413,6 +1414,10 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                       ),        
                       
                       # BUILT CAPITAL CONTENT -------------------------
+                      
+                      
+                      
+                      
                       tabItem(tabName = "built",
                               fluidRow(
                                 box(title = "About Built Capital",
@@ -1430,12 +1435,602 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                 selected = "Iowa")
                                 )
                                 ),
+                              
                               fluidRow(
-                                box(
-                                  "COMING SOON."
+                                box(title = "Explore Composite Indices",
+                                    width = 12,
+                                    column(11,
+                                           radioGroupButtons(
+                                             inputId = "builtidx_choice", #label = "Make a choice :",       
+                                             choices = c("HOUSING", "TELECOMMUNICATIONS", "TRANSPORTATION", "EDUCATION", "EMERGENCY", "CONVENTION"),   
+                                             checkIcon = list(yes = icon("angle-double-right")),
+                                             justified = FALSE, status = "success", 
+                                             direction = "horizontal", width = "100%", individual = TRUE)
+                                    ),
+                                    #tags$script("$(\"input:radio[name='builtidx_choice'][value='HOUSING']\").parent().css('background-color', '#A59200');")),
+                                    column(1,
+                                           circleButton(inputId = "infobutton_built", icon = icon("info"), status = "info", size = "sm")  
+                                    )
                                 )
+                                
+                              ),
+                              
+                              #
+                              # HOUSING PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'HOUSING'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Housing Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_housing")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(
+                                                 tabBox(title = "Housing Measures",
+                                                        id = "tab_indexbuilt_housing",
+                                                        width = 12,
+                                                        side = "right",
+                                                        
+                                                        tabPanel(title = "Single-Family Housing",
+                                                                 fluidRow(
+                                                                   h4(strong("Percentage of Households in Detached Single Family Units"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_housing_singlefam")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_housing_singlefam")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Adequate Plumbing",
+                                                                 fluidRow(
+                                                                   h4(strong("Percentage of Households with Complete Plumbing"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_housing_plumbing")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_housing_plumbing")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Vacant Housing",
+                                                                 fluidRow(
+                                                                   h4(strong("Percentage of Vacant Properties"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_housing_vacant")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_housing_vacant")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Property Age",
+                                                                 fluidRow(
+                                                                   h4(strong("Median Year of Built Structures"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_housing_medpropage")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_housing_medpropage")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Property Value",
+                                                                 fluidRow(
+                                                                   h4(strong("Median Household Property Value"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_housing_medpropval")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_housing_medpropval")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
+                              ),
+                              
+                              
+                              
+                              #
+                              # TELECOMMUNICATIONS PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'TELECOMMUNICATIONS'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Telecommunications Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_telecom")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(tabBox(title = "Telecommunications Measures",
+                                                               id = "tab_indexbuilt_telecom",
+                                                               width = 12,
+                                                               side = "right",
+                                                               
+                                                               tabPanel(title = "Internet Use in Public Libraries",
+                                                                        fluidRow(
+                                                                          h4(strong("Uses of Public Internet Computers in Libaries per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_compuse")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_compuse")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Public Computers",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Computers in Public Libraries per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_libcomps")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_libcomps")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Public Libraries",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Public Libraries Per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_libs")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_libs")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Cell Towers",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Cell Towers Per Acre"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_towers")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_towers")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Broadband Availability",
+                                                                        fluidRow(
+                                                                          h4(strong("Percentage of Households with Broadband Subscription"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_hholdbband")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_hholdbband")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Broadband Providers",
+                                                                        fluidRow(
+                                                                          h4(strong("Percentage of Households with at least Two Broadband Providers"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_telecom_2bbandpvdrs")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_telecom_2bbandpvdrs")
+                                                                          )
+                                                                        )
+                                                               )
+                                               )
+                                               )
+                              ),
+                              
+                              #
+                              # TRANSPORTATION PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'TRANSPORTATION'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Transportation Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_transpo")
+                                                 )),
+                                               
+                                               fluidRow(
+                                                 tabBox(title = "Transportation Measures",
+                                                        id = "tab_indexhum_edu",
+                                                        width = 12,
+                                                        side = "right",
+                                                        
+                                                        tabPanel(title = "Miles of Roads",
+                                                                 fluidRow(
+                                                                   h4(strong("Miles of Roads per Acre"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_miles")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_miles")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Total Roads",
+                                                                 fluidRow(
+                                                                   h4(strong("Total Roads per Acre"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_roads")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_roads")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Bridge Quality",
+                                                                 fluidRow(
+                                                                   h4(strong("Percentage of Low Quality Bridges"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_bridgequality")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_bridgequality")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Bridge Quantity",
+                                                                 fluidRow(
+                                                                   h4(strong("Number of Bridges per Acre"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_bridges")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_bridges")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
+                              ),
+                              #
+                              # EDUCATIONAL FACILITIES PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'EDUCATION'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Educational Facilities Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_edu")
+                                                 )
+                                                 
+                                               ),
+                                               fluidRow(tabBox(title = "Educational Facilities Measures",
+                                                               id = "tab_indexbuilt_edu",
+                                                               width = 12,
+                                                               side = "right",
+                                                               
+                                                               tabPanel(title = "Supplementary Colleges",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Supplementary Colleges per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_suppcolleges")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_suppcolleges")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Universities",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Universities per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_universities")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_universities")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Private Schools",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Private Schools per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_private_schools")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_private_schools")
+                                                                          )
+                                                                        )
+                                                               ),
+                                                               tabPanel(title = "Public Schools",
+                                                                        fluidRow(
+                                                                          h4(strong("Number of Public Schools per 100,000 Population"), align = "center"),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("County-Level Map")),
+                                                                            leafletOutput("plot_built_public_schools")
+                                                                          ),
+                                                                          column(
+                                                                            width = 6,
+                                                                            h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                            plotlyOutput("plotly_built_public_schools")
+                                                                          )
+                                                                        )
+                                                               )
+                                               )
+                                               )
+                              ),
+                              
+                              #
+                              # EMERGENCY FACILITIES PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'EMERGENCY'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Emergency Facilities Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_emerg")
+                                                 )
+                                                 
+                                               ),
+                                               
+                                               fluidRow(
+                                                 tabBox(title = "Emergency Facilities Measures",
+                                                        id = "tab_indexbuilt_emerg_facs",
+                                                        width = 12,
+                                                        side = "right",
+                                                        
+                                                        
+                                                        #tabPanel(title = "All Emergency Facilities",
+                                                        #         fluidRow(
+                                                        #           h4(strong("All Emergency Facilities per 100,000 Population"), align = "center"),
+                                                        #           column(
+                                                        #             width = 6,
+                                                        #             h5(strong("County-Level Map")),
+                                                        #             leafletOutput("plot_built_emerg_facs")
+                                                        #           ),
+                                                        #           column(
+                                                        #             width = 6,
+                                                        #             h5(strong("Measure Box Plot and Values by Rurality")),
+                                                        #             plotlyOutput("plotly_built_emerg_facs")
+                                                        #           )
+                                                        #         )
+                                                        #),
+                                                        tabPanel(title = "Police Stations",
+                                                                 fluidRow(
+                                                                   h4(strong("Police Stations per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_police")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_police")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Fire Stations",
+                                                                 fluidRow(
+                                                                   h4(strong("Fire Stations per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_fire")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_fire")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Mental Health",
+                                                                 fluidRow(
+                                                                   h4(strong("Mental Health Facilities per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_mentalhealth")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_mentalhealth")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Urgent Care",
+                                                                 fluidRow(
+                                                                   h4(strong("Urgent Care Facilities per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_urgentcare")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_urgentcare")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Hospitals",
+                                                                 fluidRow(
+                                                                   h4(strong("Hospitals per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_hospitals")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_hospitals")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
+                              ),
+                              
+                              
+                              #
+                              # CONVENTION FACILITIES PANEL ------------------------------------------
+                              #
+                              
+                              conditionalPanel("input.builtidx_choice == 'CONVENTION'",
+                                               
+                                               fluidRow(
+                                                 
+                                                 box(title = "Convention Index",
+                                                     width = 12,
+                                                     h5(strong("County-Level Map")),
+                                                     leafletOutput("plot_built_index_conv")
+                                                 )
+                                                 
+                                               ),
+                                               
+                                               fluidRow(
+                                                 tabBox(title = "Convention Facilities Measures",
+                                                        id = "tab_indexbuilt_conv",
+                                                        width = 12,
+                                                        side = "right",
+                 
+                                                        tabPanel(title = "Sports Venues",
+                                                                 fluidRow(
+                                                                   h4(strong("Sports Venues per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_sports")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_sports")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Fairgrounds/Convention Centers",
+                                                                 fluidRow(
+                                                                   h4(strong("Fairgrounds/Convention Centers per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_fairgrounds")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_fairgrounds")
+                                                                   )
+                                                                 )
+                                                        ),
+                                                        tabPanel(title = "Places of Worship",
+                                                                 fluidRow(
+                                                                   h4(strong("Places of Worship per 100,000 Population"), align = "center"),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("County-Level Map")),
+                                                                     leafletOutput("plot_built_worship")
+                                                                   ),
+                                                                   column(
+                                                                     width = 6,
+                                                                     h5(strong("Measure Box Plot and Values by Rurality")),
+                                                                     plotlyOutput("plotly_built_worship")
+                                                                   )
+                                                                 )
+                                                        )
+                                                 )
+                                               )
                               )
-                      ),  
+                              
+                              
+                              
+                              
+                      ), 
                       
                       # NATURAL CAPITAL CONTENT -------------------------
                       tabItem(tabName = "natural",
@@ -3357,6 +3952,7 @@ server <- function(input, output, session) {
   pol_data <- reactive({datapol %>% filter(state == input$pol_whichstate)})
   nat_data <- reactive({datanat %>% filter(state == input$nat_whichstate)})
   cult_data <- reactive({datacult %>% filter(state == input$cult_whichstate)})
+  built_data <- reactive({databuilt %>% filter(state == input$built_whichstate)})
   
   #
   # Capital Index Maps ------------------------------------------------
@@ -5306,7 +5902,570 @@ server <- function(input, output, session) {
   })
   
   
+  # 
+  # Built - Housing Outcomes - Boxplot and Map ------------------
+  #  
   
+  # index
+  output$plotly_built_index_housing <- renderPlotly({
+    
+    data_var <- built_data()$built_housing_index
+    var_label <- "Built Housing Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_housing <- renderLeaflet({
+    
+    data_var <- built_data()$built_housing_index
+    var_label <- "Built Housing Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_housing_singlefam <- renderPlotly({
+    
+    data_var <- built_data()$built_pctsinghaus
+    var_label <- "Percentage of Households in Detached Single Family Units"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_housing_singlefam <- renderLeaflet({
+    
+    data_var <- built_data()$built_pctsinghaus
+    var_label <- "Percentage of Households in Detached Single Family Units"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_plumbing <- renderPlotly({
+    
+    data_var <- built_data()$prc_complete_plumbing
+    var_label <- "Percentage of Households with Complete Plumbing"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_housing_plumbing <- renderLeaflet({
+    
+    data_var <- built_data()$prc_complete_plumbing
+    var_label <- "Percentage of Households with Complete Plumbing"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_vacant <- renderPlotly({
+    
+    data_var <- built_data()$built_pctvacant
+    var_label <- "Percentage of Vacant Properties"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_housing_vacant <- renderLeaflet({
+    
+    data_var <- built_data()$built_pctvacant
+    var_label <- "Percentage of Vacant Properties"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_medpropage <- renderPlotly({
+    
+    data_var <- built_data()$built_medyrbuilt
+    var_label <- "Median Year of Built Structures"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_housing_medpropage <- renderLeaflet({
+    
+    data_var <- built_data()$built_medyrbuilt
+    var_label <- "Median Year of Built Structures"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_housing_medpropval <- renderPlotly({
+    
+    data_var <- built_data()$built_medpropval
+    var_label <- "Median Household Property Value"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_housing_medpropval <- renderLeaflet({
+    
+    data_var <- built_data()$built_medpropval
+    var_label <- "Median Household Property Value"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  # 
+  # Built - Telecommunications Outcomes - Boxplot and Map ------------------
+  # 
+  
+  
+  # index
+  output$plotly_built_index_telecom <- renderPlotly({
+    
+    data_var <- built_data()$built_telecom_index
+    var_label <- "Built Telecommunications Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_telecom <- renderLeaflet({
+    
+    data_var <- built_data()$built_telecom_index
+    var_label <- "Built Telecommunications Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  # use of internet not working 
+  output$plotly_built_telecom_compuse <- renderPlotly({
+    
+    data_var <- built_data()$built_lib_computeruse_adj
+    var_label <- "Uses of Public Internet Computers in Libaries per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_compuse <- renderLeaflet({
+    
+    data_var <- built_data()$built_lib_computeruse_adj
+    var_label <- "Uses of Public Internet Computers in Libaries per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_telecom_libcomps <- renderPlotly({
+    
+    data_var <- built_data()$built_lib_avcomputers_adj
+    var_label <- "Number of Computers in Public Libraries per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_libcomps <- renderLeaflet({
+    
+    data_var <- built_data()$built_lib_avcomputers_adj
+    var_label <- "Number of Computers in Public Libraries per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_libs <- renderPlotly({
+    
+    data_var <- built_data()$built_publibs_adj
+    var_label <- "Number of Public Libraries Per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_libs <- renderLeaflet({
+    
+    data_var <- built_data()$built_publibs_adj
+    var_label <- "Number of Public Libraries Per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_towers <- renderPlotly({
+    
+    data_var <- built_data()$built_cell_tower_adj
+    var_label <- "Number of Cell Towers Per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_towers <- renderLeaflet({
+    
+    data_var <- built_data()$built_cell_tower_adj
+    var_label <- "Number of Cell Towers Per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_telecom_hholdbband <- renderPlotly({
+    
+    data_var <- built_data()$built_pctbband
+    var_label <- "Percentage of Households with Broadband Subscription"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_hholdbband <- renderLeaflet({
+    
+    data_var <- built_data()$built_pctbband
+    var_label <- "Percentage of Households with Broadband Subscription"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  
+  output$plotly_built_telecom_2bbandpvdrs <- renderPlotly({
+    
+    data_var <- built_data()$built_pct2bbandprov
+    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_telecom_2bbandpvdrs <- renderLeaflet({
+    
+    data_var <- built_data()$built_pct2bbandprov
+    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  
+  # 
+  # Built - Transportation Facilities - Boxplot and Map ------------------
+  #  
+  
+  # index
+  output$plotly_built_index_transpo <- renderPlotly({
+    
+    data_var <- built_data()$built_transpo_index
+    var_label <- "Built Transportation Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_transpo <- renderLeaflet({
+    
+    data_var <- built_data()$built_transpo_index
+    var_label <- "Built Transportation Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_miles <- renderPlotly({
+    
+    data_var <- built_data()$built_miles_of_road_adj
+    var_label <- "Miles of Roads per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_miles <- renderLeaflet({
+    
+    data_var <- built_data()$built_miles_of_road_adj
+    var_label <- "Miles of Roads per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_roads <- renderPlotly({
+    
+    data_var <- built_data()$built_road_count_adj
+    var_label <- "Total Roads per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_roads <- renderLeaflet({
+    
+    data_var <- built_data()$built_road_count_adj
+    var_label <- "Total Roads per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_bridgequality <- renderPlotly({
+    
+    data_var <- built_data()$built_perc_poor_bridges
+    var_label <- "Percentage of Low Quality Bridges"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_bridgequality <- renderLeaflet({
+    
+    data_var <- built_data()$built_perc_poor_bridges
+    var_label <- "Percentage of Low Quality Bridges"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_bridges <- renderPlotly({
+    
+    data_var <- built_data()$built_bridge_count_adj
+    var_label <- "Number of Bridges per Acre"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_bridges <- renderLeaflet({
+    
+    data_var <- built_data()$built_bridge_count_adj
+    var_label <- "Number of Bridges per Acre"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  # 
+  # Built - Educational Facilities - Boxplot and Map ------------------
+  #  
+  
+  # index
+  output$plotly_built_index_edu <- renderPlotly({
+    
+    data_var <- built_data()$built_edu_index
+    var_label <- "Built Educational Facilities Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_edu <- renderLeaflet({
+    
+    data_var <- built_data()$built_edu_index
+    var_label <- "Built Educational Facilities Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_suppcolleges <- renderPlotly({
+    
+    data_var <- built_data()$built_suppcollege_adj
+    var_label <- "Supplementary Colleges per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_suppcolleges <- renderLeaflet({
+    
+    data_var <- built_data()$built_suppcollege_adj
+    var_label <- "Supplementary Colleges per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_universities <- renderPlotly({
+    
+    data_var <- built_data()$built_university_adj
+    var_label <- "Universities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_universities <- renderLeaflet({
+    
+    data_var <- built_data()$built_university_adj_q
+    var_label <- "Universities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_private_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_privateschool_adj
+    var_label <- "Private Schools per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_private_schools <- renderLeaflet({
+    
+    data_var <- built_data()$built_privateschool_adj
+    var_label <- "Private Schools per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  }) 
+  
+  output$plotly_built_public_schools <- renderPlotly({
+    
+    data_var <- built_data()$built_publicschool_adj
+    var_label <- "Public Schools per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_public_schools <- renderLeaflet({
+    
+    data_var <- built_data()$built_publicschool_adj
+    var_label <- "Public Schools per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  
+  # 
+  # Built - Emergency Facilities - Boxplot and Map ------------------
+  #  
+  
+  # index
+  output$plotly_built_index_emerg <- renderPlotly({
+    
+    data_var <- built_data()$built_emerg_index
+    var_label <- "Built Emergency Facilities Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_emerg <- renderLeaflet({
+    
+    data_var <- built_data()$built_emerg_index
+    var_label <- "Built Emergency Facilities Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  
+  
+  output$plotly_built_police <- renderPlotly({
+    
+    data_var <- built_data()$built_localpolice_adj
+    var_label <- "Police Stations per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_police <- renderLeaflet({
+    
+    data_var <- built_data()$built_localpolice_adj
+    var_label <- "Police Stations per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_fire <- renderPlotly({
+    
+    data_var <- built_data()$built_fire_stations_adj
+    var_label <- "Fire Stations per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_fire <- renderLeaflet({
+    
+    data_var <- built_data()$built_fire_stations_adj
+    var_label <- "Fire Stations per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_mentalhealth <- renderPlotly({
+    
+    data_var <- built_data()$built_mentalhealthfacs_adj
+    var_label <- "Mental Health Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_mentalhealth <- renderLeaflet({
+    
+    data_var <- built_data()$built_mentalhealthfacs_adj
+    var_label <- "Mental Health Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_urgentcare <- renderPlotly({
+    
+    data_var <- built_data()$built_urgentcares_adj
+    var_label <- "Urgent Care Facilities per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_urgentcare <- renderLeaflet({
+    
+    data_var <- built_data()$built_urgentcares_adj
+    var_label <- "Urgent Care Facilities per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_hospitals <- renderPlotly({
+    
+    data_var <- built_data()$built_hospitals_adj
+    var_label <- "Hospitals per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_hospitals <- renderLeaflet({
+    
+    data_var <- built_data()$built_hospitals_adj
+    var_label <- "Hospitals per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  # 
+  # Built - Convention Facilities - Boxplot and Map ------------------
+  #  
+  
+  # index
+  output$plotly_built_index_conv <- renderPlotly({
+    
+    data_var <- built_data()$built_conv_index
+    var_label <- "Convention Facilities Index"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_index_conv <- renderLeaflet({
+    
+    data_var <- built_data()$built_conv_index
+    var_label <- "Convention Facilities Index"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_sports <- renderPlotly({
+    
+    data_var <- built_data()$built_sportvenues_adj
+    var_label <- "Sports Venues per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_sports <- renderLeaflet({
+    
+    data_var <- built_data()$built_sportvenues_adj
+    var_label <- "Sports Venues per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_fairgrounds <- renderPlotly({
+    
+    data_var <- built_data()$built_fairgrounds_adj
+    var_label <- "Fairgrounds/Convention Centers per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_fairgrounds <- renderLeaflet({
+    
+    data_var <- built_data()$built_fairgrounds_adj
+    var_label <- "Fairgrounds/Convention Centers per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
+  
+  output$plotly_built_worship <- renderPlotly({
+    
+    data_var <- built_data()$built_placesofworship_adj
+    var_label <- "Places of Worship per 100,000 Population"
+    
+    create_boxplot(built_data(), data_var, var_label)
+  })
+  
+  output$plot_built_worship <- renderLeaflet({
+    
+    data_var <- built_data()$built_placesofworship_adj
+    var_label <- "Places of Worship per 100,000 Population"
+    
+    create_indicator(built_data(), data_var, var_label)
+  })
   
   
   #--------- Measures table -------------------------
