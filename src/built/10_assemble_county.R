@@ -110,6 +110,7 @@ data <- data %>% # telecom
          built_lib_computeruse = replace_na(built_lib_computeruse, 0),
          built_comm_airports = replace_na(built_comm_airports, 0),
          built_noncomm_airports = replace_na(built_noncomm_airports, 0),
+         built_pctnonvacant = (100 - built_pctvacant), 
          
          # housing 
          # built_medpropval (med prop val)
@@ -121,10 +122,10 @@ data <- data %>% # telecom
          built_medyrbuilt_q = calcquint(built_medyrbuilt),
          built_pctsinghaus_q = calcquint(built_pctsinghaus),
          built_medpropval_q = calcquint(built_medpropval),
-         built_pctvacant_q = calcquint(built_pctvacant),
+         built_pctnonvacant_q = calcquint(built_pctnonvacant),
          built_plumbing_q = calcquint(prc_complete_plumbing),
          built_housing_index = (built_medpropval_q + built_medyrbuilt_q + 
-                                  built_pctsinghaus_q + built_pctvacant_q + built_plumbing_q) / 5, 
+                                  built_pctsinghaus_q + built_pctnonvacant_q + built_plumbing_q) / 5, 
          
          # telecomm built_pct2bbandprov, built_pctbband
          # built_pct2bbandprov (percentage of population with two broadband providers)
@@ -166,8 +167,8 @@ data <- data %>% # telecom
          # educational facilities
          built_publicschool_adj = (publicschool_count / COUNTYPOP * 10000), 
          built_privateschool_adj = (privateschool_count / COUNTYPOP * 10000),
-         built_university_adj = (university_count / COUNTYPOP * 10000 * 10000),
-         built_suppcollege_adj = (suppcollege_count / COUNTYPOP * 10000 * 10000),
+         built_university_adj = (university_count / COUNTYPOP * 10000 ),
+         built_suppcollege_adj = (suppcollege_count / COUNTYPOP * 10000 ),
          built_publicschool_adj_q = calcquint(built_publicschool_adj),
          built_privateschool_adj_q = ifelse(built_privateschool_adj != 0, calcquint(built_privateschool_adj[built_privateschool_adj != 0]), 1),
          built_university_adj_q = ifelse(built_university_adj != 0, calcquint(built_university_adj[built_university_adj != 0]), 1),

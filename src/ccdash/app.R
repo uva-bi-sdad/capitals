@@ -1506,18 +1506,18 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                                                    )
                                                                  )
                                                         ),
-                                                        tabPanel(title = "Vacant Housing",
+                                                        tabPanel(title = "Non-Vacant Housing",
                                                                  fluidRow(
-                                                                   h4(strong("Percentage of Vacant Properties"), align = "center"),
+                                                                   h4(strong("Percentage of Non-Vacant Properties"), align = "center"),
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("County-Level Map")),
-                                                                     leafletOutput("plot_built_housing_vacant")
+                                                                     leafletOutput("plot_built_housing_nonvacant")
                                                                    ),
                                                                    column(
                                                                      width = 6,
                                                                      h5(strong("Measure Box Plot and Values by Rurality")),
-                                                                     plotlyOutput("plotly_built_housing_vacant")
+                                                                     plotlyOutput("plotly_built_housing_nonvacant")
                                                                    )
                                                                  )
                                                         ),
@@ -3880,6 +3880,49 @@ server <- function(input, output, session) {
     
   }
   
+  # Function for indicator maps: POSITIVE FOR BINS ---------------------------------------
+  create_indicator_bins <- function(data, myvar, myvarlabel) {
+    
+    pal <- colorBin(palette = cbGreens[1:5], 
+                    domain = myvar, 
+                    bins = 5, 
+                    na.color = cbGreens[6]
+    )
+    
+    labels <- lapply(
+      paste("<strong>Area: </strong>",
+            data$NAME.y,
+            "<br />",
+            "<strong>", myvarlabel, ": </strong>",
+            round(myvar, 2)),
+      htmltools::HTML
+    )
+    
+    leaflet(data = data) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~pal(myvar), 
+                  fillOpacity = 0.7, 
+                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
+                  label = labels,
+                  labelOptions = labelOptions(direction = "bottom",
+                                              style = list(
+                                                "font-size" = "12px",
+                                                "border-color" = "rgba(0,0,0,0.5)",
+                                                direction = "auto"
+                                              ))) %>%
+      addLegend("bottomleft",
+                pal = pal,
+                values =  ~(myvar),
+                title = "Value By Group",
+                opacity = 0.7,
+                na.label = "Not Available",
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
+                })
+    
+  }
+  
   # Function for index maps: POSITIVE ---------------------------------------
   create_index <- function(data, myvar, myvarlabel) {
     
@@ -3947,6 +3990,9 @@ server <- function(input, output, session) {
                 opacity = 0.7,
                 na.label = "Not Available")
   }
+  
+
+  
   
   # Switches
   fin_data <- reactive({datafin %>% filter(state == input$fin_whichstate)})
@@ -5909,49 +5955,6 @@ server <- function(input, output, session) {
   # Built - Housing Outcomes - Boxplot and Map ------------------
   #  
   
-  create_indicator_housing <- function(data, myvar, myvarlabel) {
-    
-    pal <- colorBin(palette = cbGreens[1:5], 
-                    domain = myvar, 
-                    bins = 5, 
-                    #probs = seq(0, 1, length = 6), 
-                    na.color = cbGreens[6]#, right = TRUE
-                    )
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = "Quintile Range",
-                opacity = 0.7,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
-  }
-  
   # index
   output$plotly_built_index_housing <- renderPlotly({
     
@@ -5966,7 +5969,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_housing_index
     var_label <- "Built Housing Index"
     
-    create_indicator_housing(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   })
   
   output$plotly_built_housing_singlefam <- renderPlotly({
@@ -6001,18 +6004,18 @@ server <- function(input, output, session) {
     create_indicator(built_data(), data_var, var_label)
   }) 
   
-  output$plotly_built_housing_vacant <- renderPlotly({
+  output$plotly_built_housing_nonvacant <- renderPlotly({
     
-    data_var <- built_data()$built_pctvacant
-    var_label <- "Percentage of Vacant Properties"
+    data_var <- built_data()$built_pctnonvacant
+    var_label <- "Percentage of Non-Vacant Properties"
     
     create_boxplot(built_data(), data_var, var_label)
   })
   
-  output$plot_built_housing_vacant <- renderLeaflet({
+  output$plot_built_housing_nonvacant <- renderLeaflet({
     
-    data_var <- built_data()$built_pctvacant
-    var_label <- "Percentage of Vacant Properties"
+    data_var <- built_data()$built_pctnonvacant
+    var_label <- "Percentage of Non-Vacant Properties"
     
     create_indicator(built_data(), data_var, var_label)
   }) 
@@ -6156,7 +6159,7 @@ server <- function(input, output, session) {
   output$plotly_built_telecom_2bbandpvdrs <- renderPlotly({
     
     data_var <- built_data()$built_pct2bbandprov
-    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    var_label <- "Percentage of Households with Two Broadband Providers"
     
     create_boxplot(built_data(), data_var, var_label)
   })
@@ -6164,7 +6167,7 @@ server <- function(input, output, session) {
   output$plot_built_telecom_2bbandpvdrs <- renderLeaflet({
     
     data_var <- built_data()$built_pct2bbandprov
-    var_label <- "Percentage of Households with at least Two Broadband Providers"
+    var_label <- "Percentage of Households with Two Broadband Providers"
     
     create_indicator(built_data(), data_var, var_label)
   }) 
@@ -6258,50 +6261,7 @@ server <- function(input, output, session) {
   # 
   # Built - Educational Facilities - Boxplot and Map ------------------
   #  
-  
-  create_indicator_built_edu <- function(data, myvar, myvarlabel) {
-    
-    pal <- colorBin(palette = cbGreens[1:5], 
-                    domain = myvar, 
-                    bins = 5, 
-                    na.color = cbGreens[6]
-    )
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = "Quintile Range",
-                opacity = 0.7,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
-  }
-  
-  
+
   # index
   output$plotly_built_index_edu <- renderPlotly({
     
@@ -6316,7 +6276,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_edu_index
     var_label <- "Built Educational Facilities Index"
     
-    create_indicator_built_edu(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   })
   
   output$plotly_built_suppcolleges <- renderPlotly({
@@ -6332,7 +6292,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_suppcollege_adj
     var_label <- "Supplementary Colleges per 100,000 Population"
     
-    create_indicator_built_edu(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   }) 
   
   output$plotly_built_universities <- renderPlotly({
@@ -6348,7 +6308,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_university_adj_q
     var_label <- "Universities per 100,000 Population"
     
-    create_indicator_built_edu(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   }) 
   
   output$plotly_built_private_schools <- renderPlotly({
@@ -6364,7 +6324,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_privateschool_adj
     var_label <- "Private Schools per 100,000 Population"
     
-    create_indicator_built_edu(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   }) 
   
   output$plotly_built_public_schools <- renderPlotly({
@@ -6387,48 +6347,6 @@ server <- function(input, output, session) {
   # 
   # Built - Emergency Facilities - Boxplot and Map ------------------
   #  
-  
-  create_indicator_emerg <- function(data, myvar, myvarlabel) {
-    
-    pal <- colorBin(palette = cbGreens[1:5], 
-                    domain = myvar, 
-                    bins = 5, 
-                    na.color = cbGreens[6]
-    )
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = "Quintile Range",
-                opacity = 0.7,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
-  }
   
   # index
   output$plotly_built_index_emerg <- renderPlotly({
@@ -6508,7 +6426,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_urgentcares_adj
     var_label <- "Urgent Care Facilities per 100,000 Population"
     
-    create_indicator_emerg(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   })
   
   output$plotly_built_hospitals <- renderPlotly({
@@ -6530,48 +6448,6 @@ server <- function(input, output, session) {
   # 
   # Built - Convention Facilities - Boxplot and Map ------------------
   #  
-  
-  create_indicator_conv <- function(data, myvar, myvarlabel) {
-    
-    pal <- colorBin(palette = cbGreens[1:5], 
-                    domain = myvar, 
-                    bins = 5, 
-                    na.color = cbGreens[6]
-    )
-    
-    labels <- lapply(
-      paste("<strong>Area: </strong>",
-            data$NAME.y,
-            "<br />",
-            "<strong>", myvarlabel, ": </strong>",
-            round(myvar, 2)),
-      htmltools::HTML
-    )
-    
-    leaflet(data = data) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      addPolygons(fillColor = ~pal(myvar), 
-                  fillOpacity = 0.7, 
-                  stroke = TRUE, smoothFactor = 0.7, weight = 0.5, color = "#202020",
-                  label = labels,
-                  labelOptions = labelOptions(direction = "bottom",
-                                              style = list(
-                                                "font-size" = "12px",
-                                                "border-color" = "rgba(0,0,0,0.5)",
-                                                direction = "auto"
-                                              ))) %>%
-      addLegend("bottomleft",
-                pal = pal,
-                values =  ~(myvar),
-                title = "Quintile Range",
-                opacity = 0.7,
-                na.label = "Not Available",
-                labFormat = function(type, cuts, p) {
-                  n = length(cuts)
-                  paste0("[", round(cuts[-n], 2), " &ndash; ", round(cuts[-1], 2), ")")
-                })
-    
-  }
   
   # index
   output$plotly_built_index_conv <- renderPlotly({
@@ -6603,7 +6479,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_sportvenues_adj
     var_label <- "Sports Venues per 100,000 Population"
     
-    create_indicator_conv(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   })
   
   output$plotly_built_fairgrounds <- renderPlotly({
