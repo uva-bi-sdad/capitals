@@ -89,6 +89,13 @@ calcquint <- function(whichvar) {
       labels = FALSE, include.lowest = TRUE, right = FALSE)  
 }
 
+calcquart <- function(whichvar) {
+  cut(whichvar, 
+      quantile(whichvar, 
+               prob = seq(0, 1, length = 5), na.rm = TRUE), 
+      labels = FALSE, include.lowest = TRUE, right = FALSE)  
+}
+
 
 data <- data %>% # telecom 
   mutate(ALAND_acres = ALAND * 0.00024711, 
@@ -218,5 +225,5 @@ data %>%
 
 write_rds(data, "~/git/capitals/rivanna_data/built/built_final.Rds")
 check <- read_rds("~/git/capitals/rivanna_data/built/built_final.Rds")
-
+write_rds(data, "~/git/capitals/src/ccdash/data/built_final.Rds")
 
