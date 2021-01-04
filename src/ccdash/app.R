@@ -1449,7 +1449,7 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                     ),
                                     #tags$script("$(\"input:radio[name='builtidx_choice'][value='HOUSING']\").parent().css('background-color', '#A59200');")),
                                     column(1,
-                                           circleButton(inputId = "infobutton_built", icon = icon("info"), status = "info", size = "sm")  
+                                           circleButton(inputId = "infobutton_built", icon = icon("info"), status = "info", size = "sm")
                                     )
                                 )
                                 
@@ -3746,6 +3746,10 @@ server <- function(input, output, session) {
   })
   observeEvent(input$infobutton_cult, {
     shinyalert(text = includeHTML("index_interpretation_cultural.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
+  })
+  observeEvent(input$infobutton_built, {
+    shinyalert(text = includeHTML("index_interpretation.html"), html = TRUE, type = "info", size = "l", animation = FALSE,
                closeOnEsc = TRUE, closeOnClickOutside = TRUE, showConfirmButton = TRUE, confirmButtonText = "Close")
   })
   observeEvent(input$pcindex_info, {
