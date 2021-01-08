@@ -6092,7 +6092,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_lib_computeruse_adj
     var_label <- "Uses of Public Internet Computers in Libaries per 100,000 Population"
     
-    create_indicator(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   })
   
   output$plotly_built_telecom_libcomps <- renderPlotly({
@@ -6108,7 +6108,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_lib_avcomputers_adj
     var_label <- "Number of Computers in Public Libraries per 100,000 Population"
     
-    create_indicator(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   }) 
   
   output$plotly_built_telecom_libs <- renderPlotly({
@@ -6124,7 +6124,7 @@ server <- function(input, output, session) {
     data_var <- built_data()$built_publibs_adj
     var_label <- "Number of Public Libraries Per 100,000 Population"
     
-    create_indicator(built_data(), data_var, var_label)
+    create_indicator_bins(built_data(), data_var, var_label)
   }) 
   
   output$plotly_built_telecom_towers <- renderPlotly({
