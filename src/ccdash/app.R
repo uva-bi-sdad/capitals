@@ -196,6 +196,18 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                   })
                                   '),
                       
+                      tags$script('
+                                  $( document ).ready(function() {
+                                  var y = $("#vid2").attr("src");
+                                  $("#video_popup2").on("hidden.bs.modal", function (event) {
+                                  $("#vid2").attr("src", "");
+                                  });
+                                  $("#video_popup2").on("show.bs.modal", function(){
+                                  $("#vid2").attr("src", y);
+                                  });
+                                  })
+                                  '),
+                      
                       tabItems(
                         
                         # SUMMARY CONTENT -------------------------
@@ -210,13 +222,20 @@ ui <- dashboardPage(title = "Economic Mobility Data Infrastructure",
                                       br(""),
                                       "This dashboard is under construction and offers preliminary insights into community capitals in Iowa, Oregon, and Virginia.",
                                       br(""),
-                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", actionLink("video_button", "here."),    #a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
+                                      "To view a", strong("tutorial"), "on how to use the dashboard, click ", actionLink("video_button1", "here."),    #a(href = "https://youtu.be/uo25P_valhw", target = "_blank", "here."),
                                       
                                       # code to make video pop-up
                                       bsModal(id = "video_popup", title = "How to Use the Dashboard",
-                                              trigger = "video_button", size = "large",
+                                              trigger = "video_button1", size = "large",
                                               HTML('<iframe id="vid" width="560" height="315" src="https://www.youtube-nocookie.com/embed/uo25P_valhw?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')),
                                       
+                                      br(""),
+                                      "To view an", strong("example"), "of using the dashboard to search for and explore data on an issue, click ", actionLink("video_button2", "here."),    
+                                      
+                                      # code to make video pop-up
+                                      bsModal(id = "video_popup2", title = "Data Search and Exploration Example",
+                                              trigger = "video_button2", size = "large",
+                                              HTML('<iframe id="vid2" width="560" height="315" src="https://www.youtube-nocookie.com/embed/2O7Oh-Fhyvo?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')),
                                       br(""),
                                       img(src = "framework.png", class = "topimage", width = "100%",
                                           style = "display: block; margin-left: auto; margin-right: auto; border: 0.5px solid #B4B4B4")
