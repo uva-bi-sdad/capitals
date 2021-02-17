@@ -75,30 +75,3 @@ natural,climate vulnerability,Percent area (square miles) within FEMA designated
 natural,climate vulnerability,Total population vulnerable to predicted surface smoke from wildland fires,DHHS Centers for Disease Control and Prevention,2018,county
 natural,climate vulnerability,Projected number of future extreme heat days (2020 estimates),DHHS Centers for Disease Control and Prevention,2020,county
 natural,climate vulnerability,Number of extreme heat days in 2016,DHHS Centers for Disease Control and Prevention,2016,county
-built,housing,Median Household Property Value,US Census Bureau American Community Survey,2014/18,county
-built,housing,Median Year of Built Structures,US Census Bureau American Community Survey,2014/18,county
-built,housing,Percentage of Non-Vacant Properties,US Census Bureau American Community Survey,2014/18,county
-built,housing,Percentage of Households with Complete Plumbing,US Census Bureau American Community Survey,2014/18,county
-built,housing,Percentage of Households in Detached Single Family Units,US Census Bureau American Community Survey,2014/18,county
-built,telecommunications,Percentage of Households with at least Two Broadband Providers,Federal Communication Commission Broadband Data,2019,county
-built,telecommunications,Percentage of Households with Broadband Subscription,US Census Bureau American Community Survey,2014/18,county
-built,telecommunications,Number of Cell Towers Per Acre,Homeland Infrastructure Foundation Level Data,2019,county
-built,telecommunications,"Number of Public Libraries Per 100,000 Population",Institute of Museum and Library Services Public Library Use Survey,2018,county
-built,telecommunications,"Number of Computers in Public Libraries per 100,000 Population",Institute of Museum and Library Services Public Library Use Survey,2018,county
-built,telecommunications,"Uses of Public Internet Computers in Libaries per 100,000 Population",Institute of Museum and Library Services Public Library Use Survey,2018,county
-built,transportation,Number of Bridges per Acre,US Department of Transportation Data,2020,county
-built,transportation,Percentage of Low Quality Bridges,US Department of Transportation Data,2020,county
-built,transportation,Total Roads per Acre,Homeland Infrastructure Foundation Level Data,2020,county
-built,transportation,Miles of Roads per Acre,Homeland Infrastructure Foundation Level Data,2020,county
-built,education,"Number of Public Schools per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,education,"Number of Private Schools per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,education,"Number of Universities per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,education,"Number of Supplementary Colleges per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,emergency,"Hospitals per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,emergency,"Urgent Care Facilities per 100,000 Population",Homeland Infrastructure Foundation Level Data,2018,county
-built,emergency,"Mental Health Facilities per 100,000 Population",Health Resources & Services Administration,2019,county
-built,emergency,"Fire Stations per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,emergency,"Police Stations per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,convention,"Places of Worship per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,convention,"Fairgrounds/Convention Centers per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county
-built,convention,"Sports Venues per 100,000 Population",Homeland Infrastructure Foundation Level Data,2020,county

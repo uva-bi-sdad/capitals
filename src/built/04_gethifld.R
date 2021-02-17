@@ -8,6 +8,8 @@ library(tidyr)
 library(tidycensus)
 library(naniar)
 
+# https://hifld-geoplatform.opendata.arcgis.com/search
+
 # Using HIFLD Cellular Towers, Aircraft Landing Facilities, EMS Stations, Electric Substations,
 # and EPA FRS Wastewater Treatment Plants to investigate quality, and if viable,
 # identify points in OR/VA/IA and tally by county.
